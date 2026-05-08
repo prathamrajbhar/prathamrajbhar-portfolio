@@ -20,6 +20,18 @@ export function readingTimeFromHtml(html: string) {
   return Math.max(1, Math.ceil(text.split(" ").filter(Boolean).length / 200));
 }
 
+export function readingTimeFromContent(content: string) {
+  const text = content
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/!\[[^\]]*]\([^)]+\)/g, " ")
+    .replace(/\[[^\]]+]\([^)]+\)/g, " ")
+    .replace(/[#>*_`|~-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return Math.max(1, Math.ceil(text.split(" ").filter(Boolean).length / 200));
+}
+
 export function sanitizeHtml(html: string) {
   return html
     .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
@@ -35,6 +47,4 @@ export function getBaseUrl(headersList?: Headers) {
   return `${protocol}://${host}`;
 }
 
-export function skillDots(level: number) {
-  return Array.from({ length: 5 }, (_, index) => (index < level ? "●" : "○")).join(" ");
-}
+

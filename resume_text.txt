@@ -1,0 +1,65 @@
+PRATHAM RAJBHAR
+Ahmedabad, Gujarat | +91 9512518403 | pratham.rajbhar@gmail.com
+prathamrajbhar.tech | linkedin.com/in/prathamrajbhar | github.com/prathamrajbhar
+
+PROFESSIONAL SUMMARY
+Motivated Computer Engineering undergraduate (B.Tech, 6th Semester, Ganpat University) with a 9.4 CGPA in
+Diploma and real-world experience across 6 hackathons where I built and shipped working products under tight
+deadlines. I am comfortable across the full stack, from building interfaces to designing backend systems and integrating
+AI features. I take ownership of what I build, care about how it performs, and can start adding value from day one.
+
+PROJECTS
+KeplerLab AI Notebook
+•
+
+•
+•
+
+Built a full-stack AI platform with 25+ modular FastAPI routes covering JWT + OAuth authentication, AI chat
+agents, flashcard/quiz generation, mind maps, podcast creation with live text-to-speech, and sandboxed code
+execution.
+Implemented production-ready backend infrastructure including LangChain AI pipelines, realtime WebSocket communication, rate limiting, circuit breakers, and performance monitoring.
+Developed the frontend in React 19 + Next.js with Zustand state management, featuring an advanced chat
+interface, mind map canvas, podcast studio, and skill workflow editor.
+
+Smart Tourist Safety Monitoring System
+•
+
+•
+
+Built a Flutter app with background GPS tracking, live AI safety score (0–100), and an SOS panic button,
+powered by a FastAPI backend using Isolation Forest + Temporal Analysis + Geofencing models that retrain
+every 60 seconds on live Supabase data.
+Delivered a React.js police dashboard with real-time WebSocket alerts, polygon zone management, broadcast
+notifications, and blockchain-backed E-FIR PDF reports.
+
+Balanza – Personal Finance Tracker
+•
+•
+
+Built a cross-platform mobile app using Flutter for real-time income and expense tracking with dynamic balance
+updates and interactive spending charts.
+Secured all financial data locally using SQLite encryption, ensuring user privacy with consistent read/write
+performance on both Android and iOS.
+
+TECHNICAL SKILLS
+• Languages & Frontend: Python, JavaScript , SQL, React.js, Next.js, Tailwind CSS , Dart
+• Mobile & Backend: Flutter, React Native, FastAPI, Node.js,REST APIs, WebSockets, Docker, CI/CD
+• AI & LLMs: LangChain, Prompt Engineering, Generative AI, NLP, TensorFlow, PyTorch, Vector Stores
+• Databases & Tools: PostgreSQL, MongoDB, SQLite, Redis, Git, GitHub Actions, Postman, Linux
+
+EDUCATION
+Bachelor of Technology in Computer Engineering
+
+Aug 2024 - Present
+
+Ganpat University | 6th Semester
+Focus Areas: LLMs & AI Agents · Full-Stack Development · Real-Time Systems · Generative AI
+
+Diploma of Computer Engineering
+Ganpat University
+CGPA: 9.4 | Distinguished Member
+
+Sep 2021 - July 2024
+
+

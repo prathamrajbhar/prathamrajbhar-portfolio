@@ -12,6 +12,8 @@ const items = [
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/blog", label: "Blog", icon: NotebookText },
   { href: "/admin/experience", label: "Experience", icon: BriefcaseBusiness },
+  { href: "/admin/hackathons", label: "Hackathons", icon: Sparkles },
+  { href: "/admin/certifications", label: "Certifications", icon: NotebookText },
   { href: "/admin/skills", label: "Skills", icon: Sparkles },
   { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/settings", label: "Site Settings", icon: Settings }

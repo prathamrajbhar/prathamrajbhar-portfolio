@@ -12,16 +12,15 @@ const categories = ["Languages", "Frameworks", "Tools", "Cloud", "Other"];
 type Draft = {
   name: string;
   category: string;
-  level: number;
   order: number;
   iconUrl: string;
 };
 
 export function SkillsManager({ skills }: { skills: SkillDTO[] }) {
   const router = useRouter();
-  const [draft, setDraft] = useState<Draft>({ name: "", category: "Languages", level: 3, order: 0, iconUrl: "" });
+  const [draft, setDraft] = useState<Draft>({ name: "", category: "Languages", order: 0, iconUrl: "" });
   const [editing, setEditing] = useState<Record<string, Draft>>(
-    Object.fromEntries(skills.map((skill) => [skill.id, { name: skill.name, category: skill.category, level: skill.level, order: skill.order, iconUrl: skill.iconUrl ?? "" }]))
+    Object.fromEntries(skills.map((skill) => [skill.id, { name: skill.name, category: skill.category, order: skill.order, iconUrl: skill.iconUrl ?? "" }]))
   );
 
   async function save(id: string) {
@@ -39,7 +38,7 @@ export function SkillsManager({ skills }: { skills: SkillDTO[] }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(draft)
     });
-    setDraft({ name: "", category: "Languages", level: 3, order: 0, iconUrl: "" });
+    setDraft({ name: "", category: "Languages", order: 0, iconUrl: "" });
     router.refresh();
   }
 
@@ -58,9 +57,9 @@ export function SkillsManager({ skills }: { skills: SkillDTO[] }) {
             <tr>
               <th className="p-3">Name</th>
               <th className="p-3">Category</th>
-              <th className="p-3">Level</th>
-              <th className="p-3">Order</th>
-              <th className="p-3">Actions</th>
+              <th className="p-3">Icon URL</th>
+              <th className="p-3 w-24">Order</th>
+              <th className="p-3 w-32">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -74,13 +73,7 @@ export function SkillsManager({ skills }: { skills: SkillDTO[] }) {
                       {categories.map((category) => <option key={category}>{category}</option>)}
                     </select>
                   </td>
-                  <td className="p-3">
-                    <div className="flex gap-1">
-                      {[1, 2, 3, 4, 5].map((level) => (
-                        <button key={level} type="button" className={level <= value.level ? "text-primary" : "text-muted"} onClick={() => setEditing((current) => ({ ...current, [skill.id]: { ...value, level } }))}>●</button>
-                      ))}
-                    </div>
-                  </td>
+                  <td className="p-3"><Input placeholder="Logo URL" value={value.iconUrl} onChange={(event) => setEditing((current) => ({ ...current, [skill.id]: { ...value, iconUrl: event.target.value } }))} /></td>
                   <td className="p-3"><Input type="number" value={value.order} onChange={(event) => setEditing((current) => ({ ...current, [skill.id]: { ...value, order: Number(event.target.value) } }))} /></td>
                   <td className="p-3">
                     <div className="flex gap-2">
@@ -91,16 +84,16 @@ export function SkillsManager({ skills }: { skills: SkillDTO[] }) {
                 </tr>
               );
             })}
-            <tr>
+            <tr className="bg-primary/5">
               <td className="p-3"><Input placeholder="New skill" value={draft.name} onChange={(event) => setDraft((current) => ({ ...current, name: event.target.value }))} /></td>
               <td className="p-3">
                 <select className="h-10 w-full rounded-[6px] border border-border bg-bg px-3" value={draft.category} onChange={(event) => setDraft((current) => ({ ...current, category: event.target.value }))}>
                   {categories.map((category) => <option key={category}>{category}</option>)}
                 </select>
               </td>
-              <td className="p-3"><Input type="number" min={1} max={5} value={draft.level} onChange={(event) => setDraft((current) => ({ ...current, level: Number(event.target.value) }))} /></td>
+              <td className="p-3"><Input placeholder="Logo URL" value={draft.iconUrl} onChange={(event) => setDraft((current) => ({ ...current, iconUrl: event.target.value }))} /></td>
               <td className="p-3"><Input type="number" value={draft.order} onChange={(event) => setDraft((current) => ({ ...current, order: Number(event.target.value) }))} /></td>
-              <td className="p-3"><Button onClick={() => void add()}>Add Skill</Button></td>
+              <td className="p-3"><Button className="w-full" onClick={() => void add()}>Add</Button></td>
             </tr>
           </tbody>
         </table>

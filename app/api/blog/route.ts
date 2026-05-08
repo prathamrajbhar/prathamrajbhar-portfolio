@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { dataResponse, errorResponse, normalizeTags, requireAdmin, validationErrorResponse } from "@/lib/api";
 import { blogPostSchema } from "@/lib/validations";
-import { readingTimeFromHtml, slugify } from "@/lib/utils";
+import { readingTimeFromContent, slugify } from "@/lib/utils";
 
 export async function GET() {
   try {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const parsed = blogPostSchema.safeParse({
       ...body,
       slug: body.slug || slugify(String(body.title ?? "")),
-      readingTime: body.readingTime || readingTimeFromHtml(String(body.content ?? ""))
+      readingTime: body.readingTime || readingTimeFromContent(String(body.content ?? ""))
     });
     if (!parsed.success) return validationErrorResponse(parsed.error);
 

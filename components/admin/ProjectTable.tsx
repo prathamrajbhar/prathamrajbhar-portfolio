@@ -33,6 +33,7 @@ export function ProjectTable({ projects }: { projects: ProjectDTO[] }) {
       )
     },
     { key: "title", header: "Title", render: (project) => project.title, sortable: true, sortValue: (project) => project.title },
+    { key: "category", header: "Category", render: (project) => <span className="text-muted">{project.category ?? "Uncategorized"}</span> },
     { key: "status", header: "Status", render: (project) => <Badge variant={project.status === "completed" ? "success" : "warning"}>{project.status}</Badge> },
     { key: "featured", header: "Featured", render: (project) => <Badge variant={project.featured ? "default" : "muted"}>{project.featured ? "Yes" : "No"}</Badge> },
     { key: "tags", header: "Tags", render: (project) => <span className="text-muted">{project.tags.map((tag) => tag.name).join(", ")}</span> },

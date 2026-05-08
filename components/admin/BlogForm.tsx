@@ -4,20 +4,21 @@ import { Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { ImageUpload } from "@/components/admin/ImageUpload";
-import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import { MdxEditor } from "@/components/admin/MdxEditor";
 import { TagInput } from "@/components/admin/TagInput";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import type { BlogPostDTO } from "@/lib/types";
-import { readingTimeFromHtml, slugify } from "@/lib/utils";
+import { readingTimeFromContent, slugify } from "@/lib/utils";
 
 type BlogState = {
   title: string;
   slug: string;
   excerpt: string;
   content: string;
+  contentFormat: "mdx" | "html";
   coverImage: string;
   published: boolean;
   readingTime: number;
@@ -30,7 +31,8 @@ export function BlogForm({ post }: { post?: BlogPostDTO }) {
     title: post?.title ?? "",
     slug: post?.slug ?? "",
     excerpt: post?.excerpt ?? "",
-    content: post?.content ?? "<p></p>",
+    content: post?.content ?? "# New post\n\nStart writing in MDX here.",
+    contentFormat: post?.contentFormat ?? "mdx",
     coverImage: post?.coverImage ?? "",
     published: post?.published ?? false,
     readingTime: post?.readingTime ?? 1,
@@ -40,7 +42,7 @@ export function BlogForm({ post }: { post?: BlogPostDTO }) {
   const [error, setError] = useState("");
 
   function setContent(content: string) {
-    setState((current) => ({ ...current, content, readingTime: readingTimeFromHtml(content) }));
+    setState((current) => ({ ...current, content, readingTime: readingTimeFromContent(content) }));
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -82,8 +84,11 @@ export function BlogForm({ post }: { post?: BlogPostDTO }) {
           <Textarea id="excerpt" value={state.excerpt} maxLength={200} onChange={(event) => setState((current) => ({ ...current, excerpt: event.target.value }))} required />
         </div>
         <div className="grid gap-2">
-          <label className="text-sm font-medium">Content</label>
-          <RichTextEditor value={state.content} onChange={setContent} />
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <label className="text-sm font-medium">MDX Content</label>
+            <span className="text-xs text-muted">Use Markdown, tables, images, code, and JSX-style MDX.</span>
+          </div>
+          <MdxEditor value={state.content} onChange={setContent} />
         </div>
         <div className="grid gap-2">
           <label className="text-sm font-medium">Cover Image</label>

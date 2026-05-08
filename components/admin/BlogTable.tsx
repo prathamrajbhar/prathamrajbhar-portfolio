@@ -18,7 +18,13 @@ export function BlogTable({ posts }: { posts: BlogPostDTO[] }) {
     await fetch(`/api/blog/${post.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...post, published: !post.published, tags: post.tags.map((tag) => tag.name), coverImage: post.coverImage ?? "" })
+      body: JSON.stringify({
+        ...post,
+        published: !post.published,
+        tags: post.tags.map((tag) => tag.name),
+        coverImage: post.coverImage ?? "",
+        contentFormat: post.contentFormat ?? "mdx"
+      })
     });
     router.refresh();
   }
@@ -33,6 +39,7 @@ export function BlogTable({ posts }: { posts: BlogPostDTO[] }) {
   const columns: Column<BlogPostDTO>[] = [
     { key: "title", header: "Title", render: (post) => post.title, sortable: true, sortValue: (post) => post.title },
     { key: "published", header: "Published", render: (post) => <button onClick={() => void toggle(post)}><Badge variant={post.published ? "success" : "muted"}>{post.published ? "Published" : "Draft"}</Badge></button> },
+    { key: "format", header: "Format", render: (post) => <Badge variant="muted">{post.contentFormat ?? "mdx"}</Badge> },
     { key: "reading", header: "Reading", render: (post) => `${post.readingTime} min` },
     { key: "date", header: "Date", sortable: true, sortValue: (post) => post.createdAt, render: (post) => formatDate(post.createdAt) },
     {

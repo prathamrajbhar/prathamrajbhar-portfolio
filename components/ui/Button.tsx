@@ -2,20 +2,22 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
-type ButtonSize = "sm" | "md" | "lg" | "icon";
+type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "outline";
+type ButtonSize = "sm" | "md" | "lg" | "xl" | "icon";
 
 const variants: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary-hover border-transparent",
   secondary: "bg-surface text-text border-border hover:border-primary/50",
   ghost: "bg-transparent text-text border-transparent hover:bg-surface",
-  danger: "bg-red-600 text-white border-transparent hover:bg-red-700"
+  danger: "bg-red-600 text-white border-transparent hover:bg-red-700",
+  outline: "bg-transparent text-text border-border hover:border-primary/50"
 };
 
 const sizes: Record<ButtonSize, string> = {
   sm: "h-9 px-3 text-sm",
   md: "h-10 px-4 text-sm",
   lg: "h-12 px-5 text-base",
+  xl: "h-14 px-8 text-lg font-bold",
   icon: "h-10 w-10 p-0"
 };
 

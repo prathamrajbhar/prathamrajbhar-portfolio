@@ -8,68 +8,81 @@ datasource db {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  description String
-  content     String
-  techStack   String[]
-  liveUrl     String?
-  githubUrl   String?
-  imageUrl    String?
-  featured    Boolean  @default(false)
-  status      String   @default("completed")
-  views       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  tags        Tag[]    @relation("ProjectTags")
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  description   String
+  content       String
+  techStack     String[]
+  liveUrl       String?
+  githubUrl     String?
+  imageUrl      String?
+  featured      Boolean  @default(false)
+  status        String   @default("completed")
+  views         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  category      String?
+  client        String?
+  features      String[] @default([])
+  galleryImages String[] @default([])
+  impact        String?
+  outcomes      String[] @default([])
+  problem       String?
+  projectLinks  Json     @default("[]")
+  role          String?
+  solution      String?
+  subtitle      String?
+  timeline      String?
+  year          String?
+  tags          Tag[]    @relation("ProjectTags")
 }
 
 model BlogPost {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  excerpt     String
-  content     String
-  coverImage  String?
-  published   Boolean  @default(false)
-  readingTime Int      @default(5)
-  views       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  tags        Tag[]    @relation("BlogTags")
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  excerpt       String
+  content       String
+  coverImage    String?
+  published     Boolean  @default(false)
+  readingTime   Int      @default(5)
+  views         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  contentFormat String   @default("mdx")
+  tags          Tag[]    @relation("BlogTags")
 }
 
 model Experience {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   company     String
   role        String
   location    String?
-  type        String   @default("full-time")
+  type        String    @default("full-time")
   startDate   DateTime
   endDate     DateTime?
-  current     Boolean  @default(false)
+  current     Boolean   @default(false)
   description String
   skills      String[]
   logoUrl     String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
 }
 
 model Skill {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   name     String
   category String
-  level    Int    @default(3)
   iconUrl  String?
-  order    Int    @default(0)
+  order    Int     @default(0)
 }
 
 model Tag {
   id       String     @id @default(cuid())
   name     String     @unique
-  projects Project[]  @relation("ProjectTags")
   posts    BlogPost[] @relation("BlogTags")
+  projects Project[]  @relation("ProjectTags")
 }
 
 model ContactMessage {
@@ -104,4 +117,44 @@ model AdminUser {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+}
+
+model Hackathon {
+  id          String   @id @default(cuid())
+  title       String
+  project     String
+  role        String?
+  date        DateTime
+  location    String?
+  result      String?
+  link        String?
+  description String
+  image       String?
+  createdAt   DateTime @default(now())
+}
+
+model Certification {
+  id           String   @id @default(cuid())
+  name         String
+  issuer       String
+  date         DateTime
+  url          String?
+  credentialId String?
+  image        String?
+  createdAt    DateTime @default(now())
+}
+
+model Education {
+  id          String    @id @default(cuid())
+  institution String
+  degree      String
+  field       String?
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  description String?
+  gpa         String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
 }
