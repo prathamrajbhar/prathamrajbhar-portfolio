@@ -19,19 +19,34 @@ export function ContactForm() {
     setState("loading");
     setError("");
     const formData = new FormData(event.currentTarget);
-    const response = await fetch("/api/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Object.fromEntries(formData.entries()))
-    });
-    if (response.ok) {
+    const payload = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const message = data.error || "Something went wrong. Please try again.";
+        throw new Error(message);
+      }
+
       event.currentTarget.reset();
       setState("success");
       setTimeout(() => setState("idle"), 5000);
-    } else {
-      const json = (await response.json()) as { error?: string };
-      setError(json.error ?? "Something went wrong.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       setState("error");
+      setTimeout(() => setState("idle"), 5000);
     }
   }
 

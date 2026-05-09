@@ -8,7 +8,14 @@ export function ViewTracker({ path }: { path: string }) {
     const key = `viewed:${path}`;
     if (sessionStorage.getItem(key)) return;
     sessionStorage.setItem(key, "1");
-    void fetch(path, { method: "PATCH" });
+
+    fetch("/api/views", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path }),
+    }).catch(() => {
+      // Silently fail — view tracking is non-critical
+    });
   }, [path]);
 
   return null;

@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
@@ -10,36 +7,32 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// ─── Site Settings (Singleton) ───────────────────────────────────────────────
+
+model SiteSettings {
+  id          String   @id @default("singleton")
+  name        String
+  title       String
+  bio         String
+  email       String
+  github      String?
+  linkedin    String?
+  twitter     String?
+  resumeUrl   String?
+  avatarUrl   String?
+  heroTagline String?
+  openToWork  Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
 }
 
-model BlogPost {
-  id           String   @id @default(cuid())
-  title        String
-  slug         String   @unique
-  excerpt      String
-  content      String
-  contentFormat String   @default("mdx")
-  coverImage   String?
-  published    Boolean  @default(false)
-  readingTime  Int      @default(5)
-  tags         Json     @default("[]")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
+// ─── Projects ────────────────────────────────────────────────────────────────
 
 model Project {
-  id            String   @id @default(cuid())
+  id            String        @id @default(cuid())
   title         String
-  slug          String   @unique
+  slug          String        @unique
   description   String
-  content       String
+  content       String        @default("")
   subtitle      String?
   role          String?
   client        String?
@@ -49,59 +42,87 @@ model Project {
   problem       String?
   solution      String?
   impact        String?
-  features      Json     @default("[]")
-  outcomes      Json     @default("[]")
-  techStack     Json     @default("[]")
+  features      String[]
+  outcomes      String[]
+  techStack     String[]
   liveUrl       String?
   githubUrl     String?
   imageUrl      String?
-  galleryImages Json     @default("[]")
-  projectLinks  Json     @default("[]")
-  featured      Boolean  @default(false)
-  status        String   @default("completed")
-  tags          Json     @default("[]")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  galleryImages String[]
+  tags          String[]
+  featured      Boolean       @default(false)
+  status        String        @default("completed")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  projectLinks  ProjectLink[]
 }
 
+model ProjectLink {
+  id        String  @id @default(cuid())
+  label     String
+  url       String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+}
+
+// ─── Blog ────────────────────────────────────────────────────────────────────
+
+model BlogPost {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  excerpt       String
+  content       String
+  contentFormat String   @default("mdx")
+  coverImage    String?
+  published     Boolean  @default(false)
+  readingTime   Int      @default(1)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  tags          String[]
+}
+
+// ─── Experience ──────────────────────────────────────────────────────────────
+
 model Experience {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   company     String
   role        String
   location    String?
-  type        String    @default("full-time")
+  type        String   @default("Full-time")
   startDate   DateTime
   endDate     DateTime?
-  current     Boolean   @default(false)
+  current     Boolean  @default(false)
   description String
-  skills      Json      @default("[]")
+  skills      String[]
   logoUrl     String?
-  order       Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
 }
 
-model Certification {
-  id           String   @id @default(cuid())
-  name         String
-  issuer       String
-  date         DateTime
-  url          String?
-  credentialId String?
-  image        String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
+// ─── Skills ──────────────────────────────────────────────────────────────────
 
 model Skill {
+  id       String  @id @default(cuid())
+  name     String  @unique
+  category String
+  iconUrl  String?
+  order    Int     @default(0)
+}
+
+// ─── Contact Messages ────────────────────────────────────────────────────────
+
+model ContactMessage {
   id        String   @id @default(cuid())
   name      String
-  category  String
-  iconUrl   String?
-  order     Int      @default(0)
+  email     String
+  subject   String
+  message   String
+  read      Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
+
+// ─── Hackathons ──────────────────────────────────────────────────────────────
 
 model Hackathon {
   id          String   @id @default(cuid())
@@ -115,32 +136,25 @@ model Hackathon {
   description String
   image       String?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
-model Message {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  subject   String
-  message   String
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
+// ─── Certifications ──────────────────────────────────────────────────────────
+
+model Certification {
+  id           String   @id @default(cuid())
+  name         String
+  issuer       String
+  date         DateTime
+  url          String?
+  credentialId String?
+  image        String?
+  createdAt    DateTime @default(now())
 }
 
-model Settings {
-  id            String   @id @default(cuid())
-  name          String
-  title         String
-  bio           String
-  email         String
-  github        String?
-  linkedin      String?
-  twitter       String?
-  resumeUrl     String?
-  avatarUrl     String?
-  heroTagline   String?
-  openToWork    Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+// ─── Page Views (Analytics) ──────────────────────────────────────────────────
+
+model PageView {
+  id    String @id @default(cuid())
+  path  String @unique
+  count Int    @default(0)
 }

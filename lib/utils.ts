@@ -41,9 +41,6 @@ export function sanitizeHtml(html: string) {
 }
 
 export function getBaseUrl(headersList?: Headers | null) {
-  if (process.env.NEXTAUTH_URL) {
-    return process.env.NEXTAUTH_URL.replace(/\/$/, "");
-  }
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`;
   }
