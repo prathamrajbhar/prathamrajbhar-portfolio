@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import { Textarea } from "@/components/ui/Textarea";
 import type { CertificationDTO } from "@/lib/types";
 
 export function CertificationForm({ initialData }: { initialData?: CertificationDTO }) {

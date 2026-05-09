@@ -11,9 +11,10 @@ async function findProject(id: string) {
   });
 }
 
-export async function GET(_request: Request, { params }: { params: { id: string } }) {
+export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
-    const project = await findProject(params.id);
+    const project = await findProject(id);
     if (!project) return errorResponse("Project not found", 404);
     return dataResponse(project);
   } catch {
@@ -21,12 +22,13 @@ export async function GET(_request: Request, { params }: { params: { id: string 
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const session = await requireAdmin();
     if (!session) return errorResponse("Unauthorized", 401);
 
-    const existing = await findProject(params.id);
+    const existing = await findProject(id);
     if (!existing) return errorResponse("Project not found", 404);
 
     const body = await request.json();
@@ -57,12 +59,13 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(_request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const session = await requireAdmin();
     if (!session) return errorResponse("Unauthorized", 401);
 
-    const existing = await findProject(params.id);
+    const existing = await findProject(id);
     if (!existing) return errorResponse("Project not found", 404);
     await prisma.project.delete({ where: { id: existing.id } });
     return dataResponse({ deleted: true });
@@ -71,9 +74,10 @@ export async function DELETE(_request: Request, { params }: { params: { id: stri
   }
 }
 
-export async function PATCH(_request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
-    const existing = await findProject(params.id);
+    const existing = await findProject(id);
     if (!existing) return errorResponse("Project not found", 404);
     const project = await prisma.project.update({
       where: { id: existing.id },

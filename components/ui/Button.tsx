@@ -47,7 +47,7 @@ export function Button(props: ButtonProps | LinkProps) {
   );
 
   if ("href" in props && props.href) {
-    const { href, variant: _variant, size: _size, icon: _icon, className: _className, children: _children, ...anchorProps } = props;
+    const { href, variant: _v, size: _s, icon: _i, className: _c, children: _ch, ...anchorProps } = props;
     return (
       <Link href={href} className={classes} {...anchorProps}>
         {icon}
@@ -58,11 +58,11 @@ export function Button(props: ButtonProps | LinkProps) {
 
   const {
     type = "button",
-    variant: _variant,
-    size: _size,
-    icon: _icon,
-    className: _className,
-    children: _children,
+    variant: _v2,
+    size: _s2,
+    icon: _i2,
+    className: _c2,
+    children: _ch2,
     ...buttonProps
   } = props as ButtonProps;
   return (

@@ -5,7 +5,7 @@ type ApiSuccess<T> = { data: T };
 
 export async function fetchApi<T>(path: string, fallback: T, init?: RequestInit): Promise<T> {
   try {
-    const headerList = headers();
+    const headerList = await headers();
     const response = await fetch(`${getBaseUrl(headerList)}/api${path}`, {
       cache: "no-store",
       headers: {

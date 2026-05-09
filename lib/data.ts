@@ -13,12 +13,12 @@ import type {
 } from "@/lib/types";
 
 // Helper to convert Prisma types to DTOs and handle date serialization
-function toDTO<T>(data: any): T {
-  if (!data) return data;
-  return JSON.parse(JSON.stringify(data, (key, value) => {
+function toDTO<T>(data: NonNullable<unknown>): T {
+  if (!data) return data as T;
+  return JSON.parse(JSON.stringify(data, (_key, value: unknown) => {
     if (value instanceof Date) return value.toISOString();
     return value;
-  }));
+  })) as T;
 }
 
 // Experiences

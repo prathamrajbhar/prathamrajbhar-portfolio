@@ -19,22 +19,18 @@ const navLinks = [
 export function Navbar({ name }: { name: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "dark";
+    const rootTheme = document.documentElement.dataset.theme;
+    if (rootTheme === "light" || rootTheme === "dark") return rootTheme;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  });
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const rootTheme = document.documentElement.dataset.theme;
-    if (rootTheme === "light" || rootTheme === "dark") {
-      setTheme(rootTheme);
-      return;
-    }
-    setTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   }, []);
 
   function toggleTheme() {

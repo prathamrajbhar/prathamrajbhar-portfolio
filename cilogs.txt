@@ -1,0 +1,711 @@
+2026-05-08T19:47:19.6878346Z Current runner version: '2.334.0'
+2026-05-08T19:47:19.6924825Z ##[group]Runner Image Provisioner
+2026-05-08T19:47:19.6926212Z Hosted Compute Agent
+2026-05-08T19:47:19.6927137Z Version: 20260213.493
+2026-05-08T19:47:19.6928080Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-05-08T19:47:19.6929369Z Build Date: 2026-02-13T00:28:41Z
+2026-05-08T19:47:19.6930448Z Worker ID: {470c1729-c8e7-4fb0-89e6-87e331f07c3d}
+2026-05-08T19:47:19.6931567Z Azure Region: westus3
+2026-05-08T19:47:19.6952966Z ##[endgroup]
+2026-05-08T19:47:19.6955313Z ##[group]Operating System
+2026-05-08T19:47:19.6956267Z Ubuntu
+2026-05-08T19:47:19.6957170Z 24.04.4
+2026-05-08T19:47:19.6958015Z LTS
+2026-05-08T19:47:19.6958768Z ##[endgroup]
+2026-05-08T19:47:19.6959711Z ##[group]Runner Image
+2026-05-08T19:47:19.6960666Z Image: ubuntu-24.04
+2026-05-08T19:47:19.6961556Z Version: 20260413.86.1
+2026-05-08T19:47:19.6964058Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+2026-05-08T19:47:19.6966647Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+2026-05-08T19:47:19.6968348Z ##[endgroup]
+2026-05-08T19:47:19.6970162Z ##[group]GITHUB_TOKEN Permissions
+2026-05-08T19:47:19.6993344Z Contents: read
+2026-05-08T19:47:19.6994256Z Metadata: read
+2026-05-08T19:47:19.6995168Z Packages: read
+2026-05-08T19:47:19.6996137Z ##[endgroup]
+2026-05-08T19:47:19.6999099Z Secret source: Actions
+2026-05-08T19:47:19.7000554Z Prepare workflow directory
+2026-05-08T19:47:19.7637663Z Prepare all required actions
+2026-05-08T19:47:19.7713969Z Getting action download info
+2026-05-08T19:47:20.2338123Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-05-08T19:47:20.3470315Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-05-08T19:47:20.5431440Z Complete job name: build
+2026-05-08T19:47:20.6117576Z ##[group]Run actions/checkout@v4
+2026-05-08T19:47:20.6118742Z with:
+2026-05-08T19:47:20.6119268Z   repository: prathamrajbhar/prathamrajbhar-portfolio
+2026-05-08T19:47:20.6120015Z   token: ***
+2026-05-08T19:47:20.6120390Z   ssh-strict: true
+2026-05-08T19:47:20.6120774Z   ssh-user: git
+2026-05-08T19:47:20.6121168Z   persist-credentials: true
+2026-05-08T19:47:20.6121623Z   clean: true
+2026-05-08T19:47:20.6122017Z   sparse-checkout-cone-mode: true
+2026-05-08T19:47:20.6122743Z   fetch-depth: 1
+2026-05-08T19:47:20.6123121Z   fetch-tags: false
+2026-05-08T19:47:20.6123514Z   show-progress: true
+2026-05-08T19:47:20.6123904Z   lfs: false
+2026-05-08T19:47:20.6124262Z   submodules: false
+2026-05-08T19:47:20.6124655Z   set-safe-directory: true
+2026-05-08T19:47:20.6125403Z ##[endgroup]
+2026-05-08T19:47:20.7441767Z Syncing repository: prathamrajbhar/prathamrajbhar-portfolio
+2026-05-08T19:47:20.7444951Z ##[group]Getting Git version info
+2026-05-08T19:47:20.7451169Z Working directory is '/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio'
+2026-05-08T19:47:20.7453969Z [command]/usr/bin/git version
+2026-05-08T19:47:20.7455053Z git version 2.53.0
+2026-05-08T19:47:20.7458356Z ##[endgroup]
+2026-05-08T19:47:20.7465562Z Temporarily overriding HOME='/home/runner/work/_temp/42705902-6afa-4a19-b9a3-e8c0b67c46c2' before making global git config changes
+2026-05-08T19:47:20.7468084Z Adding repository directory to the temporary git global config as a safe directory
+2026-05-08T19:47:20.7470505Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio
+2026-05-08T19:47:20.7551711Z Deleting the contents of '/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio'
+2026-05-08T19:47:20.7554572Z ##[group]Initializing the repository
+2026-05-08T19:47:20.7556383Z [command]/usr/bin/git init /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio
+2026-05-08T19:47:20.7801340Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-05-08T19:47:20.7803008Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-05-08T19:47:20.7804865Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-05-08T19:47:20.7805917Z hint: call:
+2026-05-08T19:47:20.7806471Z hint:
+2026-05-08T19:47:20.7807453Z hint: 	git config --global init.defaultBranch <name>
+2026-05-08T19:47:20.7808350Z hint:
+2026-05-08T19:47:20.7808998Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-05-08T19:47:20.7810144Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-05-08T19:47:20.7810939Z hint:
+2026-05-08T19:47:20.7811437Z hint: 	git branch -m <name>
+2026-05-08T19:47:20.7811961Z hint:
+2026-05-08T19:47:20.7813326Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-05-08T19:47:20.7814928Z Initialized empty Git repository in /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.git/
+2026-05-08T19:47:20.7818251Z [command]/usr/bin/git remote add origin https://github.com/prathamrajbhar/prathamrajbhar-portfolio
+2026-05-08T19:47:20.7886261Z ##[endgroup]
+2026-05-08T19:47:20.7887654Z ##[group]Disabling automatic garbage collection
+2026-05-08T19:47:20.7888887Z [command]/usr/bin/git config --local gc.auto 0
+2026-05-08T19:47:20.9062448Z ##[endgroup]
+2026-05-08T19:47:20.9063910Z ##[group]Setting up auth
+2026-05-08T19:47:20.9065358Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-05-08T19:47:20.9069157Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-05-08T19:47:20.9085742Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-05-08T19:47:20.9183712Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-05-08T19:47:20.9489641Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-05-08T19:47:20.9559904Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-05-08T19:47:20.9897473Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-05-08T19:47:20.9968259Z ##[endgroup]
+2026-05-08T19:47:20.9969594Z ##[group]Fetching the repository
+2026-05-08T19:47:20.9971959Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +51c38bc50413790d65ffbfe252f261906254441e:refs/remotes/origin/main
+2026-05-08T19:47:21.7478850Z From https://github.com/prathamrajbhar/prathamrajbhar-portfolio
+2026-05-08T19:47:21.7484118Z  * [new ref]         51c38bc50413790d65ffbfe252f261906254441e -> origin/main
+2026-05-08T19:47:21.7515941Z ##[endgroup]
+2026-05-08T19:47:21.7517421Z ##[group]Determining the checkout info
+2026-05-08T19:47:21.7518994Z ##[endgroup]
+2026-05-08T19:47:21.7522704Z [command]/usr/bin/git sparse-checkout disable
+2026-05-08T19:47:21.7563968Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-05-08T19:47:21.7591752Z ##[group]Checking out the ref
+2026-05-08T19:47:21.7596095Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-05-08T19:47:21.7727716Z Switched to a new branch 'main'
+2026-05-08T19:47:21.7735025Z branch 'main' set up to track 'origin/main'.
+2026-05-08T19:47:21.7745929Z ##[endgroup]
+2026-05-08T19:47:21.7778662Z [command]/usr/bin/git log -1 --format=%H
+2026-05-08T19:47:21.7803431Z 51c38bc50413790d65ffbfe252f261906254441e
+2026-05-08T19:47:21.8142973Z ##[group]Run actions/setup-node@v4
+2026-05-08T19:47:21.8144136Z with:
+2026-05-08T19:47:21.8144947Z   node-version: 20
+2026-05-08T19:47:21.8145810Z   cache: npm
+2026-05-08T19:47:21.8146643Z   always-auth: false
+2026-05-08T19:47:21.8147560Z   check-latest: false
+2026-05-08T19:47:21.8148948Z   token: ***
+2026-05-08T19:47:21.8149764Z ##[endgroup]
+2026-05-08T19:47:22.0162794Z Found in cache @ /opt/hostedtoolcache/node/20.20.2/x64
+2026-05-08T19:47:22.0169491Z ##[group]Environment details
+2026-05-08T19:47:22.4156442Z node: v20.20.2
+2026-05-08T19:47:22.4157482Z npm: 10.8.2
+2026-05-08T19:47:22.4158464Z yarn: 1.22.22
+2026-05-08T19:47:22.4160084Z ##[endgroup]
+2026-05-08T19:47:22.4185964Z [command]/opt/hostedtoolcache/node/20.20.2/x64/bin/npm config get cache
+2026-05-08T19:47:22.5536980Z /home/runner/.npm
+2026-05-08T19:47:22.7994144Z npm cache is not found
+2026-05-08T19:47:22.8100204Z ##[group]Run npm ci
+2026-05-08T19:47:22.8100550Z [36;1mnpm ci[0m
+2026-05-08T19:47:22.8133628Z shell: /usr/bin/bash -e {0}
+2026-05-08T19:47:22.8133932Z ##[endgroup]
+2026-05-08T19:47:26.4443397Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2026-05-08T19:47:28.5015170Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2026-05-08T19:47:30.7611695Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+2026-05-08T19:47:30.8634367Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+2026-05-08T19:47:31.2024605Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-05-08T19:47:31.3026135Z npm warn deprecated glob@10.3.10: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-05-08T19:47:32.6588146Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-05-08T19:47:33.6042355Z npm warn deprecated @effect/schema@0.68.18: this package has been merged into the main effect package
+2026-05-08T19:47:34.3761395Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+2026-05-08T19:47:55.8928347Z 
+2026-05-08T19:47:55.8958524Z added 687 packages, and audited 688 packages in 33s
+2026-05-08T19:47:55.8970788Z 
+2026-05-08T19:47:55.8971508Z 321 packages are looking for funding
+2026-05-08T19:47:55.8972612Z   run `npm fund` for details
+2026-05-08T19:47:56.0178242Z 
+2026-05-08T19:47:56.0179248Z 9 vulnerabilities (1 moderate, 8 high)
+2026-05-08T19:47:56.0184183Z 
+2026-05-08T19:47:56.0185072Z To address all issues (including breaking changes), run:
+2026-05-08T19:47:56.0195332Z   npm audit fix --force
+2026-05-08T19:47:56.0195918Z 
+2026-05-08T19:47:56.0196306Z Run `npm audit` for details.
+2026-05-08T19:47:56.0716106Z ##[group]Run npx prisma generate
+2026-05-08T19:47:56.0716421Z [36;1mnpx prisma generate[0m
+2026-05-08T19:47:56.0738843Z shell: /usr/bin/bash -e {0}
+2026-05-08T19:47:56.0739081Z env:
+2026-05-08T19:47:56.0739248Z   DATABASE_URL: 
+2026-05-08T19:47:56.0739423Z ##[endgroup]
+2026-05-08T19:47:57.2632894Z warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+2026-05-08T19:47:57.2634780Z For more information, see: https://pris.ly/prisma-config
+2026-05-08T19:47:57.2635649Z 
+2026-05-08T19:47:57.5170021Z Prisma schema loaded from prisma/schema.prisma
+2026-05-08T19:47:57.9602385Z ┌─────────────────────────────────────────────────────────┐
+2026-05-08T19:47:57.9603041Z 
+2026-05-08T19:47:57.9603745Z ✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 188ms
+2026-05-08T19:47:57.9604776Z 
+2026-05-08T19:47:57.9606075Z │  Update available 6.19.3 -> 7.8.0                       │
+2026-05-08T19:47:57.9623247Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-05-08T19:47:57.9624374Z │                                                         │
+2026-05-08T19:47:57.9625233Z │  This is a major update - please follow the guide at    │
+2026-05-08T19:47:57.9626249Z │  https://pris.ly/d/major-version-upgrade                │
+2026-05-08T19:47:57.9627163Z │                                                         │
+2026-05-08T19:47:57.9627940Z │  Run the following to update                            │
+2026-05-08T19:47:57.9628777Z │    npm i --save-dev prisma@latest                       │
+2026-05-08T19:47:57.9629573Z │    npm i @prisma/client@latest                          │
+2026-05-08T19:47:57.9630430Z └─────────────────────────────────────────────────────────┘
+2026-05-08T19:47:57.9630785Z 
+2026-05-08T19:47:57.9631298Z Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+2026-05-08T19:47:57.9631788Z 
+2026-05-08T19:47:57.9914713Z ##[group]Run npm run lint
+2026-05-08T19:47:57.9914973Z [36;1mnpm run lint[0m
+2026-05-08T19:47:57.9936312Z shell: /usr/bin/bash -e {0}
+2026-05-08T19:47:57.9936538Z ##[endgroup]
+2026-05-08T19:47:58.1117465Z 
+2026-05-08T19:47:58.1118124Z > my-portfolio@1.0.0 lint
+2026-05-08T19:47:58.1118945Z > next lint
+2026-05-08T19:47:58.1119399Z 
+2026-05-08T19:48:01.2535393Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-05-08T19:48:01.2540236Z This information is used to shape Next.js' roadmap and prioritize features.
+2026-05-08T19:48:01.2542478Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-05-08T19:48:01.2543978Z https://nextjs.org/telemetry
+2026-05-08T19:48:01.2544511Z 
+2026-05-08T19:48:01.4487396Z ✔ No ESLint warnings or errors
+2026-05-08T19:48:01.5530646Z ##[group]Run npm run build
+2026-05-08T19:48:01.5530947Z [36;1mnpm run build[0m
+2026-05-08T19:48:01.5553107Z shell: /usr/bin/bash -e {0}
+2026-05-08T19:48:01.5553337Z env:
+2026-05-08T19:48:01.5553499Z   DATABASE_URL: 
+2026-05-08T19:48:01.5553671Z   NEXTAUTH_SECRET: 
+2026-05-08T19:48:01.5553851Z   NEXTAUTH_URL: 
+2026-05-08T19:48:01.5554012Z   ADMIN_EMAIL: 
+2026-05-08T19:48:01.5554201Z   ADMIN_PASSWORD: 
+2026-05-08T19:48:01.5554367Z   RESEND_API_KEY: 
+2026-05-08T19:48:01.5554544Z   UPLOADTHING_SECRET: 
+2026-05-08T19:48:01.5554730Z   UPLOADTHING_APP_ID: 
+2026-05-08T19:48:01.5554909Z ##[endgroup]
+2026-05-08T19:48:01.6778975Z 
+2026-05-08T19:48:01.6779763Z > my-portfolio@1.0.0 build
+2026-05-08T19:48:01.6780619Z > next build
+2026-05-08T19:48:01.6781047Z 
+2026-05-08T19:48:02.3003364Z   ▲ Next.js 14.2.35
+2026-05-08T19:48:02.3003843Z 
+2026-05-08T19:48:02.3629811Z    Creating an optimized production build ...
+2026-05-08T19:48:27.6083066Z  ⚠ Compiled with warnings
+2026-05-08T19:48:27.6083824Z 
+2026-05-08T19:48:27.6084487Z ./node_modules/jose/dist/webapi/lib/deflate.js
+2026-05-08T19:48:27.6085737Z A Node.js API is used (CompressionStream at line: 10) which is not supported in the Edge Runtime.
+2026-05-08T19:48:27.6086971Z Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+2026-05-08T19:48:27.6087584Z 
+2026-05-08T19:48:27.6087987Z Import trace for requested module:
+2026-05-08T19:48:27.6088723Z ./node_modules/jose/dist/webapi/lib/deflate.js
+2026-05-08T19:48:27.6089581Z ./node_modules/jose/dist/webapi/jwe/flattened/decrypt.js
+2026-05-08T19:48:27.6090387Z ./node_modules/jose/dist/webapi/index.js
+2026-05-08T19:48:27.6091092Z ./node_modules/@auth/core/jwt.js
+2026-05-08T19:48:27.6091783Z ./node_modules/@auth/core/lib/init.js
+2026-05-08T19:48:27.6092695Z ./node_modules/@auth/core/lib/index.js
+2026-05-08T19:48:27.6093393Z ./node_modules/@auth/core/index.js
+2026-05-08T19:48:27.6094043Z ./node_modules/next-auth/index.js
+2026-05-08T19:48:27.6094494Z 
+2026-05-08T19:48:27.6094953Z ./node_modules/jose/dist/webapi/lib/deflate.js
+2026-05-08T19:48:27.6096577Z A Node.js API is used (DecompressionStream at line: 26) which is not supported in the Edge Runtime.
+2026-05-08T19:48:27.6097837Z Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+2026-05-08T19:48:27.6098480Z 
+2026-05-08T19:48:27.6098881Z Import trace for requested module:
+2026-05-08T19:48:27.6099579Z ./node_modules/jose/dist/webapi/lib/deflate.js
+2026-05-08T19:48:27.6100393Z ./node_modules/jose/dist/webapi/jwe/flattened/decrypt.js
+2026-05-08T19:48:27.6101232Z ./node_modules/jose/dist/webapi/index.js
+2026-05-08T19:48:27.6104828Z ./node_modules/@auth/core/jwt.js
+2026-05-08T19:48:27.6105423Z ./node_modules/@auth/core/lib/init.js
+2026-05-08T19:48:27.6106017Z ./node_modules/@auth/core/lib/index.js
+2026-05-08T19:48:27.6106580Z ./node_modules/@auth/core/index.js
+2026-05-08T19:48:27.6107055Z ./node_modules/next-auth/index.js
+2026-05-08T19:48:27.6107306Z 
+2026-05-08T19:48:40.1563936Z  ✓ Compiled successfully
+2026-05-08T19:48:40.1565015Z    Linting and checking validity of types ...
+2026-05-08T19:48:50.4133123Z    Collecting page data ...
+2026-05-08T19:48:51.1082610Z  ⚠ Using edge runtime on a page currently disables static generation for that page
+2026-05-08T19:48:51.4404526Z prisma:error 
+2026-05-08T19:48:51.4409873Z Invalid `prisma.blogPost.findMany()` invocation:
+2026-05-08T19:48:51.4410559Z 
+2026-05-08T19:48:51.4411177Z 
+2026-05-08T19:48:51.4412726Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:51.4414147Z   -->  schema.prisma:7
+2026-05-08T19:48:51.4415976Z    | 
+2026-05-08T19:48:51.4416624Z  6 |   provider = "postgresql"
+2026-05-08T19:48:51.4417384Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:51.4418062Z    | 
+2026-05-08T19:48:51.4418472Z 
+2026-05-08T19:48:51.4418874Z Validation Error Count: 1
+2026-05-08T19:48:51.4529497Z prisma:error 
+2026-05-08T19:48:51.4543250Z Invalid `prisma.project.findMany()` invocation:
+2026-05-08T19:48:51.4544321Z 
+2026-05-08T19:48:51.4544509Z 
+2026-05-08T19:48:51.4545723Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:51.4546995Z   -->  schema.prisma:7
+2026-05-08T19:48:51.4547556Z    | 
+2026-05-08T19:48:51.4548042Z  6 |   provider = "postgresql"
+2026-05-08T19:48:51.4548610Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:51.4549146Z    | 
+2026-05-08T19:48:51.4549437Z 
+2026-05-08T19:48:51.4549752Z Validation Error Count: 1
+2026-05-08T19:48:53.2123520Z    Generating static pages (0/35) ...
+2026-05-08T19:48:54.5116909Z    Generating static pages (8/35) 
+2026-05-08T19:48:54.8620407Z prisma:error 
+2026-05-08T19:48:54.8643154Z Invalid `prisma.siteSettings.findFirst()` invocation:
+2026-05-08T19:48:54.8662571Z 
+2026-05-08T19:48:54.8682488Z 
+2026-05-08T19:48:54.8703663Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:54.8742775Z   -->  schema.prisma:7
+2026-05-08T19:48:54.8763105Z Prisma error in getSiteSettings: PrismaClientInitializationError: 
+2026-05-08T19:48:54.8763751Z    | 
+2026-05-08T19:48:54.8774918Z Invalid `prisma.siteSettings.findFirst()` invocation:
+2026-05-08T19:48:54.8775578Z  6 |   provider = "postgresql"
+2026-05-08T19:48:54.8794219Z 
+2026-05-08T19:48:54.8794487Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:54.8812622Z 
+2026-05-08T19:48:54.8812796Z    | 
+2026-05-08T19:48:54.8823610Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:54.8834327Z 
+2026-05-08T19:48:54.8854599Z   -->  schema.prisma:7
+2026-05-08T19:48:54.8855043Z Validation Error Count: 1
+2026-05-08T19:48:54.8872793Z    | 
+2026-05-08T19:48:54.8874194Z prisma:error 
+2026-05-08T19:48:54.8882746Z  6 |   provider = "postgresql"
+2026-05-08T19:48:54.8883385Z Invalid `prisma.skill.findMany()` invocation:
+2026-05-08T19:48:54.8894579Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:54.8894888Z 
+2026-05-08T19:48:54.8913698Z    | 
+2026-05-08T19:48:54.8913918Z 
+2026-05-08T19:48:54.8932531Z 
+2026-05-08T19:48:54.8933662Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:54.8942714Z Validation Error Count: 1
+2026-05-08T19:48:54.8951025Z   -->  schema.prisma:7
+2026-05-08T19:48:54.8964951Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:54.8968966Z    | 
+2026-05-08T19:48:54.8969338Z  6 |   provider = "postgresql"
+2026-05-08T19:48:54.8969822Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:54.8970256Z    | 
+2026-05-08T19:48:54.8970423Z 
+2026-05-08T19:48:54.8970608Z Validation Error Count: 1
+2026-05-08T19:48:54.8971005Z prisma:error 
+2026-05-08T19:48:54.8971580Z Invalid `prisma.siteSettings.findFirst()` invocation:
+2026-05-08T19:48:54.8972013Z 
+2026-05-08T19:48:54.8972024Z 
+2026-05-08T19:48:54.8973324Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:54.8974410Z   -->  schema.prisma:7
+2026-05-08T19:48:54.8974764Z    | 
+2026-05-08T19:48:54.8975110Z  6 |   provider = "postgresql"
+2026-05-08T19:48:54.8975576Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:54.8975989Z    | 
+2026-05-08T19:48:54.8976165Z 
+2026-05-08T19:48:54.8976344Z Validation Error Count: 1
+2026-05-08T19:48:54.8976719Z prisma:error 
+2026-05-08T19:48:54.8977188Z Invalid `prisma.skill.findMany()` invocation:
+2026-05-08T19:48:54.8977554Z 
+2026-05-08T19:48:54.8977565Z 
+2026-05-08T19:48:54.8978526Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:54.8979539Z   -->  schema.prisma:7
+2026-05-08T19:48:54.8980179Z    | 
+2026-05-08T19:48:54.8994194Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:54.8996402Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:54.8997843Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:54.8998821Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:11573)
+2026-05-08T19:48:54.8999691Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673 {
+2026-05-08T19:48:54.9000210Z   clientVersion: '6.19.3',
+2026-05-08T19:48:54.9000430Z   errorCode: undefined,
+2026-05-08T19:48:54.9000633Z   retryable: undefined
+2026-05-08T19:48:54.9000833Z }
+2026-05-08T19:48:54.9001154Z Prisma error in getSkills: PrismaClientInitializationError: 
+2026-05-08T19:48:54.9001578Z Invalid `prisma.skill.findMany()` invocation:
+2026-05-08T19:48:54.9001780Z 
+2026-05-08T19:48:54.9001786Z 
+2026-05-08T19:48:54.9002753Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:54.9003362Z   -->  schema.prisma:7
+2026-05-08T19:48:54.9003563Z    | 
+2026-05-08T19:48:54.9003758Z  6 |   provider = "postgresql"
+2026-05-08T19:48:54.9004010Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:54.9004225Z    | 
+2026-05-08T19:48:54.9004312Z 
+2026-05-08T19:48:54.9004409Z Validation Error Count: 1
+2026-05-08T19:48:54.9005114Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:54.9006261Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:54.9007571Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:54.9008597Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:54.9009545Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:9726)
+2026-05-08T19:48:54.9010424Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673
+2026-05-08T19:48:54.9011043Z     at async Promise.all (index 1)
+2026-05-08T19:48:54.9011662Z     at async m (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/app/(public)/about/page.js:1:2808) {
+2026-05-08T19:48:54.9022818Z   clientVersion: '6.19.3',
+2026-05-08T19:48:54.9023240Z   errorCode: undefined,
+2026-05-08T19:48:54.9023617Z   retryable: undefined
+2026-05-08T19:48:54.9023949Z }
+2026-05-08T19:48:54.9024575Z Prisma error in getSiteSettings: PrismaClientInitializationError: 
+2026-05-08T19:48:54.9025438Z Invalid `prisma.siteSettings.findFirst()` invocation:
+2026-05-08T19:48:54.9025833Z 
+2026-05-08T19:48:54.9025843Z 
+2026-05-08T19:48:54.9026896Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:54.9027954Z   -->  schema.prisma:7
+2026-05-08T19:48:54.9028289Z    | 
+2026-05-08T19:48:54.9028612Z  6 |   provider = "postgresql"
+2026-05-08T19:48:54.9029061Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:54.9029467Z    | 
+2026-05-08T19:48:54.9029951Z 
+2026-05-08T19:48:54.9030137Z Validation Error Count: 1
+2026-05-08T19:48:54.9031686Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:54.9034031Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:54.9036086Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:54.9038031Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:54.9039862Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:11573)
+2026-05-08T19:48:54.9041487Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673 {
+2026-05-08T19:48:54.9045031Z   clientVersion: '6.19.3',
+2026-05-08T19:48:54.9045431Z   errorCode: undefined,
+2026-05-08T19:48:54.9045807Z   retryable: undefined
+2026-05-08T19:48:54.9046138Z }
+2026-05-08T19:48:54.9046726Z Prisma error in getSkills: PrismaClientInitializationError: 
+2026-05-08T19:48:54.9047463Z Invalid `prisma.skill.findMany()` invocation:
+2026-05-08T19:48:54.9047811Z 
+2026-05-08T19:48:54.9047820Z 
+2026-05-08T19:48:54.9048846Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:54.9049861Z   -->  schema.prisma:7
+2026-05-08T19:48:54.9050182Z    | 
+2026-05-08T19:48:54.9050501Z  6 |   provider = "postgresql"
+2026-05-08T19:48:54.9050941Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:54.9051320Z    | 
+2026-05-08T19:48:54.9051475Z 
+2026-05-08T19:48:54.9051640Z Validation Error Count: 1
+2026-05-08T19:48:54.9053310Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:54.9055523Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:54.9057804Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:54.9059716Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:54.9061544Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:9726)
+2026-05-08T19:48:54.9063448Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673
+2026-05-08T19:48:54.9064451Z     at async Promise.all (index 1)
+2026-05-08T19:48:54.9065623Z     at async m (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/app/(public)/about/page.js:1:2808) {
+2026-05-08T19:48:54.9066698Z   clientVersion: '6.19.3',
+2026-05-08T19:48:54.9067073Z   errorCode: undefined,
+2026-05-08T19:48:54.9067425Z   retryable: undefined
+2026-05-08T19:48:54.9067745Z }
+2026-05-08T19:48:54.9068070Z  6 |   provider = "postgresql"
+2026-05-08T19:48:54.9068509Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:54.9068904Z    | 
+2026-05-08T19:48:54.9069056Z 
+2026-05-08T19:48:54.9069237Z Validation Error Count: 1
+2026-05-08T19:48:55.0406988Z prisma:error 
+2026-05-08T19:48:55.0407855Z Prisma error in getBlogPosts: PrismaClientInitializationError: 
+2026-05-08T19:48:55.0409445Z Invalid `prisma.blogPost.findMany()` invocation:
+2026-05-08T19:48:55.0411221Z Invalid `prisma.blogPost.findMany()` invocation:
+2026-05-08T19:48:55.0412585Z 
+2026-05-08T19:48:55.0412972Z 
+2026-05-08T19:48:55.0414331Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.0415066Z 
+2026-05-08T19:48:55.0416143Z   -->  schema.prisma:7
+2026-05-08T19:48:55.0416915Z    | 
+2026-05-08T19:48:55.0417737Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.0418834Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.0419886Z    | 
+2026-05-08T19:48:55.0420467Z 
+2026-05-08T19:48:55.0420975Z Validation Error Count: 1
+2026-05-08T19:48:55.0422020Z prisma:error 
+2026-05-08T19:48:55.0423305Z Invalid `prisma.blogPost.findMany()` invocation:
+2026-05-08T19:48:55.0423724Z 
+2026-05-08T19:48:55.0424549Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.0425161Z   -->  schema.prisma:7
+2026-05-08T19:48:55.0425362Z    | 
+2026-05-08T19:48:55.0425561Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.0426080Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.0426457Z    | 
+2026-05-08T19:48:55.0426675Z 
+2026-05-08T19:48:55.0427418Z Validation Error Count: 1
+2026-05-08T19:48:55.0428374Z 
+2026-05-08T19:48:55.0428693Z 
+2026-05-08T19:48:55.0442672Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.0448493Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:55.0454255Z   -->  schema.prisma:7
+2026-05-08T19:48:55.0456241Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:55.0457893Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:55.0459307Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:55.0460691Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:10745)
+2026-05-08T19:48:55.0462488Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673
+2026-05-08T19:48:55.0464184Z     at async o (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/app/(public)/blog/page.js:1:9491) {
+2026-05-08T19:48:55.0465207Z   clientVersion: '6.19.3',
+2026-05-08T19:48:55.0465579Z   errorCode: undefined,
+2026-05-08T19:48:55.0465914Z   retryable: undefined
+2026-05-08T19:48:55.0466228Z }
+2026-05-08T19:48:55.0466795Z Prisma error in getBlogPosts: PrismaClientInitializationError: 
+2026-05-08T19:48:55.0467545Z Invalid `prisma.blogPost.findMany()` invocation:
+2026-05-08T19:48:55.0467908Z 
+2026-05-08T19:48:55.0467917Z 
+2026-05-08T19:48:55.0468594Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.0469190Z   -->  schema.prisma:7
+2026-05-08T19:48:55.0469397Z    | 
+2026-05-08T19:48:55.0469594Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.0469845Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.0470070Z    | 
+2026-05-08T19:48:55.0470153Z 
+2026-05-08T19:48:55.0470254Z Validation Error Count: 1
+2026-05-08T19:48:55.0470954Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:55.0472494Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:55.0476358Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:55.0479608Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:55.0483552Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:10745)
+2026-05-08T19:48:55.0486529Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673
+2026-05-08T19:48:55.0489507Z     at async o (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/app/(public)/blog/page.js:1:9491) {
+2026-05-08T19:48:55.0491266Z   clientVersion: '6.19.3',
+2026-05-08T19:48:55.0492020Z   errorCode: undefined,
+2026-05-08T19:48:55.0492814Z   retryable: undefined
+2026-05-08T19:48:55.0493353Z }
+2026-05-08T19:48:55.0493815Z    | 
+2026-05-08T19:48:55.0494511Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.0495346Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.0496119Z    | 
+2026-05-08T19:48:55.0496303Z 
+2026-05-08T19:48:55.0496661Z Validation Error Count: 1
+2026-05-08T19:48:55.1648490Z prisma:error 
+2026-05-08T19:48:55.1648912Z Invalid `prisma.experience.findMany()` invocation:
+2026-05-08T19:48:55.1649175Z 
+2026-05-08T19:48:55.1649182Z 
+2026-05-08T19:48:55.1649751Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.1650353Z   -->  schema.prisma:7
+2026-05-08T19:48:55.1650550Z    | 
+2026-05-08T19:48:55.1650740Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.1650993Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.1651217Z    | 
+2026-05-08T19:48:55.1651302Z 
+2026-05-08T19:48:55.1651402Z Validation Error Count: 1
+2026-05-08T19:48:55.1651610Z prisma:error 
+2026-05-08T19:48:55.1651886Z Invalid `prisma.experience.findMany()` invocation:
+2026-05-08T19:48:55.1652356Z 
+2026-05-08T19:48:55.1652365Z 
+2026-05-08T19:48:55.1653381Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.1654490Z   -->  schema.prisma:7
+2026-05-08T19:48:55.1654847Z    | 
+2026-05-08T19:48:55.1655547Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.1656098Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.1656510Z    | 
+2026-05-08T19:48:55.1656681Z 
+2026-05-08T19:48:55.1656862Z Validation Error Count: 1
+2026-05-08T19:48:55.1657729Z Prisma error in getExperiences: PrismaClientInitializationError: 
+2026-05-08T19:48:55.1673326Z Invalid `prisma.experience.findMany()` invocation:
+2026-05-08T19:48:55.1674224Z 
+2026-05-08T19:48:55.1674693Z 
+2026-05-08T19:48:55.1676011Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.1677481Z   -->  schema.prisma:7
+2026-05-08T19:48:55.1678095Z    | 
+2026-05-08T19:48:55.1678691Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.1679645Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.1680297Z    | 
+2026-05-08T19:48:55.1680819Z 
+2026-05-08T19:48:55.1681337Z Validation Error Count: 1
+2026-05-08T19:48:55.1683467Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:55.1686430Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:55.1688990Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:55.1691684Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:55.1694225Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:9464)
+2026-05-08T19:48:55.1696465Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673
+2026-05-08T19:48:55.1698225Z     at async Promise.all (index 0)
+2026-05-08T19:48:55.1700013Z     at async x (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/app/(public)/experience/page.js:1:3097) {
+2026-05-08T19:48:55.1701724Z   clientVersion: '6.19.3',
+2026-05-08T19:48:55.1702600Z   errorCode: undefined,
+2026-05-08T19:48:55.1703241Z   retryable: undefined
+2026-05-08T19:48:55.1704221Z }
+2026-05-08T19:48:55.1705076Z Prisma error in getExperiences: PrismaClientInitializationError: 
+2026-05-08T19:48:55.1706426Z Invalid `prisma.experience.findMany()` invocation:
+2026-05-08T19:48:55.1707251Z 
+2026-05-08T19:48:55.1707449Z 
+2026-05-08T19:48:55.1709006Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.1710467Z   -->  schema.prisma:7
+2026-05-08T19:48:55.1711185Z    | 
+2026-05-08T19:48:55.1711756Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.1712878Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.1713457Z    | 
+2026-05-08T19:48:55.1713831Z 
+2026-05-08T19:48:55.1714197Z Validation Error Count: 1
+2026-05-08T19:48:55.1715651Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:55.1718261Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:55.1721190Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:55.1723933Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:55.1726068Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:9464)
+2026-05-08T19:48:55.1728296Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673
+2026-05-08T19:48:55.1730215Z     at async Promise.all (index 0)
+2026-05-08T19:48:55.1731984Z     at async x (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/app/(public)/experience/page.js:1:3097) {
+2026-05-08T19:48:55.1733564Z   clientVersion: '6.19.3',
+2026-05-08T19:48:55.1734157Z   errorCode: undefined,
+2026-05-08T19:48:55.1734666Z   retryable: undefined
+2026-05-08T19:48:55.1735136Z }
+2026-05-08T19:48:55.1823572Z    Generating static pages (17/35) 
+2026-05-08T19:48:55.2403472Z prisma:error 
+2026-05-08T19:48:55.2404214Z Prisma error in getProjects: PrismaClientInitializationError: 
+2026-05-08T19:48:55.2404969Z Invalid `prisma.project.findMany()` invocation:
+2026-05-08T19:48:55.2405321Z 
+2026-05-08T19:48:55.2405331Z 
+2026-05-08T19:48:55.2406371Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.2407390Z   -->  schema.prisma:7
+2026-05-08T19:48:55.2407708Z    | 
+2026-05-08T19:48:55.2408027Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.2408445Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.2408825Z    | 
+2026-05-08T19:48:55.2408967Z 
+2026-05-08T19:48:55.2409133Z Validation Error Count: 1
+2026-05-08T19:48:55.2409975Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:55.2411152Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:55.2412516Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:55.2413785Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:55.2414768Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:9968)
+2026-05-08T19:48:55.2415635Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673
+2026-05-08T19:48:55.2416169Z     at async Promise.all (index 1)
+2026-05-08T19:48:55.2416765Z     at async A (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/app/(public)/page.js:1:14321) {
+2026-05-08T19:48:55.2417312Z   clientVersion: '6.19.3',
+2026-05-08T19:48:55.2417519Z   errorCode: undefined,
+2026-05-08T19:48:55.2417714Z   retryable: undefined
+2026-05-08T19:48:55.2417908Z }
+2026-05-08T19:48:55.2418249Z Prisma error in getProjects: PrismaClientInitializationError: 
+2026-05-08T19:48:55.2418675Z Invalid `prisma.project.findMany()` invocation:
+2026-05-08T19:48:55.2418875Z 
+2026-05-08T19:48:55.2418886Z 
+2026-05-08T19:48:55.2419438Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.2420014Z   -->  schema.prisma:7
+2026-05-08T19:48:55.2420200Z    | 
+2026-05-08T19:48:55.2420389Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.2420625Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.2420845Z    | 
+2026-05-08T19:48:55.2420927Z 
+2026-05-08T19:48:55.2421027Z Validation Error Count: 1
+2026-05-08T19:48:55.2421717Z     at ei.handleRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:7568)
+2026-05-08T19:48:55.2425206Z     at ei.handleAndLogRequestError (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6593)
+2026-05-08T19:48:55.2427302Z     at ei.request (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:121:6300)
+2026-05-08T19:48:55.2429653Z     at async a (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/node_modules/@prisma/client/runtime/library.js:130:9551)
+2026-05-08T19:48:55.2431449Z     at async revalidate (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/7501.js:1:9968)
+2026-05-08T19:48:55.2433288Z     at async /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/chunks/1580.js:1:40673
+2026-05-08T19:48:55.2434300Z     at async Promise.all (index 1)
+2026-05-08T19:48:55.2435413Z     at async A (/home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio/.next/server/app/(public)/page.js:1:14321) {
+2026-05-08T19:48:55.2436445Z   clientVersion: '6.19.3',
+2026-05-08T19:48:55.2436827Z   errorCode: undefined,
+2026-05-08T19:48:55.2437184Z   retryable: undefined
+2026-05-08T19:48:55.2437520Z }
+2026-05-08T19:48:55.2438014Z Invalid `prisma.project.findMany()` invocation:
+2026-05-08T19:48:55.2441287Z 
+2026-05-08T19:48:55.2464376Z 
+2026-05-08T19:48:55.2474207Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.2481188Z   -->  schema.prisma:7
+2026-05-08T19:48:55.2483446Z    | 
+2026-05-08T19:48:55.2487031Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.2488155Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.2489080Z    | 
+2026-05-08T19:48:55.2489938Z 
+2026-05-08T19:48:55.2490652Z Validation Error Count: 1
+2026-05-08T19:48:55.2491861Z prisma:error 
+2026-05-08T19:48:55.2492827Z Invalid `prisma.project.findMany()` invocation:
+2026-05-08T19:48:55.2493382Z 
+2026-05-08T19:48:55.2493545Z 
+2026-05-08T19:48:55.2494736Z error: Error validating datasource `db`: You must provide a nonempty URL. The environment variable `DATABASE_URL` resolved to an empty string.
+2026-05-08T19:48:55.2495983Z   -->  schema.prisma:7
+2026-05-08T19:48:55.2496500Z    | 
+2026-05-08T19:48:55.2497004Z  6 |   provider = "postgresql"
+2026-05-08T19:48:55.2498070Z  7 |   url      = env("DATABASE_URL")
+2026-05-08T19:48:55.2498801Z    | 
+2026-05-08T19:48:55.2499121Z 
+2026-05-08T19:48:55.2499456Z Validation Error Count: 1
+2026-05-08T19:48:55.8357676Z    Generating static pages (26/35) 
+2026-05-08T19:48:56.1102001Z  ✓ Generating static pages (35/35)
+2026-05-08T19:48:56.3553592Z    Finalizing page optimization ...
+2026-05-08T19:48:56.3592000Z    Collecting build traces ...
+2026-05-08T19:49:03.0642815Z 
+2026-05-08T19:49:03.0876448Z Route (app)                              Size     First Load JS
+2026-05-08T19:49:03.0877561Z ┌ ○ /                                    3.37 kB         158 kB
+2026-05-08T19:49:03.0878340Z ├ ○ /_not-found                          876 B          88.2 kB
+2026-05-08T19:49:03.0879102Z ├ ○ /about                               188 B           101 kB
+2026-05-08T19:49:03.0879846Z ├ ƒ /admin                               176 B          96.2 kB
+2026-05-08T19:49:03.0880602Z ├ ƒ /admin/blog                          3.52 kB         116 kB
+2026-05-08T19:49:03.0881422Z ├ ƒ /admin/blog/[id]/edit                151 B           144 kB
+2026-05-08T19:49:03.0882074Z ├ ƒ /admin/blog/new                      152 B           144 kB
+2026-05-08T19:49:03.0883238Z ├ ƒ /admin/certifications                2.22 kB         115 kB
+2026-05-08T19:49:03.0884303Z ├ ƒ /admin/certifications/[id]           2.02 kB         115 kB
+2026-05-08T19:49:03.0885255Z ├ ƒ /admin/certifications/new            2.02 kB         115 kB
+2026-05-08T19:49:03.0886192Z ├ ƒ /admin/experience                    3.19 kB         116 kB
+2026-05-08T19:49:03.0887128Z ├ ƒ /admin/experience/[id]/edit          152 B           143 kB
+2026-05-08T19:49:03.0888060Z ├ ƒ /admin/experience/new                152 B           143 kB
+2026-05-08T19:49:03.0888886Z ├ ƒ /admin/hackathons                    2.22 kB         115 kB
+2026-05-08T19:49:03.0889730Z ├ ƒ /admin/hackathons/[id]               2.14 kB         115 kB
+2026-05-08T19:49:03.0890684Z ├ ƒ /admin/hackathons/new                2.14 kB         115 kB
+2026-05-08T19:49:03.0891596Z ├ ƒ /admin/login                         2.47 kB         118 kB
+2026-05-08T19:49:03.0893054Z ├ ƒ /admin/messages                      3.19 kB         116 kB
+2026-05-08T19:49:03.0893971Z ├ ƒ /admin/projects                      3.91 kB         122 kB
+2026-05-08T19:49:03.0894862Z ├ ƒ /admin/projects/[id]/edit            160 B           250 kB
+2026-05-08T19:49:03.0895764Z ├ ƒ /admin/projects/new                  159 B           250 kB
+2026-05-08T19:49:03.0896595Z ├ ƒ /admin/settings                      2.46 kB         142 kB
+2026-05-08T19:49:03.0897397Z ├ ƒ /admin/skills                        2.8 kB          116 kB
+2026-05-08T19:49:03.0898158Z ├ ƒ /api/auth/[...nextauth]              0 B                0 B
+2026-05-08T19:49:03.0898929Z ├ ƒ /api/blog                            0 B                0 B
+2026-05-08T19:49:03.0899715Z ├ ƒ /api/blog/[id]                       0 B                0 B
+2026-05-08T19:49:03.0900520Z ├ ƒ /api/certifications                  0 B                0 B
+2026-05-08T19:49:03.0901391Z ├ ƒ /api/certifications/[id]             0 B                0 B
+2026-05-08T19:49:03.0902578Z ├ ƒ /api/experience                      0 B                0 B
+2026-05-08T19:49:03.0903466Z ├ ƒ /api/experience/[id]                 0 B                0 B
+2026-05-08T19:49:03.0904299Z ├ ƒ /api/hackathons                      0 B                0 B
+2026-05-08T19:49:03.0905102Z ├ ƒ /api/hackathons/[id]                 0 B                0 B
+2026-05-08T19:49:03.0905880Z ├ ƒ /api/messages                        0 B                0 B
+2026-05-08T19:49:03.0906657Z ├ ƒ /api/messages/[id]                   0 B                0 B
+2026-05-08T19:49:03.0907411Z ├ ƒ /api/og                              0 B                0 B
+2026-05-08T19:49:03.0908154Z ├ ƒ /api/projects                        0 B                0 B
+2026-05-08T19:49:03.0908948Z ├ ƒ /api/projects/[id]                   0 B                0 B
+2026-05-08T19:49:03.0909697Z ├ ƒ /api/settings                        0 B                0 B
+2026-05-08T19:49:03.0910433Z ├ ƒ /api/skills                          0 B                0 B
+2026-05-08T19:49:03.0910920Z ├ ƒ /api/skills/[id]                     0 B                0 B
+2026-05-08T19:49:03.0911361Z ├ ƒ /api/upload                          0 B                0 B
+2026-05-08T19:49:03.0911793Z ├ ○ /blog                                3.53 kB         122 kB
+2026-05-08T19:49:03.0925241Z ├ ● /blog/[slug]                         3.75 kB         158 kB
+2026-05-08T19:49:03.0925833Z ├ ○ /contact                             3.87 kB         153 kB
+2026-05-08T19:49:03.0926302Z ├ ○ /experience                          298 B          92.8 kB
+2026-05-08T19:49:03.0926753Z ├ ○ /projects                            3.45 kB         121 kB
+2026-05-08T19:49:03.0927182Z ├ ● /projects/[slug]                     5.15 kB         159 kB
+2026-05-08T19:49:03.0927617Z ├ ○ /robots.txt                          0 B                0 B
+2026-05-08T19:49:03.0928046Z └ ○ /sitemap.xml                         0 B                0 B
+2026-05-08T19:49:03.0928419Z + First Load JS shared by all            87.3 kB
+2026-05-08T19:49:03.0928802Z   ├ chunks/2117-b721f050ec4a0755.js      31.7 kB
+2026-05-08T19:49:03.0929151Z   ├ chunks/fd9d1056-c217273d0a8a69f9.js  53.6 kB
+2026-05-08T19:49:03.0929483Z   └ other shared chunks (total)          1.96 kB
+2026-05-08T19:49:03.0929665Z 
+2026-05-08T19:49:03.0929671Z 
+2026-05-08T19:49:03.0929855Z ƒ Middleware                             79.1 kB
+2026-05-08T19:49:03.0930030Z 
+2026-05-08T19:49:03.0930236Z ○  (Static)   prerendered as static content
+2026-05-08T19:49:03.0930676Z ●  (SSG)      prerendered as static HTML (uses getStaticProps)
+2026-05-08T19:49:03.0931074Z ƒ  (Dynamic)  server-rendered on demand
+2026-05-08T19:49:03.0931242Z 
+2026-05-08T19:49:03.1455601Z Post job cleanup.
+2026-05-08T19:49:03.3241886Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio --files-from manifest.txt --use-compress-program zstdmt
+2026-05-08T19:49:05.3078988Z Sent 0 of 210841125 (0.0%), 0.0 MBs/sec
+2026-05-08T19:49:06.3087374Z Sent 143732261 of 210841125 (68.2%), 68.5 MBs/sec
+2026-05-08T19:49:06.5870865Z Sent 210841125 of 210841125 (100.0%), 88.2 MBs/sec
+2026-05-08T19:49:06.8352936Z Cache saved with the key: node-cache-Linux-x64-npm-3d0651718070243c034aa25ed8e8ff09063cc5740954ba89dd7542b58121909b
+2026-05-08T19:49:06.8483922Z Post job cleanup.
+2026-05-08T19:49:06.9469666Z [command]/usr/bin/git version
+2026-05-08T19:49:06.9511406Z git version 2.53.0
+2026-05-08T19:49:06.9579836Z Temporarily overriding HOME='/home/runner/work/_temp/002279b0-7789-471f-9002-c6ddb01c6ceb' before making global git config changes
+2026-05-08T19:49:06.9602085Z Adding repository directory to the temporary git global config as a safe directory
+2026-05-08T19:49:06.9613753Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/prathamrajbhar-portfolio/prathamrajbhar-portfolio
+2026-05-08T19:49:06.9627368Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-05-08T19:49:06.9664259Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-05-08T19:49:06.9901877Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-05-08T19:49:06.9927851Z http.https://github.com/.extraheader
+2026-05-08T19:49:06.9942651Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-05-08T19:49:06.9977614Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-05-08T19:49:07.0213197Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-05-08T19:49:07.0246516Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-05-08T19:49:07.0583922Z Cleaning up orphan processes
+2026-05-08T19:49:07.0946577Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-node@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

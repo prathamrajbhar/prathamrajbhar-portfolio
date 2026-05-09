@@ -4,8 +4,9 @@ import { getExperienceById } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
-export default async function EditExperiencePage({ params }: { params: { id: string } }) {
-  const experience = await getExperienceById(params.id);
+export default async function EditExperiencePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const experience = await getExperienceById(id);
   if (!experience) notFound();
   return <ExperienceForm experience={experience} />;
 }

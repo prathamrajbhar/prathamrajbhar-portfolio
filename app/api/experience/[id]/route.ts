@@ -5,7 +5,8 @@ import { experienceSchema } from "@/lib/validations";
 
 const reorderSchema = z.object({ order: z.coerce.number().int() });
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const session = await requireAdmin();
     if (!session) return errorResponse("Unauthorized", 401);
@@ -13,7 +14,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const parsed = experienceSchema.safeParse(await request.json());
     if (!parsed.success) return validationErrorResponse(parsed.error);
     const experience = await prisma.experience.update({
-      where: { id: params.id },
+      where: { id: id },
       data: parsed.data
     });
     return dataResponse(experience);
@@ -22,14 +23,15 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const session = await requireAdmin();
     if (!session) return errorResponse("Unauthorized", 401);
     const parsed = reorderSchema.safeParse(await request.json());
     if (!parsed.success) return validationErrorResponse(parsed.error);
     const experience = await prisma.experience.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { order: parsed.data.order }
     });
     return dataResponse(experience);
@@ -38,11 +40,12 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(_request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const session = await requireAdmin();
     if (!session) return errorResponse("Unauthorized", 401);
-    await prisma.experience.delete({ where: { id: params.id } });
+    await prisma.experience.delete({ where: { id: id } });
     return dataResponse({ deleted: true });
   } catch {
     return errorResponse("Unable to delete experience");
