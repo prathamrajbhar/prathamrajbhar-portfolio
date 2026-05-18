@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { getEducation } from "@/lib/data";
+import { getEducation, getSiteSettings } from "@/lib/data";
+import { defaultSettings } from "@/lib/defaults";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
@@ -16,7 +17,10 @@ export const metadata: Metadata = {
 };
 
 export default async function EducationPage() {
-  const educations = await getEducation();
+  const [educations, settings] = await Promise.all([
+    getEducation(),
+    getSiteSettings().then(s => s || defaultSettings),
+  ]);
 
   return (
     <div className="relative overflow-hidden">
@@ -27,7 +31,7 @@ export default async function EducationPage() {
             Education
           </h1>
           <p className="mt-6 text-base leading-relaxed text-muted sm:text-lg">
-            A list of where I studied and what I learned about computer engineering.
+            {settings.educationHeroDesc || ""}
           </p>
         </div>
 

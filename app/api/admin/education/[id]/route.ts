@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
 const educationSchema = z.object({
@@ -39,6 +41,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     const body = await request.json();
     const result = educationSchema.safeParse(body);
@@ -58,6 +61,11 @@ export async function PUT(
       slug: result.data.slug || slugify(`${result.data.degree}-${result.data.institution}`),
     };
     const education = await prisma.education.update({ where: { id }, data });
+
+    revalidatePath("/");
+    revalidatePath("/education");
+    revalidatePath("/about");
+
     return NextResponse.json({ data: education });
   } catch (error) {
     console.error("Error updating education:", error);
@@ -70,8 +78,14 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     await prisma.education.delete({ where: { id } });
+
+    revalidatePath("/");
+    revalidatePath("/education");
+    revalidatePath("/about");
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting education:", error);

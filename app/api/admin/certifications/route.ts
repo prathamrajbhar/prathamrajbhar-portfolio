@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
 const certificationSchema = z.object({
@@ -30,6 +32,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
     
     const dataToValidate = {
@@ -57,6 +60,9 @@ export async function POST(request: Request) {
       slug: result.data.slug || slugify(result.data.name),
     };
     const certification = await prisma.certification.create({ data });
+
+    revalidatePath("/");
+    revalidatePath("/certifications");
 
     return NextResponse.json({ data: certification }, { status: 201 });
   } catch (error) {

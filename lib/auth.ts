@@ -1,4 +1,5 @@
 import { jwtVerify, SignJWT, type JWTPayload } from "jose";
+import { cookies } from "next/headers";
 
 export const getJwtSecretKey = () => {
   const secret = process.env.AUTH_JWT_SECRET;
@@ -24,3 +25,12 @@ export const signToken = async (payload: { role: string }) => {
     .setExpirationTime("7d")
     .sign(getJwtSecretKey());
 };
+
+export async function requireAdmin() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("admin-token")?.value;
+  if (!token) throw new Error("Unauthorized");
+  const payload = await verifyAuth(token);
+  if (!payload) throw new Error("Unauthorized");
+  return payload;
+}

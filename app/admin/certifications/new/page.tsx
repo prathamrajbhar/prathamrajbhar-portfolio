@@ -11,6 +11,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn, slugify } from "@/lib/utils";
 import { AIAssistant } from "@/components/admin/AIAssistant";
+import { AISuggestField } from "@/components/admin/AISuggestField";
 import { IconSelector } from "@/components/admin/IconSelector";
 import { normalize } from "@/lib/ai-autofill";
 import type { CertificationDTO } from "@/lib/types";
@@ -20,6 +21,7 @@ export default function NewCertificationPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -137,7 +139,10 @@ export default function NewCertificationPage() {
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Certification Name *</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="name">Certification Name *</Label>
+                      <AISuggestField label="Certification Name" module="certifications" field="name" context={formData} onApply={(v) => setFormData({ ...formData, name: v, slug: isEditingSlug ? formData.slug : slugify(v) })} />
+                    </div>
                     <Input
                       id="name"
                       placeholder="e.g. AWS Certified Solutions Architect"
@@ -156,7 +161,7 @@ export default function NewCertificationPage() {
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                         <LinkIcon size={10} className="text-primary/50" />
                         <span>Permalink:</span>
-                        <span className="text-text/40">pratham.dev/certifications/</span>
+                        <span className="text-text/40">{origin}/certifications/</span>
                         {isEditingSlug ? (
                           <input
                             type="text"
@@ -184,7 +189,10 @@ export default function NewCertificationPage() {
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="issuer">Issuer *</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="issuer">Issuer *</Label>
+                    <AISuggestField label="Issuer" module="certifications" field="issuer" context={formData} onApply={(v) => setFormData({ ...formData, issuer: v })} />
+                  </div>
                   <div className="relative">
                     <Input
                       id="issuer"

@@ -1,12 +1,12 @@
 "use client";
 
 import { Card } from "@/components/ui/Card";
-import { 
-  FolderOpen, 
-  FileText, 
-  Briefcase, 
-  Zap, 
-  Trophy, 
+import {
+  FolderOpen,
+  FileText,
+  Briefcase,
+  Zap,
+  Trophy,
   MessageSquare,
   TrendingUp,
   Eye,
@@ -15,12 +15,16 @@ import {
   Sparkles,
   ArrowUpRight,
   GraduationCap,
-  Loader2
+  Loader2,
+  Database,
+  Trash2,
+  RefreshCw
 } from "lucide-react";
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import type { SiteSettingsDTO } from "@/lib/types";
 
 const container = {
   hidden: { opacity: 0 },
@@ -47,22 +51,32 @@ export default function AdminDashboard() {
     education: 0,
     views: 0
   });
+  const [settings, setSettings] = React.useState<SiteSettingsDTO | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [seeding, setSeeding] = React.useState(false);
+  const [resetting, setResetting] = React.useState(false);
 
   React.useEffect(() => {
-    const fetchStats = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/admin/stats");
-        const json = await res.json();
-        if (json.success) setStats(json.data);
+        const [statsRes, settingsRes] = await Promise.all([
+          fetch("/api/admin/stats"),
+          fetch("/api/admin/settings")
+        ]);
+        const statsJson = await statsRes.json();
+        const settingsJson = await settingsRes.json();
+        if (statsJson.success) setStats(statsJson.data);
+        if (settingsJson.success) setSettings(settingsJson.data);
       } catch (_err) {
-        console.error("Failed to fetch stats");
+        console.error("Failed to fetch dashboard data");
       } finally {
         setLoading(false);
       }
     };
-    fetchStats();
+    fetchData();
   }, []);
+
+  const adminName = settings?.name || "Admin";
 
   if (loading) {
     return (
@@ -92,7 +106,7 @@ export default function AdminDashboard() {
               Platform Overview
             </div>
             <h1 className="font-display text-5xl font-bold tracking-tight text-text lg:text-6xl">
-              Welcome back, <span className="text-gradient">Pratham.</span>
+              Welcome back, <span className="text-gradient">{adminName}.</span>
             </h1>
             <p className="text-lg text-muted max-w-xl">
               Your portfolio is performing exceptionally. You have <span className="font-bold text-text">{stats.messages} new messages</span> and <span className="font-bold text-text">{stats.views} total views</span> across all pages.
@@ -191,47 +205,76 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Danger Zone */}
-      <motion.div variants={item} className="mt-12 rounded-[2.5rem] border border-red-500/20 bg-red-500/5 p-10 backdrop-blur-md">
+      {/* System Tools */}
+      <motion.div variants={item} className="mt-12 rounded-[2.5rem] border border-border/50 bg-surface/30 p-10 backdrop-blur-md">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 rounded-full bg-red-500/10 px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-red-500">
-              <Zap size={12} className="fill-red-500" />
-              Danger Zone
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-primary">
+              <Database size={12} />
+              System Tools
             </div>
-            <h2 className="font-display text-4xl font-bold tracking-tight text-text">System Reset</h2>
+            <h2 className="font-display text-4xl font-bold tracking-tight text-text">Database Management</h2>
             <p className="text-lg text-muted max-w-xl">
-              Permanently remove all mock data, projects, experience, and analytics. This action is <span className="text-red-500 font-bold uppercase underline underline-offset-4">irreversible</span>.
+              Seed your portfolio with realistic mock data for testing, or reset the database to a clean state.
             </p>
           </div>
-          <button
-            onClick={async () => {
-              if (confirm("🚨 WARNING: This will PERMANENTLY DELETE all your projects, experience, skills, and messages. Are you absolutely sure?")) {
-                if (confirm("Final confirmation: Type 'RESET' in your mind and click OK to wipe everything.")) {
-                  try {
-                    const res = await fetch("/api/admin/system/clear-mock", { method: "POST" });
-                    if (res.ok) {
-                      alert("Portfolio successfully reset. All mock data cleared.");
-                      window.location.reload();
-                    }
-                  } catch (_err) {
+          <div className="flex flex-wrap gap-4">
+            <button
+              disabled={seeding || resetting}
+              onClick={async () => {
+                if (!confirm("This will populate your portfolio with sample projects, blog posts, skills, experience, and more. Continue?")) return;
+                setSeeding(true);
+                try {
+                  const res = await fetch("/api/admin/system/seed", { method: "POST" });
+                  const json = await res.json();
+                  if (res.ok) {
+                    alert("Mock data seeded successfully! Refreshing...");
+                    window.location.reload();
+                  } else {
+                    alert(json.error || "Failed to seed data.");
+                  }
+                } catch (_err) {
+                  alert("Failed to seed data.");
+                } finally {
+                  setSeeding(false);
+                }
+              }}
+              className="group flex items-center gap-3 rounded-2xl bg-primary px-6 py-4 text-sm font-bold text-bg shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {seeding ? <Loader2 size={20} className="animate-spin" /> : <RefreshCw size={20} className="transition-transform group-hover:rotate-180" />}
+              Seed Mock Data
+            </button>
+            <button
+              disabled={seeding || resetting}
+              onClick={async () => {
+                if (!confirm("🚨 WARNING: This will PERMANENTLY DELETE all your data including projects, experience, skills, and messages. Are you absolutely sure?")) return;
+                if (!confirm("Final confirmation: This action cannot be undone. Click OK to wipe everything.")) return;
+                setResetting(true);
+                try {
+                  const res = await fetch("/api/admin/system/clear-mock", { method: "POST" });
+                  if (res.ok) {
+                    alert("Database reset successfully. All data cleared.");
+                    window.location.reload();
+                  } else {
                     alert("Failed to reset database.");
                   }
+                } catch (_err) {
+                  alert("Failed to reset database.");
+                } finally {
+                  setResetting(false);
                 }
-              }
-            }}
-            className="group flex items-center gap-3 rounded-2xl bg-red-500 px-8 py-5 text-sm font-black uppercase tracking-widest text-white shadow-2xl shadow-red-500/20 transition-all hover:scale-105 active:scale-95 hover:bg-red-600"
-          >
-            <Trash2 size={20} />
-            Wipe All Mock Data
-          </button>
+              }}
+              className="group flex items-center gap-3 rounded-2xl border border-red-500/30 bg-red-500/10 px-6 py-4 text-sm font-bold text-red-500 backdrop-blur-md transition-all hover:scale-105 active:scale-95 hover:bg-red-500 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {resetting ? <Loader2 size={20} className="animate-spin" /> : <Trash2 size={20} />}
+              Reset Database
+            </button>
+          </div>
         </div>
       </motion.div>
     </motion.div>
   );
 }
-
-import { Trash2 } from "lucide-react";
 
 function StatCard({ title, value, icon: Icon, trend, color }: { title: string; value: string; icon: React.ElementType, trend?: string, color: string }) {
   return (

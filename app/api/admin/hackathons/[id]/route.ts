@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
 const hackathonSchema = z.object({
@@ -48,6 +50,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     const body = await request.json();
     
@@ -80,6 +83,9 @@ export async function PUT(
       data,
     });
 
+    revalidatePath("/");
+    revalidatePath("/hackathons");
+
     return NextResponse.json({ data: hackathon });
   } catch (error) {
     console.error("Error updating hackathon:", error);
@@ -95,10 +101,14 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     await prisma.hackathon.delete({
       where: { id },
     });
+
+    revalidatePath("/");
+    revalidatePath("/hackathons");
 
     return NextResponse.json({ success: true });
   } catch (error) {

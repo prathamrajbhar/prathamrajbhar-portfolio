@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 const serviceSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -26,6 +28,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
     const result = serviceSchema.safeParse(body);
 
@@ -45,6 +48,8 @@ export async function POST(request: Request) {
     const service = await prisma.service.create({
       data: result.data,
     });
+
+    revalidatePath("/");
 
     return NextResponse.json({ data: service }, { status: 201 });
   } catch (error) {

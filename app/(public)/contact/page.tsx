@@ -12,7 +12,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch for collaborations, projects, or just to say hi.",
+  description: "Get in touch for collaborations, projects, or inquiries.",
   alternates: {
     canonical: "/contact"
   }
@@ -117,7 +117,7 @@ export default async function ContactPage() {
              </div>
              <div>
                <h3 className="text-xl font-semibold">Location</h3>
-               <p className="mt-1 text-muted leading-relaxed">I work from Surat, India, but can work with anyone in the world.</p>
+               <p className="mt-1 text-muted leading-relaxed">{settings.location ? `I work from ${settings.location}, but can work with anyone in the world.` : ""}</p>
              </div>
           </Card>
         </div>

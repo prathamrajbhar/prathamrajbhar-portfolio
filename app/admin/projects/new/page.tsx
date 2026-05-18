@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import { cn, slugify } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { AIAssistant } from "@/components/admin/AIAssistant";
+import { AISuggestField } from "@/components/admin/AISuggestField";
 import { normalize } from "@/lib/ai-autofill";
 import type { ProjectDTO } from "@/lib/types";
 
@@ -27,6 +28,7 @@ export default function NewProjectPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
   const [projectLinks, setProjectLinks] = useState<ProjectLink[]>([]);
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
@@ -161,7 +163,10 @@ export default function NewProjectPage() {
               <div className="p-8 space-y-6">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title">Project Title *</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="title">Project Title *</Label>
+                      <AISuggestField label="Project Title" module="projects" field="title" context={formData} onApply={(v) => setFormData({ ...formData, title: v, slug: isEditingSlug ? formData.slug : slugify(v) })} />
+                    </div>
                     <Input
                       id="title"
                       placeholder="e.g. Acme Dashboard"
@@ -180,7 +185,7 @@ export default function NewProjectPage() {
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                         <LinkIcon size={10} className="text-primary/50" />
                         <span>Permalink:</span>
-                        <span className="text-text/40">pratham.dev/projects/</span>
+                        <span className="text-text/40">{origin}/projects/</span>
                         {isEditingSlug ? (
                           <input
                             type="text"
@@ -214,7 +219,10 @@ export default function NewProjectPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="description">Short Description *</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="description">Short Description *</Label>
+                    <AISuggestField label="Short Description" module="projects" field="description" context={formData} onApply={(v) => setFormData({ ...formData, description: v })} />
+                  </div>
                   <Textarea
                     id="description"
                     placeholder="Provide a brief overview of the project..."
@@ -239,7 +247,10 @@ export default function NewProjectPage() {
               <div className="p-8 space-y-8">
                 <div className="grid gap-8">
                   <div className="space-y-2">
-                    <Label htmlFor="problem">The Problem</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="problem">The Problem</Label>
+                      <AISuggestField label="Problem" module="projects" field="problem" context={formData} onApply={(v) => setFormData({ ...formData, problem: v })} />
+                    </div>
                     <Textarea
                       id="problem"
                       placeholder="What challenges did this project address?"
@@ -249,7 +260,10 @@ export default function NewProjectPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="solution">The Solution</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="solution">The Solution</Label>
+                      <AISuggestField label="Solution" module="projects" field="solution" context={formData} onApply={(v) => setFormData({ ...formData, solution: v })} />
+                    </div>
                     <Textarea
                       id="solution"
                       placeholder="How did you solve these challenges?"
@@ -259,7 +273,10 @@ export default function NewProjectPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="impact">The Impact</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="impact">The Impact</Label>
+                      <AISuggestField label="Impact" module="projects" field="impact" context={formData} onApply={(v) => setFormData({ ...formData, impact: v })} />
+                    </div>
                     <Textarea
                       id="impact"
                       placeholder="What was the result of your work?"
@@ -271,7 +288,10 @@ export default function NewProjectPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="content">Full Content (Markdown)</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="content">Full Content (Markdown)</Label>
+                    <AISuggestField label="Full Content" module="projects" field="content" context={formData} onApply={(v) => setFormData({ ...formData, content: v })} />
+                  </div>
                   <Textarea
                     id="content"
                     placeholder="Write the complete case study or project details..."
@@ -387,7 +407,10 @@ export default function NewProjectPage() {
               </div>
               <div className="p-8 space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="seoTitle">Meta Title</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="seoTitle">Meta Title</Label>
+                    <AISuggestField label="Meta Title" module="projects" field="seoTitle" context={formData} onApply={(v) => setFormData({ ...formData, seoTitle: v })} />
+                  </div>
                   <Input 
                     id="seoTitle" 
                     placeholder="e.g. Acme Dashboard | My Portfolio" 
@@ -397,7 +420,10 @@ export default function NewProjectPage() {
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted/60">Overrides default title.</p>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="seoDescription">Meta Description</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="seoDescription">Meta Description</Label>
+                    <AISuggestField label="Meta Description" module="projects" field="seoDescription" context={formData} onApply={(v) => setFormData({ ...formData, seoDescription: v })} />
+                  </div>
                   <Textarea 
                     id="seoDescription" 
                     placeholder="Short, keyword-rich description..." 

@@ -12,6 +12,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn, slugify } from "@/lib/utils";
 import { AIAssistant } from "@/components/admin/AIAssistant";
+import { AISuggestField } from "@/components/admin/AISuggestField";
 import { normalize } from "@/lib/ai-autofill";
 import type { EducationDTO } from "@/lib/types";
 
@@ -20,6 +21,7 @@ export default function NewEducationPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -135,7 +137,10 @@ export default function NewEducationPage() {
             <div className="p-8 space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="institution">Institution *</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="institution">Institution *</Label>
+                    <AISuggestField label="Institution" module="education" field="institution" context={formData} onApply={(v) => setFormData({ ...formData, institution: v, slug: isEditingSlug ? formData.slug : slugify(v) })} />
+                  </div>
                   <div className="relative">
                     <Input
                       id="institution"
@@ -157,7 +162,10 @@ export default function NewEducationPage() {
                 </div>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="degree">Degree *</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="degree">Degree *</Label>
+                      <AISuggestField label="Degree" module="education" field="degree" context={formData} onApply={(v) => setFormData({ ...formData, degree: v })} />
+                    </div>
                     <div className="relative">
                       <Input
                         id="degree"
@@ -179,7 +187,7 @@ export default function NewEducationPage() {
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                         <LinkIcon size={10} className="text-primary/50" />
                         <span>Permalink:</span>
-                        <span className="text-text/40">pratham.dev/education/</span>
+                        <span className="text-text/40">{origin}/education/</span>
                         {isEditingSlug ? (
                           <input
                             type="text"
@@ -218,7 +226,10 @@ export default function NewEducationPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Academic Description</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="description">Academic Description</Label>
+                  <AISuggestField label="Description" module="education" field="description" context={formData} onApply={(v) => setFormData({ ...formData, description: v })} />
+                </div>
                 <Textarea
                   id="description"
                   placeholder="Key courses, extracurricular activities, honors..."

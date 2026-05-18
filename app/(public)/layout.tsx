@@ -11,7 +11,7 @@ export default async function PublicLayout({ children }: { children: React.React
   return (
     <SmoothScroll>
       <div className="min-h-screen bg-bg text-text pt-12">
-        <Navbar name={settings.name} />
+        <Navbar name={settings.name} openToWork={settings.openToWork} />
         <main>{children}</main>
         <Footer settings={settings} />
       </div>

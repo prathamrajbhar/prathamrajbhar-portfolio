@@ -31,6 +31,7 @@ export default function EditProjectPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [project, setProject] = useState<ProjectDTO | null>(null);
   const [isEditingSlug, setIsEditingSlug] = useState(false);
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
 
   const [formData, setFormData] = useState({
     title: "",
@@ -257,7 +258,7 @@ export default function EditProjectPage() {
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                         <LinkIcon size={10} className="text-primary/50" />
                         <span>Permalink:</span>
-                        <span className="text-text/40">pratham.dev/projects/</span>
+                        <span className="text-text/40">{origin}/projects/</span>
                         {isEditingSlug ? (
                           <input
                             type="text"

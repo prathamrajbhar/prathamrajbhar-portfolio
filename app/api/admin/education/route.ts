@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
 const educationSchema = z.object({
@@ -29,6 +31,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
     const result = educationSchema.safeParse(body);
 
@@ -47,6 +50,11 @@ export async function POST(request: Request) {
       slug: result.data.slug || slugify(`${result.data.degree}-${result.data.institution}`),
     };
     const education = await prisma.education.create({ data });
+
+    revalidatePath("/");
+    revalidatePath("/education");
+    revalidatePath("/about");
+
     return NextResponse.json({ data: education }, { status: 201 });
   } catch (error) {
     console.error("Error creating education:", error);

@@ -16,7 +16,7 @@ const navLinks = [
   { href: "/contact", label: "Contact" }
 ];
 
-export function Navbar({ name }: { name: string }) {
+export function Navbar({ name, openToWork }: { name: string; openToWork?: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -176,7 +176,7 @@ export function Navbar({ name }: { name: string }) {
             <div className="mt-auto flex flex-col gap-6 rounded-3xl bg-surface/50 p-8 border border-border/50">
               <div>
                 <p className="text-sm font-bold uppercase tracking-widest text-primary/60">Status</p>
-                <p className="mt-1 text-lg font-medium">Available for work</p>
+                <p className="mt-1 text-lg font-medium">{openToWork ? "Available for work" : "Not looking for work"}</p>
               </div>
               <Link
                 href="/contact"

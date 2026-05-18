@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 const experienceSchema = z.object({
   company: z.string().min(1, "Company is required"),
@@ -33,6 +35,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
     
     const dataToValidate = {
@@ -59,6 +62,9 @@ export async function POST(request: Request) {
     const experience = await prisma.experience.create({
       data: result.data,
     });
+
+    revalidatePath("/");
+    revalidatePath("/experience");
 
     return NextResponse.json({ data: experience }, { status: 201 });
   } catch (error) {

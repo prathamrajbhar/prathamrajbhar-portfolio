@@ -13,6 +13,7 @@ import { FileUpload } from "@/components/ui/FileUpload";
 import { motion } from "framer-motion";
 import { cn, slugify } from "@/lib/utils";
 import { AIAssistant } from "@/components/admin/AIAssistant";
+import { AISuggestField } from "@/components/admin/AISuggestField";
 import { normalize } from "@/lib/ai-autofill";
 import type { HackathonDTO } from "@/lib/types";
 
@@ -21,6 +22,7 @@ export default function NewHackathonPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -141,7 +143,10 @@ export default function NewHackathonPage() {
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title">Hackathon Name *</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="title">Hackathon Name *</Label>
+                      <AISuggestField label="Hackathon Name" module="hackathons" field="title" context={formData} onApply={(v) => setFormData({ ...formData, title: v, slug: isEditingSlug ? formData.slug : slugify(v) })} />
+                    </div>
                     <Input
                       id="title"
                       placeholder="e.g. ETHGlobal San Francisco"
@@ -160,7 +165,7 @@ export default function NewHackathonPage() {
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                         <LinkIcon size={10} className="text-primary/50" />
                         <span>Permalink:</span>
-                        <span className="text-text/40">pratham.dev/hackathons/</span>
+                        <span className="text-text/40">{origin}/hackathons/</span>
                         {isEditingSlug ? (
                           <input
                             type="text"
@@ -187,7 +192,10 @@ export default function NewHackathonPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Hackathon Description *</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="description">Hackathon Description *</Label>
+                  <AISuggestField label="Description" module="hackathons" field="description" context={formData} onApply={(v) => setFormData({ ...formData, description: v })} />
+                </div>
                 <Textarea
                   id="description"
                   placeholder="Tell the story of the event, the challenge, and your experience..."
@@ -212,7 +220,10 @@ export default function NewHackathonPage() {
             <div className="p-8 space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="project">Project Name *</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="project">Project Name *</Label>
+                    <AISuggestField label="Project Name" module="hackathons" field="project" context={formData} onApply={(v) => setFormData({ ...formData, project: v })} />
+                  </div>
                   <Input
                     id="project"
                     placeholder="What did you build?"
@@ -235,7 +246,10 @@ export default function NewHackathonPage() {
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="result">Result / Achievement</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="result">Result / Achievement</Label>
+                    <AISuggestField label="Result" module="hackathons" field="result" context={formData} onApply={(v) => setFormData({ ...formData, result: v })} />
+                  </div>
                   <div className="relative">
                     <Input
                       id="result"

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   Settings,
@@ -13,6 +14,7 @@ import {
   Award,
   MessageSquare,
   GraduationCap,
+  Settings2,
   ArrowLeft,
   ChevronRight,
   LogOut,
@@ -20,6 +22,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import type { SiteSettingsDTO } from "@/lib/types";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -27,6 +30,7 @@ const navItems = [
   { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/experience", label: "Experience", icon: Briefcase },
   { href: "/admin/skills", label: "Skills", icon: Zap },
+  { href: "/admin/services", label: "Services", icon: Settings2 },
   { href: "/admin/hackathons", label: "Hackathons", icon: Trophy },
   { href: "/admin/certifications", label: "Certifications", icon: Award },
   { href: "/admin/education", label: "Education", icon: GraduationCap },
@@ -40,6 +44,20 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [settings, setSettings] = useState<SiteSettingsDTO | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data) setSettings(json.data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const adminName = settings?.name || "Admin";
+  const adminEmail = settings?.email || "admin@site.com";
+  const initial = adminName.charAt(0).toUpperCase() || "A";
 
   return (
     <div className="relative min-h-screen bg-bg overflow-hidden selection:bg-primary/20">
@@ -59,12 +77,12 @@ export default function AdminLayout({
               <Link href="/admin" className="group flex items-center gap-4">
                 <div className="relative">
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary shadow-xl shadow-primary/20 transition-all group-hover:scale-110 group-hover:rotate-3">
-                    <span className="font-display text-xl font-black text-bg">P</span>
+                    <span className="font-display text-xl font-black text-bg">{initial}</span>
                   </div>
                   <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-surface bg-green-500" />
                 </div>
                 <div>
-                  <h1 className="font-display text-xl font-bold tracking-tight text-text">Pratham</h1>
+                  <h1 className="font-display text-xl font-bold tracking-tight text-text">{adminName}</h1>
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Admin Console</p>
                 </div>
               </Link>
@@ -113,7 +131,7 @@ export default function AdminLayout({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-black uppercase tracking-widest text-text truncate">Admin User</p>
-                    <p className="text-[10px] font-bold text-muted truncate">pratham@portfolio.com</p>
+                    <p className="text-[10px] font-bold text-muted truncate">{adminEmail}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2">

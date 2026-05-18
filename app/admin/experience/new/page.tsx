@@ -12,6 +12,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AIAssistant } from "@/components/admin/AIAssistant";
+import { AISuggestField } from "@/components/admin/AISuggestField";
 import { IconSelector } from "@/components/admin/IconSelector";
 import { normalize } from "@/lib/ai-autofill";
 import type { ExperienceDTO } from "@/lib/types";
@@ -117,7 +118,10 @@ export default function NewExperiencePage() {
                 <div className="p-8 space-y-6">
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="company">Company Name *</Label>
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="company">Company Name *</Label>
+                        <AISuggestField label="Company Name" module="experience" field="company" context={formData} onApply={(v) => setFormData({ ...formData, company: v })} />
+                      </div>
                       <Input
                         id="company"
                         placeholder="e.g. Google"
@@ -128,7 +132,10 @@ export default function NewExperiencePage() {
                       {errors.company && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.company}</p>}
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="role">Role / Position *</Label>
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="role">Role / Position *</Label>
+                        <AISuggestField label="Role" module="experience" field="role" context={formData} onApply={(v) => setFormData({ ...formData, role: v })} />
+                      </div>
                       <Input
                         id="role"
                         placeholder="e.g. Senior Frontend Developer"
@@ -231,7 +238,10 @@ export default function NewExperiencePage() {
                 </div>
                 <div className="p-8 space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="description">What did you do? *</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="description">What did you do? *</Label>
+                      <AISuggestField label="Description" module="experience" field="description" context={formData} onApply={(v) => setFormData({ ...formData, description: v })} />
+                    </div>
                     <Textarea
                       id="description"
                       placeholder="Describe your responsibilities, achievements, and impact..."

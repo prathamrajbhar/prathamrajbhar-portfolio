@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Plus, Pencil, Trash2, Loader2, Zap, Settings2, Search } from "lucide-react";
@@ -147,7 +148,11 @@ export default function ServicesPage() {
                   
                   <div className="flex items-start justify-between relative z-10 mb-8">
                     <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-bg border border-border/50 shadow-inner group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 flex items-center justify-center">
-                      <Settings2 size={24} className="text-primary" />
+                      {service.icon ? (
+                        <Image src={service.icon} alt="" width={24} height={24} className="object-contain" unoptimized />
+                      ) : (
+                        <Settings2 size={24} className="text-primary" />
+                      )}
                     </div>
 
                     <div className="flex gap-2 opacity-0 -translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">

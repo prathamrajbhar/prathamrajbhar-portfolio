@@ -15,7 +15,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Home",
-  description: "I build websites and web apps. Explore my projects, writing, and work history.",
+  description: "Portfolio showcasing projects, writing, and professional experience.",
   alternates: {
     canonical: "/"
   }
@@ -60,7 +60,7 @@ export default async function HomePage() {
             </div>
             <h3 className="font-display text-2xl font-bold tracking-tight mb-6 sm:text-3xl lg:text-4xl">{settings.aboutGoalTitle || "My Goal"}</h3>
             <p className="text-lg leading-relaxed text-text/80 lg:text-2xl lg:leading-snug">
-              {settings.aboutGoalDesc || "I make websites that look great and work perfectly. I focus on building fast, easy-to-use apps that can grow with your needs."}
+              {settings.aboutGoalDesc || ""}
             </p>
             
             <div className="mt-12 flex flex-wrap gap-12">
@@ -126,7 +126,7 @@ export default async function HomePage() {
             </div>
             <div>
               <p className="text-[10px] font-black uppercase tracking-widest text-muted/60 mb-1">Home Base</p>
-              <h4 className="font-bold text-lg">{settings.location || "Surat, India"}</h4>
+              <h4 className="font-bold text-lg">{settings.location || ""}</h4>
               <p className="text-xs text-muted">Remote / On-site</p>
             </div>
           </Card>
@@ -170,7 +170,7 @@ export default async function HomePage() {
               <p className="text-xs font-medium uppercase tracking-widest text-primary">{settings.homeWorkSubtitle}</p>
               <h2 className="mt-4 font-display text-4xl tracking-tight sm:text-5xl">{settings.homeWorkTitle}</h2>
               <p className="mt-6 text-base leading-relaxed text-muted">
-                A look at where I&apos;ve worked and what I&apos;ve learned along the way.
+                {settings.homeWorkDesc || ""}
               </p>
               <div className="mt-10">
                 <Button href="/experience" size="lg" variant="secondary" icon={<Zap size={16} />} className="group">

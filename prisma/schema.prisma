@@ -41,9 +41,28 @@ model SiteSettings {
   // Home Page Additional Sections
   homeWorkTitle     String?  @default("Work History")
   homeWorkSubtitle  String?  @default("History")
+  homeWorkDesc      String?
   homeBlogTitle     String?  @default("Recent Posts")
   homeBlogSubtitle  String?  @default("Blog")
-  
+
+  // Hero Typing Roles (comma-separated)
+  heroRoles         String?
+
+  // Blog Page
+  blogTitle         String?
+  blogSubtitle      String?
+  blogIntro         String?
+
+  // Experience Page
+  experienceHeroTitle   String?
+  experienceHeroDesc  String?
+
+  // Education Page
+  educationHeroDesc String?
+
+  // About Extra Bio
+  aboutExtraBio     String?
+
   // Contact CTA
   contactCtaTitle   String?  @default("Have a project in mind?")
   contactCtaDesc    String?  @default("I'm currently open for freelance work and new jobs. Let's build something great together.")

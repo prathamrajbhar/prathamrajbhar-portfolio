@@ -10,7 +10,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Learn about my background, skills, and how I build software.",
+  description: "Learn about the background, skills, and approach.",
   alternates: {
     canonical: "/about"
   }
@@ -32,13 +32,11 @@ export default async function AboutPage() {
               {settings.aboutTitle?.split(" ").slice(0, -2).join(" ")} <span className="text-gradient">{settings.aboutTitle?.split(" ").slice(-2).join(" ")}</span>
             </h1>
             <p className="mt-8 text-xl leading-relaxed text-muted sm:text-2xl">
-              I am {settings.name}, a {settings.heroTitle} focused on building good digital solutions and crafting beautiful user experiences.
+              I am {settings.name}, a {settings.title || settings.heroTagline || "Software Engineer"} focused on building good digital solutions and crafting beautiful user experiences.
             </p>
             <div className="mt-10 space-y-5 text-base leading-relaxed text-muted md:text-lg">
               <p>{settings.heroBio}</p>
-              <p>
-                I use my technical skills to build things that are easy for people to use.
-              </p>
+              {settings.aboutExtraBio && <p>{settings.aboutExtraBio}</p>}
             </div>
 
             <div className="mt-12 flex flex-wrap gap-10">

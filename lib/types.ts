@@ -91,6 +91,7 @@ export type ContactMessageDTO = {
 export type SiteSettingsDTO = {
   id: string;
   name: string;
+  title: string | null;
   email: string;
   location: string | null;
   
@@ -118,9 +119,28 @@ export type SiteSettingsDTO = {
   // Home Page Additional Sections
   homeWorkTitle: string | null;
   homeWorkSubtitle: string | null;
+  homeWorkDesc: string | null;
   homeBlogTitle: string | null;
   homeBlogSubtitle: string | null;
-  
+
+  // Hero Typing Roles
+  heroRoles: string | null;
+
+  // Blog Page
+  blogTitle: string | null;
+  blogSubtitle: string | null;
+  blogIntro: string | null;
+
+  // Experience Page
+  experienceHeroTitle: string | null;
+  experienceHeroDesc: string | null;
+
+  // Education Page
+  educationHeroDesc: string | null;
+
+  // About Extra Bio
+  aboutExtraBio: string | null;
+
   // Contact CTA
   contactCtaTitle: string | null;
   contactCtaDesc: string | null;

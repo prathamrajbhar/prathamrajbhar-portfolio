@@ -24,6 +24,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { SiteSettingsDTO } from "@/lib/types";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { AISuggestField } from "@/components/admin/AISuggestField";
 
 const tabs = [
   { id: "hero", label: "Hero Section", icon: Layout },
@@ -40,6 +41,7 @@ export default function SettingsPage() {
   const [formData, setFormData] = useState<SiteSettingsDTO>({
     id: "singleton",
     name: "",
+    title: "",
     email: "",
     location: "",
     heroTitle: "",
@@ -59,8 +61,17 @@ export default function SettingsPage() {
     projectsDesc: "",
     homeWorkTitle: "",
     homeWorkSubtitle: "",
+    homeWorkDesc: "",
     homeBlogTitle: "",
     homeBlogSubtitle: "",
+    heroRoles: "",
+    blogTitle: "",
+    blogSubtitle: "",
+    blogIntro: "",
+    experienceHeroTitle: "",
+    experienceHeroDesc: "",
+    educationHeroDesc: "",
+    aboutExtraBio: "",
     contactCtaTitle: "",
     contactCtaDesc: "",
     github: "",
@@ -171,7 +182,10 @@ export default function SettingsPage() {
                   >
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div className="space-y-2">
-                        <Label>Name</Label>
+                        <div className="flex items-center justify-between">
+                          <Label>Name</Label>
+                          <AISuggestField label="Name" module="settings" field="name" context={formData} onApply={(v) => setFormData({ ...formData, name: v })} />
+                        </div>
                         <Input 
                           value={formData.name || ""}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -179,7 +193,24 @@ export default function SettingsPage() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label>Hero Tagline</Label>
+                        <div className="flex items-center justify-between">
+                          <Label>Professional Title</Label>
+                          <AISuggestField label="Professional Title" module="settings" field="title" context={formData} onApply={(v) => setFormData({ ...formData, title: v })} />
+                        </div>
+                        <Input 
+                          value={formData.title || ""}
+                          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                          placeholder="e.g. Software Engineer"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Hero Tagline</Label>
+                          <AISuggestField label="Hero Tagline" module="settings" field="heroTagline" context={formData} onApply={(v) => setFormData({ ...formData, heroTagline: v })} />
+                        </div>
                         <Input 
                           value={formData.heroTagline || ""}
                           onChange={(e) => setFormData({ ...formData, heroTagline: e.target.value })}
@@ -189,7 +220,10 @@ export default function SettingsPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Hero Main Heading</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Hero Main Heading</Label>
+                        <AISuggestField label="Hero Main Heading" module="settings" field="heroTitle" context={formData} onApply={(v) => setFormData({ ...formData, heroTitle: v })} />
+                      </div>
                       <Input 
                         value={formData.heroTitle || ""}
                         onChange={(e) => setFormData({ ...formData, heroTitle: e.target.value })}
@@ -198,7 +232,10 @@ export default function SettingsPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Hero Bio</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Hero Bio</Label>
+                        <AISuggestField label="Hero Bio" module="settings" field="heroBio" context={formData} onApply={(v) => setFormData({ ...formData, heroBio: v })} />
+                      </div>
                       <textarea
                         value={formData.heroBio || ""}
                         onChange={(e) => setFormData({ ...formData, heroBio: e.target.value })}
@@ -235,7 +272,10 @@ export default function SettingsPage() {
                   >
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div className="space-y-2">
-                        <Label>About Heading</Label>
+                        <div className="flex items-center justify-between">
+                          <Label>About Heading</Label>
+                          <AISuggestField label="About Heading" module="settings" field="aboutTitle" context={formData} onApply={(v) => setFormData({ ...formData, aboutTitle: v })} />
+                        </div>
                         <Input 
                           value={formData.aboutTitle || ""}
                           onChange={(e) => setFormData({ ...formData, aboutTitle: e.target.value })}
@@ -253,7 +293,10 @@ export default function SettingsPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Goal Title</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Goal Title</Label>
+                        <AISuggestField label="Goal Title" module="settings" field="aboutGoalTitle" context={formData} onApply={(v) => setFormData({ ...formData, aboutGoalTitle: v })} />
+                      </div>
                       <Input 
                         value={formData.aboutGoalTitle || ""}
                         onChange={(e) => setFormData({ ...formData, aboutGoalTitle: e.target.value })}
@@ -262,7 +305,10 @@ export default function SettingsPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Goal Description</Label>
+                      <div className="flex items-center justify-between">
+                        <Label>Goal Description</Label>
+                        <AISuggestField label="Goal Description" module="settings" field="aboutGoalDesc" context={formData} onApply={(v) => setFormData({ ...formData, aboutGoalDesc: v })} />
+                      </div>
                       <textarea
                         value={formData.aboutGoalDesc || ""}
                         onChange={(e) => setFormData({ ...formData, aboutGoalDesc: e.target.value })}
@@ -364,18 +410,145 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
+                    <div className="space-y-2 pt-6 border-t border-border/50">
+                      <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Home Work Section</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Home Work Description</Label>
+                          <AISuggestField label="Home Work Description" module="settings" field="homeWorkDesc" context={formData} onApply={(v) => setFormData({ ...formData, homeWorkDesc: v })} />
+                        </div>
+                        <textarea
+                          value={formData.homeWorkDesc || ""}
+                          onChange={(e) => setFormData({ ...formData, homeWorkDesc: e.target.value })}
+                          placeholder="Short description for the work history section on the home page..."
+                          className="w-full min-h-[80px] rounded-2xl border border-border/50 bg-bg/50 p-4 text-sm font-medium text-text outline-none focus:border-primary/50 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-6 pt-6 border-t border-border/50">
+                      <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Hero Typing Effect</h3>
+                      <div className="space-y-2">
+                        <Label>Typing Roles (comma-separated)</Label>
+                        <Input
+                          value={formData.heroRoles || ""}
+                          onChange={(e) => setFormData({ ...formData, heroRoles: e.target.value })}
+                          placeholder="e.g. Full-Stack Engineer, Product Builder, Designer"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-6 pt-6 border-t border-border/50">
+                      <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Blog Page</h3>
+                      <div className="grid gap-6 sm:grid-cols-2">
+                        <div className="space-y-2">
+                          <Label>Blog Subtitle</Label>
+                          <Input
+                            value={formData.blogSubtitle || ""}
+                            onChange={(e) => setFormData({ ...formData, blogSubtitle: e.target.value })}
+                            placeholder="e.g. My Blog"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Blog Title</Label>
+                          <Input
+                            value={formData.blogTitle || ""}
+                            onChange={(e) => setFormData({ ...formData, blogTitle: e.target.value })}
+                            placeholder="e.g. My thoughts on building things."
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Blog Intro</Label>
+                          <AISuggestField label="Blog Intro" module="settings" field="blogIntro" context={formData} onApply={(v) => setFormData({ ...formData, blogIntro: v })} />
+                        </div>
+                        <textarea
+                          value={formData.blogIntro || ""}
+                          onChange={(e) => setFormData({ ...formData, blogIntro: e.target.value })}
+                          placeholder="Introduction paragraph for the blog page..."
+                          className="w-full min-h-[80px] rounded-2xl border border-border/50 bg-bg/50 p-4 text-sm font-medium text-text outline-none focus:border-primary/50 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-6 pt-6 border-t border-border/50">
+                      <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Experience Page</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Experience Hero Title</Label>
+                          <AISuggestField label="Experience Hero Title" module="settings" field="experienceHeroTitle" context={formData} onApply={(v) => setFormData({ ...formData, experienceHeroTitle: v })} />
+                        </div>
+                        <Input
+                          value={formData.experienceHeroTitle || ""}
+                          onChange={(e) => setFormData({ ...formData, experienceHeroTitle: e.target.value })}
+                          placeholder="e.g. My Work Path."
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Experience Hero Description</Label>
+                          <AISuggestField label="Experience Hero Description" module="settings" field="experienceHeroDesc" context={formData} onApply={(v) => setFormData({ ...formData, experienceHeroDesc: v })} />
+                        </div>
+                        <textarea
+                          value={formData.experienceHeroDesc || ""}
+                          onChange={(e) => setFormData({ ...formData, experienceHeroDesc: e.target.value })}
+                          placeholder="Description for the experience page hero..."
+                          className="w-full min-h-[80px] rounded-2xl border border-border/50 bg-bg/50 p-4 text-sm font-medium text-text outline-none focus:border-primary/50 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-6 pt-6 border-t border-border/50">
+                      <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Education Page</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>Education Hero Description</Label>
+                          <AISuggestField label="Education Hero Description" module="settings" field="educationHeroDesc" context={formData} onApply={(v) => setFormData({ ...formData, educationHeroDesc: v })} />
+                        </div>
+                        <textarea
+                          value={formData.educationHeroDesc || ""}
+                          onChange={(e) => setFormData({ ...formData, educationHeroDesc: e.target.value })}
+                          placeholder="Description for the education page hero..."
+                          className="w-full min-h-[80px] rounded-2xl border border-border/50 bg-bg/50 p-4 text-sm font-medium text-text outline-none focus:border-primary/50 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-6 pt-6 border-t border-border/50">
+                      <h3 className="text-sm font-black uppercase tracking-widest text-text/80">About Extra Bio</h3>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label>About Extra Bio Paragraph</Label>
+                          <AISuggestField label="About Extra Bio" module="settings" field="aboutExtraBio" context={formData} onApply={(v) => setFormData({ ...formData, aboutExtraBio: v })} />
+                        </div>
+                        <textarea
+                          value={formData.aboutExtraBio || ""}
+                          onChange={(e) => setFormData({ ...formData, aboutExtraBio: e.target.value })}
+                          placeholder="Extra bio paragraph for the about page..."
+                          className="w-full min-h-[80px] rounded-2xl border border-border/50 bg-bg/50 p-4 text-sm font-medium text-text outline-none focus:border-primary/50 transition-all"
+                        />
+                      </div>
+                    </div>
+
                     <div className="space-y-6 pt-6 border-t border-border/50">
                       <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Projects Page</h3>
                       <div className="grid gap-6 sm:grid-cols-2">
                         <div className="space-y-2">
-                          <Label>Projects Title</Label>
+                          <div className="flex items-center justify-between">
+                            <Label>Projects Title</Label>
+                            <AISuggestField label="Projects Title" module="settings" field="projectsTitle" context={formData} onApply={(v) => setFormData({ ...formData, projectsTitle: v })} />
+                          </div>
                           <Input 
                             value={formData.projectsTitle || ""}
                             onChange={(e) => setFormData({ ...formData, projectsTitle: e.target.value })}
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label>Projects Subtitle</Label>
+                          <div className="flex items-center justify-between">
+                            <Label>Projects Subtitle</Label>
+                            <AISuggestField label="Projects Subtitle" module="settings" field="projectsSubtitle" context={formData} onApply={(v) => setFormData({ ...formData, projectsSubtitle: v })} />
+                          </div>
                           <Input 
                             value={formData.projectsSubtitle || ""}
                             onChange={(e) => setFormData({ ...formData, projectsSubtitle: e.target.value })}
@@ -383,7 +556,10 @@ export default function SettingsPage() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label>Projects Description</Label>
+                        <div className="flex items-center justify-between">
+                          <Label>Projects Description</Label>
+                          <AISuggestField label="Projects Description" module="settings" field="projectsDesc" context={formData} onApply={(v) => setFormData({ ...formData, projectsDesc: v })} />
+                        </div>
                         <textarea
                           value={formData.projectsDesc || ""}
                           onChange={(e) => setFormData({ ...formData, projectsDesc: e.target.value })}
@@ -395,14 +571,20 @@ export default function SettingsPage() {
                     <div className="space-y-6 pt-6 border-t border-border/50">
                       <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Contact CTA</h3>
                       <div className="space-y-2">
-                        <Label>Contact CTA Title</Label>
+                        <div className="flex items-center justify-between">
+                          <Label>Contact CTA Title</Label>
+                          <AISuggestField label="Contact CTA Title" module="settings" field="contactCtaTitle" context={formData} onApply={(v) => setFormData({ ...formData, contactCtaTitle: v })} />
+                        </div>
                         <Input 
                           value={formData.contactCtaTitle || ""}
                           onChange={(e) => setFormData({ ...formData, contactCtaTitle: e.target.value })}
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label>Contact CTA Description</Label>
+                        <div className="flex items-center justify-between">
+                          <Label>Contact CTA Description</Label>
+                          <AISuggestField label="Contact CTA Description" module="settings" field="contactCtaDesc" context={formData} onApply={(v) => setFormData({ ...formData, contactCtaDesc: v })} />
+                        </div>
                         <textarea
                           value={formData.contactCtaDesc || ""}
                           onChange={(e) => setFormData({ ...formData, contactCtaDesc: e.target.value })}
@@ -441,7 +623,7 @@ export default function SettingsPage() {
                         <Input 
                           value={formData.location || ""}
                           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                          placeholder="e.g. Surat, India"
+                          placeholder="e.g. City, Country"
                         />
                       </div>
                     </div>
@@ -490,7 +672,10 @@ export default function SettingsPage() {
                       <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Footer Configuration</h3>
                       <div className="space-y-4">
                         <div className="space-y-2">
-                          <Label>Footer Title</Label>
+                          <div className="flex items-center justify-between">
+                            <Label>Footer Title</Label>
+                            <AISuggestField label="Footer Title" module="settings" field="footerTitle" context={formData} onApply={(v) => setFormData({ ...formData, footerTitle: v })} />
+                          </div>
                           <Input 
                             value={formData.footerTitle || ""}
                             onChange={(e) => setFormData({ ...formData, footerTitle: e.target.value })}
@@ -498,7 +683,10 @@ export default function SettingsPage() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label>Footer Description</Label>
+                          <div className="flex items-center justify-between">
+                            <Label>Footer Description</Label>
+                            <AISuggestField label="Footer Description" module="settings" field="footerBio" context={formData} onApply={(v) => setFormData({ ...formData, footerBio: v })} />
+                          </div>
                           <textarea
                             value={formData.footerBio || ""}
                             onChange={(e) => setFormData({ ...formData, footerBio: e.target.value })}
@@ -523,16 +711,22 @@ export default function SettingsPage() {
                       <h3 className="text-sm font-black uppercase tracking-widest text-text/80">Global SEO Settings</h3>
                       
                       <div className="space-y-2">
-                        <Label>Meta Title</Label>
+                        <div className="flex items-center justify-between">
+                          <Label>Meta Title</Label>
+                          <AISuggestField label="Meta Title" module="settings" field="seoTitle" context={formData} onApply={(v) => setFormData({ ...formData, seoTitle: v })} />
+                        </div>
                         <Input 
                           value={formData.seoTitle || ""}
                           onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
-                          placeholder="e.g. Pratham Rajbhar | Full-Stack Engineer"
+                          placeholder="e.g. Name | Professional Title"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label>Meta Description</Label>
+                        <div className="flex items-center justify-between">
+                          <Label>Meta Description</Label>
+                          <AISuggestField label="Meta Description" module="settings" field="seoDescription" context={formData} onApply={(v) => setFormData({ ...formData, seoDescription: v })} />
+                        </div>
                         <textarea
                           value={formData.seoDescription || ""}
                           onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 import { readingTimeFromContent } from "@/lib/utils";
 
@@ -51,6 +53,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     const body = await request.json();
     
@@ -80,6 +83,10 @@ export async function PUT(
       data: result.data,
     });
 
+    revalidatePath("/");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${post.slug}`);
+
     return NextResponse.json({ data: post });
   } catch (error) {
     console.error("Error updating blog post:", error);
@@ -95,10 +102,16 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
+    const post = await prisma.blogPost.findUnique({ where: { id }, select: { slug: true } });
     await prisma.blogPost.delete({
       where: { id },
     });
+
+    revalidatePath("/");
+    revalidatePath("/blog");
+    if (post) revalidatePath(`/blog/${post.slug}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -15,7 +15,11 @@ export function HeroSection({ settings }: { settings: SiteSettingsDTO }) {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    const rolesToCycle = [settings.heroTagline || "Full-Stack Engineer", "Computer Engineer", "Product Builder"];
+    const defaultRoles = settings.heroTagline ? [settings.heroTagline] : [""];
+    const rolesFromSettings = settings.heroRoles
+      ? settings.heroRoles.split(",").map((r) => r.trim()).filter(Boolean)
+      : [];
+    const rolesToCycle = rolesFromSettings.length > 0 ? rolesFromSettings : defaultRoles;
     const role = rolesToCycle[roleIndex % rolesToCycle.length];
     if (text.length < role.length) {
       const timeout = window.setTimeout(() => setText(role.slice(0, text.length + 1)), 70);
@@ -26,7 +30,7 @@ export function HeroSection({ settings }: { settings: SiteSettingsDTO }) {
       setRoleIndex((current) => current + 1);
     }, 2000);
     return () => window.clearTimeout(timeout);
-  }, [roleIndex, text, settings.heroTagline]);
+  }, [roleIndex, text, settings.heroTagline, settings.heroRoles]);
 
   return (
     <section className="relative flex min-h-[90vh] items-center overflow-hidden px-6 pt-12 lg:pt-16">
@@ -68,7 +72,7 @@ export function HeroSection({ settings }: { settings: SiteSettingsDTO }) {
               variants={fadeInUp}
               className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl"
             >
-              {settings.heroBio || `Hi, I'm ${settings.name}. A ${settings.heroTagline} building fast, beautiful websites that work perfectly.`}
+              {settings.heroBio || ""}
             </motion.p>
 
             <motion.div variants={fadeInUp} className="mt-8">

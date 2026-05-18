@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
 const hackathonSchema = z.object({
@@ -33,6 +35,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
     
     const dataToValidate = {
@@ -60,6 +63,9 @@ export async function POST(request: Request) {
       slug: result.data.slug || slugify(result.data.title),
     };
     const hackathon = await prisma.hackathon.create({ data });
+
+    revalidatePath("/");
+    revalidatePath("/hackathons");
 
     return NextResponse.json({ data: hackathon }, { status: 201 });
   } catch (error) {

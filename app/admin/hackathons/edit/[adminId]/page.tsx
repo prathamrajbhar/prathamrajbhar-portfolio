@@ -25,6 +25,7 @@ export default function EditHackathonPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [hackathon, setHackathon] = useState<HackathonDTO | null>(null);
   const [isEditingSlug, setIsEditingSlug] = useState(false);
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
 
   const [formData, setFormData] = useState({
     slug: "",
@@ -222,7 +223,7 @@ export default function EditHackathonPage() {
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                         <LinkIcon size={10} className="text-primary/50" />
                         <span>Permalink:</span>
-                        <span className="text-text/40">pratham.dev/hackathons/</span>
+                        <span className="text-text/40">{origin}/hackathons/</span>
                         {isEditingSlug ? (
                           <input
                             type="text"

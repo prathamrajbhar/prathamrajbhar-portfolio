@@ -7,7 +7,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "A showcase of software projects including web apps, AI tools, and live systems.",
+  description: "A showcase of software projects and applications.",
   alternates: {
     canonical: "/projects"
   }

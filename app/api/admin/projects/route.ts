@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
 const projectLinkSchema = z.object({
@@ -60,13 +62,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
-    
+
     const dataToValidate = {
       ...body,
       slug: body.slug || slugify(body.title),
     };
-    
+
     const result = projectSchema.safeParse(dataToValidate);
 
     if (!result.success) {
@@ -93,6 +96,10 @@ export async function POST(request: Request) {
       },
       include: { projectLinks: true },
     });
+
+    revalidatePath("/");
+    revalidatePath("/projects");
+    revalidatePath(`/projects/${project.slug}`);
 
     return NextResponse.json({ data: project }, { status: 201 });
   } catch (error) {

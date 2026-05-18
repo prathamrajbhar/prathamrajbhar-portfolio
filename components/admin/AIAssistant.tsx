@@ -1,7 +1,5 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Sparkles, X, Loader2, Send, Bot, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -25,37 +23,28 @@ interface AIAssistantProps<T> {
   onFill: (data: Partial<T>) => void;
 }
 
-/**
- * Extracts validated fill_form data from the last assistant message.
- * In AI SDK v6, tool-invocation parts have a `state` field. We read
- * `inv.result` only when `state === "result"` so we get the validated
- * server response, not the raw model arguments.
- */
+interface Message {
+  id: string;
+  role: "user" | "assistant";
+  parts: { type: string; text?: string; toolInvocation?: unknown }[];
+}
+
 function extractFillFormData(parts: unknown[]): unknown | null {
   for (const part of parts) {
     if (!part || typeof (part as Record<string, unknown>).type !== "string") continue;
-
     const p = part as Record<string, unknown>;
     if (p.type === "tool-invocation") {
       const inv = p.toolInvocation as Record<string, unknown> | undefined;
       if (inv?.toolName === "fill_form") {
-        // DEBUG: log the raw invocation so we can see its shape
-        console.log("[AI DEBUG] fill_form invocation:", JSON.stringify(inv, null, 2));
-        // Prefer validated server result
         if (inv.result && typeof inv.result === "object") {
           const result = inv.result as Record<string, unknown>;
-          console.log("[AI DEBUG] returning result.data or result:", result.data ?? inv.result);
           return result.data ?? inv.result;
         }
-        // Fallback to raw model arguments if result wasn't streamed back
         if (inv.args && typeof inv.args === "object") {
-          console.log("[AI DEBUG] falling back to args:", inv.args);
           return inv.args;
         }
       }
-      continue;
     }
-
     if ((p.type as string).startsWith("tool-")) {
       return p.result ?? p.args ?? p.input;
     }
@@ -66,6 +55,9 @@ function extractFillFormData(parts: unknown[]): unknown | null {
 export function AIAssistant<T>({ module, onFill }: AIAssistantProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const onFillRef = useRef(onFill);
 
@@ -73,24 +65,57 @@ export function AIAssistant<T>({ module, onFill }: AIAssistantProps<T>) {
     onFillRef.current = onFill;
   }, [onFill]);
 
-  const { messages, sendMessage, status, error } = useChat({
-    id: `autofill-${module}`,
-    transport: new DefaultChatTransport({
-      api: "/api/admin/ai-autofill",
-      body: { module },
-    }),
-    onFinish: ({ message }) => {
-      if (message.role !== "assistant" || !Array.isArray(message.parts)) return;
-      const data = extractFillFormData(message.parts);
-      if (data) {
-        onFillRef.current(normalize(module, data) as Partial<T>);
+  const handleSend = useCallback(
+    async (text: string) => {
+      if (!text || isLoading) return;
+      setInput("");
+      setError(false);
+
+      const userMsg: Message = {
+        id: `u-${Date.now()}`,
+        role: "user",
+        parts: [{ type: "text", text }],
+      };
+      setMessages((prev) => [...prev, userMsg]);
+      setIsLoading(true);
+
+      try {
+        const res = await fetch("/api/admin/ai-autofill", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            module,
+            messages: [
+              ...messages.map((m) => ({ role: m.role, content: m.parts.map((p) => p.text).join("\n"), parts: m.parts })),
+              { role: "user", content: text, parts: userMsg.parts },
+            ],
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+
+        const data = (await res.json()) as Message;
+        setMessages((prev) => [...prev, data]);
+
+        if (data.role === "assistant" && Array.isArray(data.parts)) {
+          const extracted = extractFillFormData(data.parts);
+          if (extracted) {
+            onFillRef.current(normalize(module, extracted) as Partial<T>);
+          }
+        }
+      } catch (err) {
+        console.error("AI Assistant error:", err);
+        setError(true);
+        setInput(text);
+      } finally {
+        setIsLoading(false);
       }
     },
-  });
+    [isLoading, messages, module],
+  );
 
-  const isLoading = status === "submitted" || status === "streaming";
-
-  // Show success banner only when the latest assistant message contains a tool result
   const filled = useMemo(() => {
     const last = messages[messages.length - 1];
     if (!last || !Array.isArray(last.parts)) return false;
@@ -101,20 +126,6 @@ export function AIAssistant<T>({ module, onFill }: AIAssistantProps<T>) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  const handleSend = useCallback(
-    async (text: string) => {
-      if (!text || isLoading) return;
-      setInput("");
-      try {
-        await sendMessage({ text });
-      } catch (err) {
-        console.error("AI Assistant error:", err);
-        setInput(text);
-      }
-    },
-    [isLoading, sendMessage],
-  );
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {

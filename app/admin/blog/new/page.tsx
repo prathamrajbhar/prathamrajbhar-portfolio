@@ -13,6 +13,7 @@ import { FileUpload } from "@/components/ui/FileUpload";
 import { motion } from "framer-motion";
 import { cn, slugify } from "@/lib/utils";
 import { AIAssistant } from "@/components/admin/AIAssistant";
+import { AISuggestField } from "@/components/admin/AISuggestField";
 import { normalize } from "@/lib/ai-autofill";
 import type { BlogPostDTO } from "@/lib/types";
 
@@ -21,6 +22,7 @@ export default function NewBlogPostPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -115,7 +117,16 @@ export default function NewBlogPostPage() {
                 <div className="p-8 space-y-6">
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="title">Post Title *</Label>
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="title">Post Title *</Label>
+                        <AISuggestField
+                          label="Post Title"
+                          module="blog"
+                          field="title"
+                          context={formData}
+                          onApply={(v) => setFormData({ ...formData, title: v, slug: isEditingSlug ? formData.slug : slugify(v) })}
+                        />
+                      </div>
                       <Input
                         id="title"
                         placeholder="e.g. My Journey into Web Development"
@@ -134,7 +145,7 @@ export default function NewBlogPostPage() {
                         <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                           <LinkIcon size={10} className="text-primary/50" />
                           <span>Permalink:</span>
-                          <span className="text-text/40">pratham.dev/blog/</span>
+                          <span className="text-text/40">{origin}/blog/</span>
                           {isEditingSlug ? (
                             <input
                               type="text"
@@ -159,7 +170,16 @@ export default function NewBlogPostPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="excerpt">Excerpt / Summary *</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="excerpt">Excerpt / Summary *</Label>
+                      <AISuggestField
+                        label="Excerpt"
+                        module="blog"
+                        field="excerpt"
+                        context={formData}
+                        onApply={(v) => setFormData({ ...formData, excerpt: v })}
+                      />
+                    </div>
                     <Textarea
                       id="excerpt"
                       placeholder="A short summary for the blog card..."
@@ -180,7 +200,17 @@ export default function NewBlogPostPage() {
                   </div>
                   <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Content Body</h2>
                 </div>
-                <div className="p-8">
+                <div className="p-8 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="content">Content Body</Label>
+                    <AISuggestField
+                      label="Content Body"
+                      module="blog"
+                      field="content"
+                      context={formData}
+                      onApply={(v) => setFormData({ ...formData, content: v })}
+                    />
+                  </div>
                   <Textarea
                     id="content"
                     placeholder="Write your article in Markdown..."
@@ -260,7 +290,16 @@ export default function NewBlogPostPage() {
                 </div>
                 <div className="p-8 space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="seoTitle">Meta Title</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="seoTitle">Meta Title</Label>
+                      <AISuggestField
+                        label="Meta Title"
+                        module="blog"
+                        field="seoTitle"
+                        context={formData}
+                        onApply={(v) => setFormData({ ...formData, seoTitle: v })}
+                      />
+                    </div>
                     <Input
                       id="seoTitle"
                       placeholder="e.g. My Post Title | Blog"
@@ -270,7 +309,16 @@ export default function NewBlogPostPage() {
                     <p className="text-[10px] font-bold uppercase tracking-widest text-muted/60">Overrides default title.</p>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="seoDescription">Meta Description</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="seoDescription">Meta Description</Label>
+                      <AISuggestField
+                        label="Meta Description"
+                        module="blog"
+                        field="seoDescription"
+                        context={formData}
+                        onApply={(v) => setFormData({ ...formData, seoDescription: v })}
+                      />
+                    </div>
                     <Textarea
                       id="seoDescription"
                       placeholder="Short, keyword-rich description..."

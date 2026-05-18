@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 const skillSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -26,6 +28,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
     const result = skillSchema.safeParse(body);
 
@@ -45,6 +48,9 @@ export async function POST(request: Request) {
     const skill = await prisma.skill.create({
       data: result.data,
     });
+
+    revalidatePath("/");
+    revalidatePath("/about");
 
     return NextResponse.json({ data: skill }, { status: 201 });
   } catch (error) {

@@ -25,6 +25,7 @@ export default function EditBlogPostPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [post, setPost] = useState<BlogPostDTO | null>(null);
   const [isEditingSlug, setIsEditingSlug] = useState(false);
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
 
   const [formData, setFormData] = useState({
     title: "",
@@ -193,7 +194,7 @@ export default function EditBlogPostPage() {
                         <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                           <LinkIcon size={10} className="text-primary/50" />
                           <span>Permalink:</span>
-                          <span className="text-text/40">pratham.dev/blog/</span>
+                          <span className="text-text/40">{origin}/blog/</span>
                           {isEditingSlug ? (
                             <input
                               type="text"

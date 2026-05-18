@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 export async function GET() {
   try {
@@ -16,24 +18,46 @@ export async function GET() {
           title: "",
           bio: "",
           email: "",
-          heroTitle: "Engineering Great Websites.",
-          heroTagline: "FULL-STACK ENGINEER",
-          aboutTitle: "Building things that work well.",
-          aboutGoalTitle: "My Goal",
-          yearsOfExperience: "2+",
-          aboutStatsWork: "2+",
-          aboutStatsProjects: "15+",
-          aboutStatsCommitment: "100%",
-          projectsTitle: "My Projects",
-          projectsSubtitle: "My Work",
-          projectsDesc: "I have built many projects that are fast and easy to use.",
-          homeWorkTitle: "Work History",
-          homeWorkSubtitle: "History",
-          homeBlogTitle: "Recent Posts",
-          homeBlogSubtitle: "Blog",
-          contactCtaTitle: "Have a project in mind?",
-          contactCtaDesc: "I'm currently open for freelance work and new jobs. Let's build something great together.",
-          openToWork: true
+          heroTitle: "",
+          heroTagline: "",
+          heroBio: "",
+          avatarUrl: null,
+          resumeUrl: null,
+          aboutTitle: "",
+          aboutGoalTitle: "",
+          aboutGoalDesc: "",
+          yearsOfExperience: "",
+          aboutStatsWork: "",
+          aboutStatsProjects: "",
+          aboutStatsCommitment: "",
+          projectsTitle: "",
+          projectsSubtitle: "",
+          projectsDesc: "",
+          homeWorkTitle: "",
+          homeWorkSubtitle: "",
+          homeWorkDesc: "",
+          homeBlogTitle: "",
+          homeBlogSubtitle: "",
+          heroRoles: "",
+          blogTitle: "",
+          blogSubtitle: "",
+          blogIntro: "",
+          experienceHeroTitle: "",
+          experienceHeroDesc: "",
+          educationHeroDesc: "",
+          aboutExtraBio: "",
+          contactCtaTitle: "",
+          contactCtaDesc: "",
+          github: null,
+          linkedin: null,
+          twitter: null,
+          footerTitle: "",
+          footerBio: "",
+          openToWork: true,
+          seoTitle: null,
+          seoDescription: null,
+          seoKeywords: null,
+          ogImage: null
         }
       });
     }
@@ -47,9 +71,9 @@ export async function GET() {
 
 export async function PUT(req: Request) {
   try {
+    await requireAdmin();
     const body = await req.json();
-    
-    // We only want one record, so we use upsert
+
     const settings = await prisma.siteSettings.upsert({
       where: { id: "singleton" },
       update: body,
@@ -58,6 +82,17 @@ export async function PUT(req: Request) {
         ...body
       }
     });
+
+    revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/contact");
+    revalidatePath("/projects");
+    revalidatePath("/blog");
+    revalidatePath("/experience");
+    revalidatePath("/education");
+    revalidatePath("/services");
+    revalidatePath("/hackathons");
+    revalidatePath("/certifications");
 
     return NextResponse.json({ success: true, data: settings });
   } catch (error) {

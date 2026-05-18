@@ -54,13 +54,13 @@ export function ExperienceClient({ experiences, skills, hackathons, certificatio
         <motion.div variants={item} className="mb-12 grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <Badge variant="default" className="mb-4 border-primary/20 bg-primary/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-              My Skills
+              Skills
             </Badge>
             <h1 className="font-display text-4xl tracking-tight sm:text-6xl lg:text-8xl">
-              My Work <br /><span className="text-gradient">Path.</span>
+              {settings.experienceHeroTitle?.split(" ").slice(0, -1).join(" ")} <br /><span className="text-gradient">{settings.experienceHeroTitle?.split(" ").slice(-1).join(" ")}</span>
             </h1>
             <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted lg:text-xl">
-              A full list of my jobs, the tools I use, and the certificates I&apos;ve earned.
+              {settings.experienceHeroDesc || ""}
             </p>
           </div>
           <div className="flex gap-4 lg:flex-col lg:items-end">
@@ -95,7 +95,7 @@ export function ExperienceClient({ experiences, skills, hackathons, certificatio
             <motion.section variants={item} className="pt-12">
               <div className="mb-8 px-2">
                 <h2 className="font-display text-3xl tracking-tight">Tools <span className="text-gradient">I Use</span></h2>
-                <p className="mt-2 text-sm text-muted">A look at the tools I use to build websites.</p>
+                <p className="mt-2 text-sm text-muted">A look at the tools used to build projects.</p>
               </div>
               <SkillsCloud skills={skills} />
             </motion.section>

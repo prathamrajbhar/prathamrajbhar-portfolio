@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 const serviceSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -38,6 +40,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     const body = await request.json();
     const result = serviceSchema.safeParse(body);
@@ -60,6 +63,8 @@ export async function PUT(
       data: result.data,
     });
 
+    revalidatePath("/");
+
     return NextResponse.json({ data: service });
   } catch (error) {
     console.error("Error updating service:", error);
@@ -81,10 +86,13 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     await prisma.service.delete({
       where: { id },
     });
+
+    revalidatePath("/");
 
     return NextResponse.json({ success: true });
   } catch (error) {

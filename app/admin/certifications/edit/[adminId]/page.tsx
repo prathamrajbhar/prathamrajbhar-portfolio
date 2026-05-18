@@ -24,6 +24,7 @@ export default function EditCertificationPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [certification, setCertification] = useState<CertificationDTO | null>(null);
   const [isEditingSlug, setIsEditingSlug] = useState(false);
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
 
   const [formData, setFormData] = useState({
     slug: "",
@@ -215,7 +216,7 @@ export default function EditCertificationPage() {
                       <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
                         <LinkIcon size={10} className="text-primary/50" />
                         <span>Permalink:</span>
-                        <span className="text-text/40">pratham.dev/certifications/</span>
+                        <span className="text-text/40">{origin}/certifications/</span>
                         {isEditingSlug ? (
                           <input
                             type="text"

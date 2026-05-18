@@ -5,8 +5,8 @@ import { ExperienceClient } from "@/components/public/ExperienceClient";
 import { defaultSettings } from "@/lib/defaults";
 
 export const metadata: Metadata = {
-  title: "Experience | Professional Trajectory",
-  description: "A comprehensive archive of engineering roles, technical mastery, and verified credentials.",
+  title: "Experience",
+  description: "Professional roles, technical skills, and credentials.",
 };
 
 export default async function ExperiencePage() {

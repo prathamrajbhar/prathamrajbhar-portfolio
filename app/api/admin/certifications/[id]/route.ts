@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
 const certificationSchema = z.object({
@@ -45,6 +47,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     const body = await request.json();
     
@@ -77,6 +80,9 @@ export async function PUT(
       data,
     });
 
+    revalidatePath("/");
+    revalidatePath("/certifications");
+
     return NextResponse.json({ data: certification });
   } catch (error) {
     console.error("Error updating certification:", error);
@@ -92,10 +98,14 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     await prisma.certification.delete({
       where: { id },
     });
+
+    revalidatePath("/");
+    revalidatePath("/certifications");
 
     return NextResponse.json({ success: true });
   } catch (error) {

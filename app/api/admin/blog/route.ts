@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 import { readingTimeFromContent } from "@/lib/utils";
 
@@ -40,14 +42,15 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await requireAdmin();
     const body = await request.json();
-    
+
     const dataToValidate = {
       ...body,
       slug: body.slug || slugify(body.title),
       readingTime: body.readingTime || readingTimeFromContent(body.content || ""),
     };
-    
+
     const result = blogSchema.safeParse(dataToValidate);
 
     if (!result.success) {
@@ -66,6 +69,10 @@ export async function POST(request: Request) {
     const post = await prisma.blogPost.create({
       data: result.data,
     });
+
+    revalidatePath("/");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${post.slug}`);
 
     return NextResponse.json({ data: post }, { status: 201 });
   } catch (error) {

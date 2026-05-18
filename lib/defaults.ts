@@ -2,50 +2,70 @@ import type { SiteSettingsDTO } from "@/lib/types";
 
 export const defaultSettings: SiteSettingsDTO = {
   id: "singleton",
-  name: "Pratham Rajbhar",
-  email: "pratham.rajbhar@gmail.com",
-  location: "Surat, India",
-  
+  name: "",
+  title: "",
+  email: "",
+  location: "",
+
   // Hero Section
-  heroTitle: "Engineering Great Websites.",
-  heroTagline: "FULL-STACK ENGINEER",
-  heroBio: "Hi, I'm Pratham Rajbhar. A Computer Engineering student building fast, beautiful websites that work perfectly.",
+  heroTitle: "",
+  heroTagline: "",
+  heroBio: "",
   avatarUrl: null,
-  resumeUrl: "/resume.pdf",
-  
+  resumeUrl: null,
+
   // About Section
-  aboutTitle: "Building things that work well.",
-  aboutGoalTitle: "My Goal",
-  aboutGoalDesc: "I make websites that look great and work perfectly. I focus on building fast, easy-to-use apps that can grow with your needs.",
-  yearsOfExperience: "2+",
-  aboutStatsWork: "2+",
-  aboutStatsProjects: "15+",
-  aboutStatsCommitment: "100%",
-  
+  aboutTitle: "",
+  aboutGoalTitle: "",
+  aboutGoalDesc: "",
+  yearsOfExperience: "",
+  aboutStatsWork: "",
+  aboutStatsProjects: "",
+  aboutStatsCommitment: "",
+
   // Projects Section
-  projectsTitle: "My Projects.",
-  projectsSubtitle: "My Work",
-  projectsDesc: "I have built 15+ projects that are fast and easy to use.",
+  projectsTitle: "",
+  projectsSubtitle: "",
+  projectsDesc: "",
 
   // Home Page Additional Sections
-  homeWorkTitle: "Work History",
-  homeWorkSubtitle: "History",
-  homeBlogTitle: "Recent Posts",
-  homeBlogSubtitle: "Blog",
-  
+  homeWorkTitle: "",
+  homeWorkSubtitle: "",
+  homeWorkDesc: "",
+  homeBlogTitle: "",
+  homeBlogSubtitle: "",
+
+  // Hero Typing Roles
+  heroRoles: "",
+
+  // Blog Page
+  blogTitle: "",
+  blogSubtitle: "",
+  blogIntro: "",
+
+  // Experience Page
+  experienceHeroTitle: "",
+  experienceHeroDesc: "",
+
+  // Education Page
+  educationHeroDesc: "",
+
+  // About Extra Bio
+  aboutExtraBio: "",
+
   // Contact CTA
-  contactCtaTitle: "Have a project in mind?",
-  contactCtaDesc: "I'm currently open for freelance work and new jobs. Let's build something great together.",
-  
+  contactCtaTitle: "",
+  contactCtaDesc: "",
+
   // Links
-  github: "https://github.com/prathamrajbhar",
-  linkedin: "https://linkedin.com/in/prathamrajbhar",
+  github: null,
+  linkedin: null,
   twitter: null,
-  
+
   // Footer
-  footerTitle: "Ready to bring your ideas to life?",
-  footerBio: "I build fast, high-quality websites and apps that are easy to use.",
-  
+  footerTitle: "",
+  footerBio: "",
+
   openToWork: true,
   updatedAt: new Date().toISOString(),
 

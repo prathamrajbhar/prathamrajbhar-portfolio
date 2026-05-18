@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 const experienceSchema = z.object({
   company: z.string().min(1, "Company is required"),
@@ -48,6 +50,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     const body = await request.json();
     
@@ -77,6 +80,9 @@ export async function PUT(
       data: result.data,
     });
 
+    revalidatePath("/");
+    revalidatePath("/experience");
+
     return NextResponse.json({ data: experience });
   } catch (error) {
     console.error("Error updating experience:", error);
@@ -92,10 +98,14 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     await prisma.experience.delete({
       where: { id },
     });
+
+    revalidatePath("/");
+    revalidatePath("/experience");
 
     return NextResponse.json({ success: true });
   } catch (error) {

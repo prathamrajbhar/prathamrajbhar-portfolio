@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 
 const skillSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -41,6 +43,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     const body = await request.json();
     const result = skillSchema.safeParse(body);
@@ -63,6 +66,9 @@ export async function PUT(
       data: result.data,
     });
 
+    revalidatePath("/");
+    revalidatePath("/about");
+
     return NextResponse.json({ data: skill });
   } catch (error) {
     console.error("Error updating skill:", error);
@@ -84,10 +90,14 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     await prisma.skill.delete({
       where: { id },
     });
+
+    revalidatePath("/");
+    revalidatePath("/about");
 
     return NextResponse.json({ success: true });
   } catch (error) {

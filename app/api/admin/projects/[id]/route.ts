@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
 const projectLinkSchema = z.object({
@@ -71,6 +73,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
     const body = await request.json();
     
@@ -108,6 +111,10 @@ export async function PUT(
       include: { projectLinks: true },
     });
 
+    revalidatePath("/");
+    revalidatePath("/projects");
+    revalidatePath(`/projects/${project.slug}`);
+
     return NextResponse.json({ data: project });
   } catch (error) {
     console.error("Error updating project:", error);
@@ -123,10 +130,16 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAdmin();
     const { id } = await params;
+    const project = await prisma.project.findUnique({ where: { id }, select: { slug: true } });
     await prisma.project.delete({
       where: { id },
     });
+
+    revalidatePath("/");
+    revalidatePath("/projects");
+    if (project) revalidatePath(`/projects/${project.slug}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {
