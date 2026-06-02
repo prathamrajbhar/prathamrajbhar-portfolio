@@ -113,8 +113,8 @@ export default async function HomePage() {
               </div>
               <div>
                 <p className="text-[10px] font-black uppercase tracking-widest text-muted/60 mb-1">Education</p>
-                <h4 className="font-bold text-lg truncate max-w-[200px]">{education[0].degree}</h4>
-                <p className="text-xs text-muted truncate max-w-[200px]">{education[0].institution}</p>
+                <h4 className="font-bold text-lg leading-snug">{education[0].degree}</h4>
+                <p className="text-xs text-muted mt-1">{education[0].institution}</p>
               </div>
             </Card>
           )}
