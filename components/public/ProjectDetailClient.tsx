@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowLeft, CheckCircle2, ExternalLink, LinkIcon, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, CheckCircle2, ExternalLink, LinkIcon, Sparkles, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Github } from "@/components/ui/BrandIcons";
 import Image from "next/image";
 import { ProjectCard } from "@/components/public/ProjectCard";
@@ -12,7 +13,25 @@ import type { ProjectDTO } from "@/lib/types";
 import { sanitizeHtml } from "@/lib/utils";
 
 export function ProjectDetailClient({ project, related }: { project: ProjectDTO; related: ProjectDTO[] }) {
+  const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
   const projectLinks = Array.isArray(project.projectLinks) ? project.projectLinks : [];
+
+  useEffect(() => {
+    if (activeImageIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveImageIndex(null);
+      } else if (e.key === "ArrowLeft" && project.galleryImages.length > 1) {
+        setActiveImageIndex((prev) => (prev === null || prev === 0 ? project.galleryImages.length - 1 : prev - 1));
+      } else if (e.key === "ArrowRight" && project.galleryImages.length > 1) {
+        setActiveImageIndex((prev) => (prev === null || prev === project.galleryImages.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeImageIndex, project.galleryImages]);
   const overviewItems = [
     ["Role", project.role],
     ["Client", project.client],
@@ -144,9 +163,20 @@ export function ProjectDetailClient({ project, related }: { project: ProjectDTO;
               <section className="mt-16">
                 <h2 className="font-display text-2xl tracking-tight">Project Gallery</h2>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  {project.galleryImages.map((imageUrl) => (
-                    <div key={imageUrl} className="relative aspect-[16/10] overflow-hidden rounded-xl border border-border bg-surface">
-                      <Image src={imageUrl} alt={`${project.title} screenshot`} fill className="object-cover" sizes="(min-width: 1024px) 320px, 100vw" />
+                  {project.galleryImages.map((imageUrl, index) => (
+                    <div
+                      key={imageUrl}
+                      onClick={() => setActiveImageIndex(index)}
+                      className="relative aspect-[16/10] overflow-hidden rounded-xl border border-border bg-surface cursor-pointer group hover:border-primary/40 hover:shadow-lg transition-all duration-300"
+                    >
+                      <Image
+                        src={imageUrl}
+                        alt={`${project.title} screenshot`}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(min-width: 1024px) 320px, 100vw"
+                      />
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
                     </div>
                   ))}
                 </div>
@@ -220,6 +250,77 @@ export function ProjectDetailClient({ project, related }: { project: ProjectDTO;
           </div>
         </section>
       ) : null}
+
+      <AnimatePresence>
+        {activeImageIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95 p-4 backdrop-blur-md"
+            onClick={() => setActiveImageIndex(null)}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setActiveImageIndex(null)}
+              className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 hover:scale-105 active:scale-95 text-white rounded-full transition-all duration-300 z-50 cursor-pointer"
+              aria-label="Close Lightbox"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Next / Prev buttons */}
+            {project.galleryImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIndex((prev) => (prev === null || prev === 0 ? project.galleryImages.length - 1 : prev - 1));
+                  }}
+                  className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-white/5 hover:bg-white/15 hover:scale-105 active:scale-95 text-white rounded-full transition-all duration-300 z-50 cursor-pointer"
+                  aria-label="Previous Image"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIndex((prev) => (prev === null || prev === project.galleryImages.length - 1 ? 0 : prev + 1));
+                  }}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-white/5 hover:bg-white/15 hover:scale-105 active:scale-95 text-white rounded-full transition-all duration-300 z-50 cursor-pointer"
+                  aria-label="Next Image"
+                >
+                  <ChevronRight size={28} />
+                </button>
+              </>
+            )}
+
+            {/* Main image container */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="relative max-w-5xl max-h-[80vh] w-full aspect-[16/10] md:aspect-auto md:h-[80vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={project.galleryImages[activeImageIndex]}
+                alt="Enlarged screenshot"
+                fill
+                priority
+                className="object-contain max-h-[80vh] select-none pointer-events-none"
+                sizes="100vw"
+              />
+            </motion.div>
+
+            {/* Indicator / caption */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-xs font-black uppercase tracking-[0.2em] bg-white/5 px-6 py-3 border border-white/10 rounded-full backdrop-blur-md z-50 select-none">
+              {activeImageIndex + 1} / {project.galleryImages.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </article>
   );
 }

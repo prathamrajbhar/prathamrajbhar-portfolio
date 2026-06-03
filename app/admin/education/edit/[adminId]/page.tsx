@@ -24,7 +24,13 @@ export default function EditEducationPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [education, setEducation] = useState<EducationDTO | null>(null);
   const [isEditingSlug, setIsEditingSlug] = useState(false);
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const [origin, setOrigin] = useState("");
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOrigin(window.location.origin);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [formData, setFormData] = useState({
     slug: "",

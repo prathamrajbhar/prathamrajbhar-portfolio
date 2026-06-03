@@ -107,21 +107,35 @@ export function FileUpload({
   return (
     <div className="space-y-4">
       {value ? (
-        <div className="relative group overflow-hidden rounded-2xl border border-border/50 shadow-lg">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={value}
-            alt="Uploaded"
-            className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <button
-              type="button"
-              onClick={handleRemove}
-              className="p-3 bg-red-500 text-white rounded-2xl shadow-xl transform scale-90 group-hover:scale-100 transition-all duration-300 hover:bg-red-600"
-            >
-              <X size={20} />
-            </button>
+        <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-surface/30 backdrop-blur-md p-3 group">
+          <div className="relative aspect-[21/9] w-full overflow-hidden rounded-2xl border border-border/30 bg-bg/50 shadow-inner">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={value}
+              alt="Uploaded Banner"
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-102"
+            />
+            {/* Glossy overlay with actions */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-between p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-widest bg-primary text-bg px-2.5 py-1 rounded-md shadow-sm">
+                  Active Banner
+                </span>
+                <span className="text-[10px] font-bold text-white/80 bg-black/40 px-2 py-1 rounded-md backdrop-blur-sm max-w-[200px] truncate">
+                  {value.split('/').pop()}
+                </span>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick={handleRemove}
+                  className="px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-red-500/20 transform scale-95 group-hover:scale-100 transition-all duration-300 flex items-center gap-1.5 cursor-pointer"
+                >
+                  <X size={14} />
+                  Remove Banner
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       ) : (

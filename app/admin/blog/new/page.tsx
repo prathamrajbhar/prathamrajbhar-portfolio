@@ -26,8 +26,10 @@ export default function NewBlogPostPage() {
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOrigin(window.location.origin);
+    const timer = setTimeout(() => {
+      setOrigin(window.location.origin);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const [formData, setFormData] = useState({
