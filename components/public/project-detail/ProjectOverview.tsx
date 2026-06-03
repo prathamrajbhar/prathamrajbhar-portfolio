@@ -59,17 +59,17 @@ export function ProjectOverview({ project }: ProjectOverviewProps) {
       {/* Technologies Card */}
       <div className="rounded-2xl border border-border/50 bg-surface/30 backdrop-blur-md p-6 shadow-xl shadow-black/5 hover:border-border transition-colors duration-300">
         <h3 className="mb-4 text-xs font-black uppercase tracking-[0.2em] text-primary">Core Tech</h3>
-        <div className="flex flex-wrap gap-2">
-          {project.techStack.map((tech) => (
-            <Badge
-              key={tech}
-              variant="default"
-              className="bg-primary/5 border-primary/10 hover:bg-primary/10 hover:border-primary/20 text-[10px] font-bold uppercase tracking-wider text-primary/80 transition-all duration-300"
-            >
-              {tech}
-            </Badge>
-          ))}
-        </div>
+        <ul className="space-y-2.5">
+          {project.techStack
+            .flatMap((tech) => tech.split(",").map((t) => t.trim()))
+            .filter(Boolean)
+            .map((tech) => (
+              <li key={tech} className="flex items-center gap-2.5 text-sm font-semibold text-text">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary/80 shrink-0" />
+                <span>{tech}</span>
+              </li>
+            ))}
+        </ul>
       </div>
 
       {/* Additional Resource Links */}

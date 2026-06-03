@@ -271,7 +271,6 @@ export const getServices = cache(async (): Promise<ServiceDTO[]> => {
 export const getProjects = cache(async (): Promise<ProjectDTO[]> => {
   try {
     const rows = await prisma.project.findMany({
-      where: { status: "completed" },
       select: {
         id: true,
         title: true,
