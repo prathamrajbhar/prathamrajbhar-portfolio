@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
@@ -46,6 +46,13 @@ export default function EditBlogPostPage() {
     seoKeywords: "",
   });
 
+  const initialDataRef = useRef<{
+    formData: typeof formData;
+  } | null>(null);
+  const [autoSaveStatus, setAutoSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
+  const [draftId, setDraftId] = useState<string | null>(params.adminId || null);
+
   useEffect(() => {
     if (params.adminId) {
       const fetchPost = async () => {
@@ -56,7 +63,7 @@ export default function EditBlogPostPage() {
 
           if (data) {
             setPost(data);
-            setFormData({
+            const initialForm = {
               title: data.title,
               slug: data.slug,
               excerpt: data.excerpt,
@@ -67,7 +74,11 @@ export default function EditBlogPostPage() {
               seoTitle: data.seoTitle || "",
               seoDescription: data.seoDescription || "",
               seoKeywords: data.seoKeywords || "",
-            });
+            };
+            setFormData(initialForm);
+            initialDataRef.current = {
+              formData: initialForm
+            };
           }
         } catch (error) {
           console.error("Error fetching blog post:", error);
@@ -79,19 +90,69 @@ export default function EditBlogPostPage() {
     }
   }, [params.adminId]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (loading || !initialDataRef.current) return;
+
+    const currentData = { formData };
+    const hasChanged = JSON.stringify(currentData) !== JSON.stringify(initialDataRef.current);
+
+    if (!hasChanged) return;
+
+    setAutoSaveStatus("saving");
+
+    const timer = setTimeout(async () => {
+      const data = {
+        ...formData,
+        published: false,
+        tags: formData.tags.split("\n").filter(Boolean),
+      };
+
+      try {
+        const idToUse = draftId || params.adminId;
+        const res = await fetch(idToUse ? `/api/admin/blog/${idToUse}` : "/api/admin/blog", {
+          method: idToUse ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+          const json = await res.json();
+          const savedPost = json.data;
+          if (savedPost && savedPost.id) {
+            setDraftId(savedPost.id);
+            if (!idToUse) {
+              window.history.replaceState(null, "", `/admin/blog/edit/${savedPost.id}`);
+            }
+          }
+          setAutoSaveStatus("saved");
+          setLastSavedTime(new Date().toLocaleTimeString());
+          initialDataRef.current = { formData };
+        } else {
+          setAutoSaveStatus("error");
+        }
+      } catch (err) {
+        console.error("Auto-save error:", err);
+        setAutoSaveStatus("error");
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [formData, loading, draftId, params.adminId]);
+
+  const handleSave = async (isPublish: boolean) => {
     setSaving(true);
     setErrors({});
 
     const data = {
       ...formData,
+      published: isPublish,
       tags: formData.tags.split("\n").filter(Boolean),
     };
 
     try {
-      const res = await fetch(`/api/admin/blog/${params.adminId}`, {
-        method: "PUT",
+      const idToUse = draftId || params.adminId;
+      const res = await fetch(idToUse ? `/api/admin/blog/${idToUse}` : "/api/admin/blog", {
+        method: idToUse ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
@@ -106,15 +167,15 @@ export default function EditBlogPostPage() {
           });
           setErrors(fieldErrors);
         } else {
-          setErrors({ general: json.error || "Failed to update blog post" });
+          setErrors({ general: json.error || "Failed to save blog post" });
         }
         return;
       }
 
       router.push("/admin/blog");
     } catch (error) {
-      console.error("Error updating blog post:", error);
-      setErrors({ general: "Failed to update blog post" });
+      console.error("Error saving blog post:", error);
+      setErrors({ general: "Failed to save blog post" });
     } finally {
       setSaving(false);
     }
@@ -167,7 +228,7 @@ export default function EditBlogPostPage() {
           onFill={(data) => setFormData(prev => ({ ...prev, ...normalize("blog", data) }))}
         />
 
-        <form onSubmit={handleSubmit} className="grid gap-10">
+        <form onSubmit={(e) => { e.preventDefault(); handleSave(true); }} className="grid gap-10">
           <div className="grid gap-8 lg:grid-cols-3">
             {/* Left Column: Post Content */}
             <div className="lg:col-span-2 space-y-8">
@@ -358,16 +419,39 @@ export default function EditBlogPostPage() {
               </Card>
 
               <div className="flex flex-col gap-4">
-                <Button type="submit" disabled={saving} size="lg" className="w-full h-14 rounded-2xl shadow-xl shadow-primary/20">
+                {autoSaveStatus !== "idle" && (
+                  <span className="text-xs text-muted font-medium text-center">
+                    {autoSaveStatus === "saving" && "Auto-saving..."}
+                    {autoSaveStatus === "saved" && `Draft auto-saved at ${lastSavedTime}`}
+                    {autoSaveStatus === "error" && "Auto-save failed"}
+                  </span>
+                )}
+                <Button 
+                  type="button" 
+                  variant="secondary" 
+                  disabled={saving} 
+                  onClick={() => handleSave(false)} 
+                  size="lg" 
+                  className="w-full h-14 rounded-2xl border border-border"
+                >
+                  Save Draft
+                </Button>
+                <Button 
+                  type="button" 
+                  disabled={saving} 
+                  onClick={() => handleSave(true)} 
+                  size="lg" 
+                  className="w-full h-14 rounded-2xl shadow-xl shadow-primary/20"
+                >
                   {saving ? (
                     <>
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Saving Changes...
+                      Publishing Article...
                     </>
                   ) : (
                     <>
                       <Save className="mr-2 h-5 w-5" />
-                      Save Changes
+                      Publish Post
                     </>
                   )}
                 </Button>

@@ -21,6 +21,21 @@ const blogSchema = z.object({
   seoKeywords: z.string().optional().or(z.literal("")).or(z.null()),
 });
 
+const draftBlogSchema = z.object({
+  title: z.string().default("Untitled Post"),
+  slug: z.string().default(""),
+  excerpt: z.string().default(""),
+  content: z.string().default(""),
+  contentFormat: z.string().default("mdx"),
+  coverImage: z.string().url().optional().or(z.literal("")).or(z.null()).default(""),
+  published: z.boolean().default(false),
+  readingTime: z.number().optional().default(1),
+  tags: z.array(z.string()).default([]),
+  seoTitle: z.string().optional().or(z.literal("")).or(z.null()).default(""),
+  seoDescription: z.string().optional().or(z.literal("")).or(z.null()).default(""),
+  seoKeywords: z.string().optional().or(z.literal("")).or(z.null()).default(""),
+});
+
 function coerceBoolean(value: unknown): boolean {
   if (typeof value === "boolean") return value;
   if (typeof value === "number") return value !== 0;
@@ -60,20 +75,31 @@ function deriveExcerpt(content: string): string {
 }
 
 function buildBlogPayload(body: Record<string, unknown>) {
+  const published = coerceBoolean(body.published);
   const title = typeof body.title === "string" ? body.title.trim() : "";
   const content = typeof body.content === "string" ? body.content.trim() : "";
   const excerpt = typeof body.excerpt === "string" ? body.excerpt.trim() : "";
 
+  let finalTitle = title;
+  if (!finalTitle && !published) {
+    finalTitle = "Untitled Post";
+  }
+
+  let finalSlug = typeof body.slug === "string" && body.slug.trim() ? body.slug.trim() : slugify(finalTitle);
+  if (!published && (!finalSlug || finalSlug === "untitled-post")) {
+    finalSlug = `untitled-post-${Date.now()}`;
+  }
+
   return {
     ...body,
-    title,
-    slug: typeof body.slug === "string" && body.slug.trim() ? body.slug.trim() : slugify(title),
-    excerpt: excerpt || deriveExcerpt(content),
+    title: finalTitle,
+    slug: finalSlug,
+    excerpt: excerpt || (published ? deriveExcerpt(content) : ""),
     content,
     contentFormat: typeof body.contentFormat === "string" && body.contentFormat.trim() ? body.contentFormat.trim() : "mdx",
     coverImage: typeof body.coverImage === "string" ? body.coverImage.trim() : body.coverImage,
-    published: coerceBoolean(body.published),
-    readingTime: readingTimeFromContent(content),
+    published,
+    readingTime: readingTimeFromContent(content) || 1,
     tags: normalizeTags(body.tags),
     seoTitle: typeof body.seoTitle === "string" ? body.seoTitle.trim() : body.seoTitle,
     seoDescription: typeof body.seoDescription === "string" ? body.seoDescription.trim() : body.seoDescription,
@@ -108,6 +134,25 @@ export async function GET(
   }
 }
 
+async function getUniqueBlogSlug(baseSlug: string, currentPostId: string): Promise<string> {
+  let slug = baseSlug;
+  let counter = 1;
+  while (true) {
+    const existing = await prisma.blogPost.findFirst({
+      where: {
+        slug,
+        id: { not: currentPostId },
+      },
+      select: { id: true },
+    });
+    if (!existing) {
+      return slug;
+    }
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+}
+
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -118,8 +163,10 @@ export async function PUT(
     const body = await request.json();
     
     const dataToValidate = buildBlogPayload(body);
+    dataToValidate.slug = await getUniqueBlogSlug(dataToValidate.slug, id);
     
-    const result = blogSchema.safeParse(dataToValidate);
+    const schemaToUse = dataToValidate.published ? blogSchema : draftBlogSchema;
+    const result = schemaToUse.safeParse(dataToValidate);
 
     if (!result.success) {
       const fieldErrors: Record<string, string[]> = {};
@@ -139,9 +186,11 @@ export async function PUT(
       data: result.data,
     });
 
-    revalidatePath("/");
-    revalidatePath("/blog");
-    revalidatePath(`/blog/${post.slug}`);
+    if (post.published) {
+      revalidatePath("/");
+      revalidatePath("/blog");
+      revalidatePath(`/blog/${post.slug}`);
+    }
 
     return NextResponse.json({ data: post });
   } catch (error) {

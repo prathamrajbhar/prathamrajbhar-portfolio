@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
@@ -36,11 +36,6 @@ export default function NewProjectPage() {
     }, 0);
     return () => clearTimeout(timer);
   }, []);
-  const [projectLinks, setProjectLinks] = useState<ProjectLink[]>([]);
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
-  const [isEditingSlug, setIsEditingSlug] = useState(false);
-  const [activeTab, setActiveTab] = useState<"general" | "media" | "content" | "seo">("general");
-
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -69,13 +64,115 @@ export default function NewProjectPage() {
     seoKeywords: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [projectLinks, setProjectLinks] = useState<ProjectLink[]>([]);
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [isEditingSlug, setIsEditingSlug] = useState(false);
+  const [activeTab, setActiveTab] = useState<"general" | "media" | "content" | "seo">("general");
+
+  const initialDataRef = useRef<{
+    formData: typeof formData;
+    projectLinks: ProjectLink[];
+    galleryImages: string[];
+  } | null>(null);
+  const [autoSaveStatus, setAutoSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
+  const [draftId, setDraftId] = useState<string | null>(null);
+
+  useEffect(() => {
+    initialDataRef.current = {
+      formData: {
+        title: "",
+        slug: "",
+        description: "",
+        content: "",
+        subtitle: "",
+        role: "",
+        client: "",
+        category: "",
+        timeline: "",
+        year: "",
+        problem: "",
+        solution: "",
+        impact: "",
+        features: "",
+        outcomes: "",
+        techStack: "",
+        liveUrl: "",
+        githubUrl: "",
+        imageUrl: "",
+        tags: "",
+        featured: false,
+        status: "completed",
+        seoTitle: "",
+        seoDescription: "",
+        seoKeywords: "",
+      },
+      projectLinks: [],
+      galleryImages: [],
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!initialDataRef.current) return;
+
+    const currentData = { formData, projectLinks, galleryImages };
+    const hasChanged = JSON.stringify(currentData) !== JSON.stringify(initialDataRef.current);
+
+    if (!hasChanged) return;
+
+    setAutoSaveStatus("saving");
+
+    const timer = setTimeout(async () => {
+      const data = {
+        ...formData,
+        status: "draft",
+        features: formData.features.split("\n").filter(Boolean),
+        outcomes: formData.outcomes.split("\n").filter(Boolean),
+        techStack: formData.techStack.split("\n").filter(Boolean),
+        galleryImages,
+        tags: formData.tags.split("\n").filter(Boolean),
+        projectLinks,
+      };
+
+      try {
+        const idToUse = draftId;
+        const res = await fetch(idToUse ? `/api/admin/projects/${idToUse}` : "/api/admin/projects", {
+          method: idToUse ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+          const json = await res.json();
+          const savedProject = json.data;
+          if (savedProject && savedProject.id) {
+            setDraftId(savedProject.id);
+            if (!idToUse) {
+              window.history.replaceState(null, "", `/admin/projects/edit/${savedProject.id}`);
+            }
+          }
+          setAutoSaveStatus("saved");
+          setLastSavedTime(new Date().toLocaleTimeString());
+          initialDataRef.current = { formData, projectLinks, galleryImages };
+        } else {
+          setAutoSaveStatus("error");
+        }
+      } catch (err) {
+        console.error("Auto-save error:", err);
+        setAutoSaveStatus("error");
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [formData, projectLinks, galleryImages, draftId]);
+
+  const handleSave = async (isPublish: boolean) => {
     setLoading(true);
     setErrors({});
 
     const data = {
       ...formData,
+      status: isPublish ? (formData.status === "draft" ? "completed" : formData.status) : "draft",
       features: formData.features.split("\n").filter(Boolean),
       outcomes: formData.outcomes.split("\n").filter(Boolean),
       techStack: formData.techStack.split("\n").filter(Boolean),
@@ -85,8 +182,9 @@ export default function NewProjectPage() {
     };
 
     try {
-      const res = await fetch("/api/admin/projects", {
-        method: "POST",
+      const idToUse = draftId;
+      const res = await fetch(idToUse ? `/api/admin/projects/${idToUse}` : "/api/admin/projects", {
+        method: idToUse ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
@@ -101,15 +199,15 @@ export default function NewProjectPage() {
           });
           setErrors(fieldErrors);
         } else {
-          setErrors({ general: json.error || "Failed to create project" });
+          setErrors({ general: json.error || "Failed to save project" });
         }
         return;
       }
 
       router.push("/admin/projects");
     } catch (error) {
-      console.error("Error creating project:", error);
-      setErrors({ general: "Failed to create project" });
+      console.error("Error saving project:", error);
+      setErrors({ general: "Failed to save project" });
     } finally {
       setLoading(false);
     }
@@ -228,7 +326,7 @@ export default function NewProjectPage() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={(e) => { e.preventDefault(); handleSave(true); }} className="space-y-8">
           <AnimatePresence mode="wait">
             {activeTab === "general" && (
               <motion.div
@@ -341,6 +439,7 @@ export default function NewProjectPage() {
                           onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                           className="h-12 w-full rounded-2xl border border-border/50 bg-bg/50 px-5 text-sm text-text outline-none backdrop-blur-sm transition-all focus:border-primary/50 focus:bg-bg focus:ring-4 focus:ring-primary/10 cursor-pointer"
                         >
+                          <option value="draft">Draft</option>
                           <option value="completed">Completed</option>
                           <option value="in-progress">In Progress</option>
                           <option value="planned">Planned</option>
@@ -690,20 +789,41 @@ export default function NewProjectPage() {
               )}
             </div>
 
-            <div className="flex gap-3 ml-auto">
+            <div className="flex flex-wrap items-center gap-4 ml-auto">
+              {autoSaveStatus !== "idle" && (
+                <span className="text-xs text-muted font-medium">
+                  {autoSaveStatus === "saving" && "Auto-saving..."}
+                  {autoSaveStatus === "saved" && `Draft auto-saved at ${lastSavedTime}`}
+                  {autoSaveStatus === "error" && "Auto-save failed"}
+                </span>
+              )}
               <Link href="/admin/projects">
                 <Button variant="outline" type="button" className="h-12 px-6 rounded-xl cursor-pointer">Cancel</Button>
               </Link>
-              <Button type="submit" disabled={loading} className="h-12 px-8 rounded-xl shadow-lg shadow-primary/20 cursor-pointer">
+              <Button 
+                type="button" 
+                variant="secondary" 
+                disabled={loading} 
+                onClick={() => handleSave(false)} 
+                className="h-12 px-6 rounded-xl cursor-pointer border border-border"
+              >
+                Save Draft
+              </Button>
+              <Button 
+                type="button" 
+                disabled={loading} 
+                onClick={() => handleSave(true)} 
+                className="h-12 px-8 rounded-xl shadow-lg shadow-primary/20 cursor-pointer"
+              >
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
+                    Publishing...
                   </>
                 ) : (
                   <>
                     <Save className="mr-2 h-4 w-4" />
-                    Save Project
+                    Publish Project
                   </>
                 )}
               </Button>

@@ -40,6 +40,36 @@ const projectSchema = z.object({
   projectLinks: z.array(projectLinkSchema).default([]),
 });
 
+const draftProjectSchema = z.object({
+  title: z.string().default("Untitled Project"),
+  slug: z.string().default(""),
+  description: z.string().default(""),
+  content: z.string().default(""),
+  subtitle: z.string().optional().default(""),
+  role: z.string().optional().default(""),
+  client: z.string().optional().default(""),
+  category: z.string().optional().default(""),
+  timeline: z.string().optional().default(""),
+  year: z.string().optional().default(""),
+  problem: z.string().optional().default(""),
+  solution: z.string().optional().default(""),
+  impact: z.string().optional().default(""),
+  features: z.array(z.string()).default([]),
+  outcomes: z.array(z.string()).default([]),
+  techStack: z.array(z.string()).default([]),
+  liveUrl: z.string().url().optional().or(z.literal("")).or(z.null()).default(""),
+  githubUrl: z.string().url().optional().or(z.literal("")).or(z.null()).default(""),
+  imageUrl: z.string().url().optional().or(z.literal("")).or(z.null()).default(""),
+  galleryImages: z.array(z.string()).default([]),
+  tags: z.array(z.string()).default([]),
+  featured: z.coerce.boolean().default(false),
+  status: z.string().default("draft"),
+  seoTitle: z.string().optional().or(z.literal("")).or(z.null()).default(""),
+  seoDescription: z.string().optional().or(z.literal("")).or(z.null()).default(""),
+  seoKeywords: z.string().optional().or(z.literal("")).or(z.null()).default(""),
+  projectLinks: z.array(projectLinkSchema).default([]),
+});
+
 export async function GET() {
   try {
     const projects = await prisma.project.findMany({
@@ -60,17 +90,45 @@ export async function GET() {
   }
 }
 
+async function getUniqueProjectSlug(baseSlug: string): Promise<string> {
+  let slug = baseSlug;
+  let counter = 1;
+  while (true) {
+    const existing = await prisma.project.findFirst({
+      where: { slug },
+      select: { id: true },
+    });
+    if (!existing) {
+      return slug;
+    }
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+}
+
 export async function POST(request: Request) {
   try {
     await requireAdmin();
     const body = await request.json();
 
+    const isDraft = body.status === "draft";
+    const titleVal = body.title?.trim() || (isDraft ? "Untitled Project" : "");
+    let slugVal = body.slug?.trim() || slugify(titleVal);
+
+    if (isDraft && (!slugVal || slugVal === "untitled-project")) {
+      slugVal = `untitled-project-${Date.now()}`;
+    }
+
+    slugVal = await getUniqueProjectSlug(slugVal);
+
     const dataToValidate = {
       ...body,
-      slug: body.slug || slugify(body.title),
+      title: titleVal,
+      slug: slugVal,
     };
 
-    const result = projectSchema.safeParse(dataToValidate);
+    const schemaToUse = isDraft ? draftProjectSchema : projectSchema;
+    const result = schemaToUse.safeParse(dataToValidate);
 
     if (!result.success) {
       const fieldErrors: Record<string, string[]> = {};
@@ -97,9 +155,11 @@ export async function POST(request: Request) {
       include: { projectLinks: true },
     });
 
-    revalidatePath("/");
-    revalidatePath("/projects");
-    revalidatePath(`/projects/${project.slug}`);
+    if (project.status !== "draft") {
+      revalidatePath("/");
+      revalidatePath("/projects");
+      revalidatePath(`/projects/${project.slug}`);
+    }
 
     return NextResponse.json({ data: project }, { status: 201 });
   } catch (error) {
