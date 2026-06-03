@@ -10,16 +10,18 @@ function createPrismaClient(): PrismaClient {
     throw new Error("DATABASE_URL environment variable is not set");
   }
 
-  const needsSsl = rawUrl.includes("sslmode=");
-  const connectionString = rawUrl.replace(/[?&]sslmode=[^&]*/g, "").replace(/\?$/, "");
+  const parsedUrl = new URL(rawUrl);
+  const needsSsl = parsedUrl.searchParams.has("sslmode");
+  parsedUrl.searchParams.delete("sslmode");
+  const connectionString = parsedUrl.toString();
 
   const pool = new Pool({
     connectionString,
     ssl: needsSsl ? { rejectUnauthorized: false } : undefined,
-    max: 10,
-    min: 2,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 10000,
+    max: 2,
+    min: 0,
+    idleTimeoutMillis: 10000,
+    connectionTimeoutMillis: 5000,
   });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ 

@@ -37,7 +37,9 @@ async function main() {
 
   // Strip sslmode parameters from the connection URL before passing it to Client.
   // pg-connection-string parses sslmode parameters in ways that can conflict with explicit ssl options.
-  const connectionString = dbUrl.replace(/[?&]sslmode=[^&]*/g, "").replace(/\?$/, "");
+  const parsedUrl = new URL(dbUrl);
+  parsedUrl.searchParams.delete("sslmode");
+  const connectionString = parsedUrl.toString();
   const client = new Client({
     connectionString,
     ssl: { rejectUnauthorized: false },

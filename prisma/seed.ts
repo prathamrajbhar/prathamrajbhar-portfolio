@@ -6,7 +6,9 @@ import { getDefaultAIBaseUrl, getDefaultAIModel, normalizeAIProvider } from "../
 
 // Strip sslmode from URL — we configure SSL via Pool options to avoid TLS cert errors with AWS RDS
 const rawUrl = process.env.DATABASE_URL!;
-const connectionString = rawUrl.replace(/[?&]sslmode=[^&]*/g, "").replace(/\?$/, "");
+const parsedUrl = new URL(rawUrl);
+parsedUrl.searchParams.delete("sslmode");
+const connectionString = parsedUrl.toString();
 
 const pool = new Pool({
   connectionString,
