@@ -1,7 +1,6 @@
 "use client";
 
 import { Sparkles, LinkIcon, User, Briefcase, Layers, Clock, Calendar, ExternalLink } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import type { ProjectDTO } from "@/lib/types";
 
@@ -42,17 +41,6 @@ export function ProjectOverview({ project }: ProjectOverviewProps) {
               <span className="text-sm font-medium text-text text-right max-w-[160px] truncate">{value}</span>
             </div>
           ))}
-          
-          <div className="flex items-center justify-between pt-4">
-            <div className="flex items-center gap-2.5 text-muted">
-              <Sparkles size={16} className="text-muted/70" />
-              <span className="text-xs font-semibold uppercase tracking-wider">Status</span>
-            </div>
-            <span className="capitalize font-bold text-xs">
-              <span className={`inline-block w-2 h-2 rounded-full mr-2 ${project.status === "completed" ? "bg-emerald-500" : "bg-amber-500 animate-pulse"}`} />
-              {project.status}
-            </span>
-          </div>
         </div>
       </div>
 

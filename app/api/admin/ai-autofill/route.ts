@@ -136,16 +136,35 @@ export async function POST(req: Request) {
       });
     }
 
-    const data = (await res.json()) as {
-      choices?: {
-        message?: {
-          content?: string;
-          tool_calls?: {
-            function?: { name?: string; arguments?: string };
-          }[];
-        };
-      }[];
-    };
+    const contentType = res.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      const text = await res.text();
+      console.error(`${getAIProviderLabel(config.provider)} non-JSON response:`, res.status, text.slice(0, 500));
+      return NextResponse.json({
+        role: "assistant",
+        parts: [{ type: "text", text: `I couldn’t extract form data right now (${getAIProviderLabel(config.provider)} returned an invalid non-JSON response). Please try again.` }],
+      });
+    }
+
+    let data;
+    try {
+      data = (await res.json()) as {
+        choices?: {
+          message?: {
+            content?: string;
+            tool_calls?: {
+              function?: { name?: string; arguments?: string };
+            }[];
+          };
+        }[];
+      };
+    } catch (parseErr) {
+      console.error("Failed to parse JSON response from AI provider:", parseErr);
+      return NextResponse.json({
+        role: "assistant",
+        parts: [{ type: "text", text: "I couldn’t parse the JSON response from the AI provider. Please try again." }],
+      });
+    }
 
     const message = data.choices?.[0]?.message;
     const toolCall = message?.tool_calls?.[0];

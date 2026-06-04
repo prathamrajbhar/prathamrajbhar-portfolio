@@ -192,19 +192,16 @@ export function IconSelector({ value, onChange, label = "Select Icon" }: IconSel
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="group relative aspect-square flex items-center justify-center rounded-2xl border bg-primary border-primary shadow-2xl shadow-primary/40 z-10 scale-110"
+                className="group relative aspect-square flex items-center justify-center rounded-2xl border border-primary bg-surface/80 shadow-lg z-10 scale-105"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={value} 
                   alt="Current Selection" 
-                  className={cn(
-                    "relative h-10 w-10 object-contain transition-all duration-500 z-10 scale-110",
-                    !value.includes('supabase') && "brightness-0 invert"
-                  )} 
+                  className="relative h-10 w-10 object-contain transition-all duration-500 z-10" 
                 />
-                <div className="absolute inset-0 bg-primary flex items-center justify-center z-20">
-                  <Check size={24} strokeWidth={4} className="text-primary-foreground drop-shadow-md" />
+                <div className="absolute top-1.5 right-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm z-20">
+                  <Check size={11} strokeWidth={4} />
                 </div>
               </motion.div>
             )}
@@ -227,7 +224,7 @@ export function IconSelector({ value, onChange, label = "Select Icon" }: IconSel
                     className={cn(
                       "group relative aspect-square flex items-center justify-center rounded-2xl border transition-all duration-500 overflow-hidden",
                       isSelected 
-                        ? "bg-primary border-primary shadow-2xl shadow-primary/40 z-10 scale-110" 
+                        ? "border-primary bg-surface/80 shadow-lg z-10 scale-105" 
                         : "bg-surface/30 border-border/50 hover:border-primary/50 hover:bg-surface/80 hover:scale-105"
                     )}
                     title={fullName}
@@ -244,16 +241,16 @@ export function IconSelector({ value, onChange, label = "Select Icon" }: IconSel
                       alt={fullName} 
                       className={cn(
                         "relative h-10 w-10 object-contain transition-all duration-500 z-10",
-                        isSelected && !url.includes('supabase') ? "brightness-0 invert scale-110" : "opacity-90 group-hover:opacity-100 group-hover:scale-110"
+                        isSelected ? "scale-110" : "opacity-90 group-hover:opacity-100 group-hover:scale-110"
                       )} 
                     />
                     
                     {isSelected && (
                       <motion.div 
                         layoutId="active-check"
-                        className="absolute inset-0 bg-primary flex items-center justify-center z-20"
+                        className="absolute top-1.5 right-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm z-20"
                       >
-                        <Check size={24} strokeWidth={4} className="text-primary-foreground drop-shadow-md" />
+                        <Check size={11} strokeWidth={4} />
                       </motion.div>
                     )}
                   </motion.button>

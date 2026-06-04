@@ -11,7 +11,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn, slugify } from "@/lib/utils";
 import { AIAssistant } from "@/components/admin/AIAssistant";
-import { IconSelector } from "@/components/admin/IconSelector";
+import { AISuggestField } from "@/components/admin/AISuggestField";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import { normalize } from "@/lib/ai-autofill";
 import type { CertificationDTO } from "@/lib/types";
 
@@ -23,7 +24,6 @@ export default function EditCertificationPage() {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [certification, setCertification] = useState<CertificationDTO | null>(null);
-  const [isEditingSlug, setIsEditingSlug] = useState(false);
   const [origin, setOrigin] = useState("");
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -144,7 +144,7 @@ export default function EditCertificationPage() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-10"
+      className="max-w-4xl mx-auto space-y-10"
     >
       {/* Header */}
       <div className="flex flex-col gap-4">
@@ -183,155 +183,142 @@ export default function EditCertificationPage() {
         onFill={(data) => setFormData(prev => ({ ...prev, ...normalize("certifications", data) }))}
       />
 
-      <form onSubmit={handleSubmit} className="grid gap-8 lg:grid-cols-12">
-        {/* Left Column: Core Details */}
-        <div className="lg:col-span-8 space-y-8">
-          {errors.general && (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-sm font-bold text-red-500">
-              {errors.general}
-            </motion.div>
-          )}
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {errors.general && (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-sm font-bold text-red-500">
+            {errors.general}
+          </motion.div>
+        )}
 
-          <Card className="overflow-hidden border-border/50 bg-surface/30 backdrop-blur-md">
-            <div className="flex items-center gap-3 border-b border-border/50 bg-bg/30 px-8 py-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <ShieldCheck size={18} />
-              </div>
-              <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Certification Details</h2>
+        <Card className="overflow-hidden border-border/50 bg-surface/30 backdrop-blur-md">
+          <div className="flex items-center gap-3 border-b border-border/50 bg-bg/30 px-8 py-4">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <ShieldCheck size={18} />
             </div>
-            
-            <div className="p-8 space-y-6">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Certification Name *</Label>
-                    <Input
-                      id="name"
-                      placeholder="e.g. AWS Certified Solutions Architect"
-                      value={formData.name}
-                      onChange={(e) => {
-                        const name = e.target.value;
-                        setFormData({ 
-                          ...formData, 
-                          name, 
-                          slug: isEditingSlug ? formData.slug : slugify(name) 
-                        });
-                      }}
-                      className={cn(errors.name && "border-red-500/50 focus:ring-red-500/10")}
-                    />
-                    <div className="flex items-center gap-2 px-1">
-                      <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
-                        <LinkIcon size={10} className="text-primary/50" />
-                        <span>Permalink:</span>
-                        <span className="text-text/40">{origin}/certifications/</span>
-                        {isEditingSlug ? (
-                          <input
-                            type="text"
-                            value={formData.slug}
-                            onChange={(e) => setFormData({ ...formData, slug: slugify(e.target.value) })}
-                            onBlur={() => setIsEditingSlug(false)}
-                            autoFocus
-                            className="bg-transparent border-none p-0 focus:ring-0 text-primary font-bold lowercase w-fit min-w-[50px] outline-none"
-                          />
-                        ) : (
-                          <span 
-                            className="text-primary font-bold cursor-pointer hover:underline decoration-dotted underline-offset-4"
-                            onClick={() => setIsEditingSlug(true)}
-                          >
-                            {formData.slug}
-                          </span>
-                        )}
-                      </div>
-                      {errors.slug && <span className="text-[10px] font-bold uppercase text-red-500">— {errors.slug}</span>}
-                    </div>
-                    {errors.name && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.name}</p>}
-                  </div>
-                </div>
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="issuer">Issuer *</Label>
-                  <div className="relative">
-                    <Input
-                      id="issuer"
-                      placeholder="e.g. Amazon Web Services"
-                      value={formData.issuer}
-                      onChange={(e) => setFormData({ ...formData, issuer: e.target.value })}
-                      className={cn("pl-10", errors.issuer && "border-red-500/50 focus:ring-red-500/10")}
-                    />
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
-                  </div>
-                  {errors.issuer && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.issuer}</p>}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="date">Date Issued *</Label>
-                  <div className="relative">
-                    <Input
-                      id="date"
-                      type="date"
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className={cn("pl-10", errors.date && "border-red-500/50 focus:ring-red-500/10")}
-                    />
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
-                  </div>
-                  {errors.date && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.date}</p>}
-                </div>
-              </div>
-
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="credentialId">Credential ID</Label>
-                  <div className="relative">
-                    <Input
-                      id="credentialId"
-                      placeholder="ABC-123-XYZ"
-                      value={formData.credentialId}
-                      onChange={(e) => setFormData({ ...formData, credentialId: e.target.value })}
-                      className="pl-10"
-                    />
-                    <Fingerprint className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="url">Verification URL</Label>
-                  <div className="relative">
-                    <Input
-                      id="url"
-                      placeholder="https://..."
-                      value={formData.url}
-                      onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                      className={cn("pl-10", errors.url && "border-red-500/50 focus:ring-red-500/10")}
-                    />
-                    <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
-                  </div>
-                  {errors.url && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.url}</p>}
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Right Column: Media */}
-        <div className="lg:col-span-4 space-y-8">
-          <Card className="overflow-hidden border-border/50 bg-surface/30 backdrop-blur-md">
-            <div className="flex items-center gap-3 border-b border-border/50 bg-bg/30 px-8 py-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <ImageIcon size={18} />
-              </div>
-              <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Media</h2>
-            </div>
-            
-            <div className="p-8 space-y-6">
+            <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Certification Details</h2>
+          </div>
+          
+          <div className="p-8 space-y-8">
+            <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
-                <IconSelector
-                  value={formData.image}
-                  onChange={(url) => setFormData({ ...formData, image: url })}
-                  label="Certificate Icon"
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="name">Certification Name *</Label>
+                  <AISuggestField label="Certification Name" module="certifications" field="name" context={formData} onApply={(v) => setFormData(prev => ({ ...prev, name: v, slug: slugify(v) }))} />
+                </div>
+                <Input
+                  id="name"
+                  placeholder="e.g. AWS Certified Solutions Architect"
+                  value={formData.name}
+                  onChange={(e) => {
+                    const name = e.target.value;
+                    setFormData(prev => ({ 
+                      ...prev, 
+                      name, 
+                      slug: slugify(name) 
+                    }));
+                  }}
+                  className={cn(errors.name && "border-red-500/50 focus:ring-red-500/10")}
                 />
-                {errors.image && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.image}</p>}
+                {errors.name && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.name}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="slug">Slug / URL Path *</Label>
+                <div className="relative">
+                  <Input
+                    id="slug"
+                    placeholder="e.g. aws-certified-solutions-architect"
+                    value={formData.slug}
+                    onChange={(e) => setFormData(prev => ({ ...prev, slug: slugify(e.target.value) }))}
+                    className={cn("pl-10", errors.slug && "border-red-500/50 focus:ring-red-500/10")}
+                  />
+                  <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
+                </div>
+                <p className="text-[10px] text-muted/60 px-1 font-medium truncate">
+                  Permalink: {origin}/certifications/{formData.slug || "auto-generated"}
+                </p>
+                {errors.slug && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.slug}</p>}
               </div>
             </div>
-          </Card>
-        </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="issuer">Issuer *</Label>
+                  <AISuggestField label="Issuer" module="certifications" field="issuer" context={formData} onApply={(v) => setFormData(prev => ({ ...prev, issuer: v }))} />
+                </div>
+                <div className="relative">
+                  <Input
+                    id="issuer"
+                    placeholder="e.g. Amazon Web Services"
+                    value={formData.issuer}
+                    onChange={(e) => setFormData(prev => ({ ...prev, issuer: e.target.value }))}
+                    className={cn("pl-10", errors.issuer && "border-red-500/50 focus:ring-red-500/10")}
+                  />
+                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
+                </div>
+                {errors.issuer && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.issuer}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="date">Date Issued *</Label>
+                <div className="relative">
+                  <Input
+                    id="date"
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                    className={cn("pl-10", errors.date && "border-red-500/50 focus:ring-red-500/10")}
+                  />
+                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
+                </div>
+                {errors.date && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.date}</p>}
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="credentialId">Credential ID</Label>
+                <div className="relative">
+                  <Input
+                    id="credentialId"
+                    placeholder="ABC-123-XYZ"
+                    value={formData.credentialId}
+                    onChange={(e) => setFormData(prev => ({ ...prev, credentialId: e.target.value }))}
+                    className="pl-10"
+                  />
+                  <Fingerprint className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="url">Verification URL</Label>
+                <div className="relative">
+                  <Input
+                    id="url"
+                    placeholder="https://..."
+                    value={formData.url}
+                    onChange={(e) => setFormData(prev => ({ ...prev, url: e.target.value }))}
+                    className={cn("pl-10", errors.url && "border-red-500/50 focus:ring-red-500/10")}
+                  />
+                  <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
+                </div>
+                {errors.url && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.url}</p>}
+              </div>
+            </div>
+
+            <div className="border-t border-border/50 pt-8 space-y-4">
+              <ImageUpload
+                value={formData.image}
+                onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                label="Certificate File / Image"
+                aspect="aspect-video"
+                folder="certifications"
+              />
+              {errors.image && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.image}</p>}
+            </div>
+          </div>
+        </Card>
       </form>
     </motion.div>
   );

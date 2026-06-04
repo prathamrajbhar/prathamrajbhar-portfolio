@@ -271,6 +271,9 @@ export const getServices = cache(async (): Promise<ServiceDTO[]> => {
 export const getProjects = cache(async (): Promise<ProjectDTO[]> => {
   try {
     const rows = await prisma.project.findMany({
+      where: {
+        status: { not: "draft" },
+      },
       select: {
         id: true,
         title: true,
@@ -314,7 +317,10 @@ export const getProjects = cache(async (): Promise<ProjectDTO[]> => {
 
 export const getAllProjectSlugs = cache(async (): Promise<string[]> => {
   try {
-    const rows = await prisma.project.findMany({ select: { slug: true } });
+    const rows = await prisma.project.findMany({
+      where: { status: { not: "draft" } },
+      select: { slug: true },
+    });
     return rows.map((r) => r.slug);
   } catch (error) {
     console.error("Error fetching project slugs:", error);
@@ -401,7 +407,8 @@ export const getProjectBySlug = cache(async (slug: string): Promise<ProjectDTO |
       where: { slug },
       include: { projectLinks: true },
     });
-    return row ? toProjectDTO(row as PrismaProject) : null;
+    if (!row || row.status === "draft") return null;
+    return toProjectDTO(row as PrismaProject);
   } catch (error) {
     console.error("Error fetching project by slug:", error);
     return null;
@@ -411,7 +418,8 @@ export const getProjectBySlug = cache(async (slug: string): Promise<ProjectDTO |
 export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPostDTO | null> => {
   try {
     const row = await prisma.blogPost.findUnique({ where: { slug } });
-    return row ? toBlogPostDTO(row) : null;
+    if (!row || !row.published) return null;
+    return toBlogPostDTO(row);
   } catch (error) {
     console.error("Error fetching blog post by slug:", error);
     return null;
@@ -434,7 +442,8 @@ export const getProjectById = cache(async (id: string): Promise<ProjectDTO | nul
       where: { id },
       include: { projectLinks: true },
     });
-    return row ? toProjectDTO(row as PrismaProject) : null;
+    if (!row || row.status === "draft") return null;
+    return toProjectDTO(row as PrismaProject);
   } catch (error) {
     console.error("Error fetching project by id:", error);
     return null;
@@ -444,7 +453,8 @@ export const getProjectById = cache(async (id: string): Promise<ProjectDTO | nul
 export const getBlogPostById = cache(async (id: string): Promise<BlogPostDTO | null> => {
   try {
     const row = await prisma.blogPost.findUnique({ where: { id } });
-    return row ? toBlogPostDTO(row) : null;
+    if (!row || !row.published) return null;
+    return toBlogPostDTO(row);
   } catch (error) {
     console.error("Error fetching blog post by id:", error);
     return null;

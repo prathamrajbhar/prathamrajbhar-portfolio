@@ -1,10 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, CalendarDays, Clock, Share2 } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock, Share2, Check } from "lucide-react";
 import Image from "next/image";
-import type { ReactNode } from "react";
-import { CopyCodeButtons } from "@/components/public/CopyCodeButtons";
+import { type ReactNode, useState } from "react";
 import { ReadingProgress } from "@/components/public/ReadingProgress";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -13,10 +12,26 @@ import type { BlogPostDTO } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
 export function BlogPostClient({ post, children }: { post: BlogPostDTO; children: ReactNode }) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleShare() {
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: post.title, url });
+      } catch {
+        // User dismissed or error — do nothing
+      }
+    } else {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }
+
   return (
     <article className="relative min-h-screen pb-24">
       <ReadingProgress />
-      <CopyCodeButtons />
 
       <div className="relative h-[55vh] min-h-[400px] w-full overflow-hidden">
         <Image
@@ -69,9 +84,13 @@ export function BlogPostClient({ post, children }: { post: BlogPostDTO; children
             <Button href="/blog" variant="ghost" className="group -ml-3" icon={<ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />}>
               Back to journal
             </Button>
-            <button className="flex items-center gap-2 text-sm text-muted hover:text-text transition-colors">
-              <Share2 size={16} />
-              Share
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-2 text-sm text-muted hover:text-primary transition-colors"
+              aria-label="Share this post"
+            >
+              {copied ? <Check size={16} className="text-emerald-500" /> : <Share2 size={16} />}
+              {copied ? "Copied!" : "Share"}
             </button>
           </div>
 

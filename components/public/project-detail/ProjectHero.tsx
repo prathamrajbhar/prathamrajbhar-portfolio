@@ -56,14 +56,6 @@ export function ProjectHero({ project }: ProjectHeroProps) {
             className="flex flex-col items-start"
           >
             <motion.div variants={fadeInUp} className="flex flex-wrap gap-2 mb-4">
-              <Badge
-                variant={project.status === "completed" ? "success" : "warning"}
-                className={`px-3 py-1 text-xs uppercase tracking-wider font-bold shadow-sm ${
-                  project.status !== "completed" ? "animate-pulse" : ""
-                }`}
-              >
-                {project.status}
-              </Badge>
               {project.category && (
                 <Badge variant="muted" className="flex items-center gap-1.5 bg-surface/50 border-border/60 px-3 py-1 text-xs text-muted">
                   <Layers size={12} />

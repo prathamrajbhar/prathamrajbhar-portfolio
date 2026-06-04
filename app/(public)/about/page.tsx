@@ -29,7 +29,18 @@ export default async function AboutPage() {
           <div>
             <p className="text-xs font-medium uppercase tracking-widest text-primary">Who I am</p>
             <h1 className="mt-6 font-display text-4xl tracking-tight sm:text-5xl lg:text-6xl">
-              {settings.aboutTitle?.split(" ").slice(0, -2).join(" ")} <span className="text-gradient">{settings.aboutTitle?.split(" ").slice(-2).join(" ")}</span>
+              {(() => {
+                const words = settings.aboutTitle?.split(" ") ?? [];
+                const splitAt = Math.max(0, words.length - 2);
+                const head = words.slice(0, splitAt).join(" ");
+                const tail = words.slice(splitAt).join(" ");
+                return (
+                  <>
+                    {head && <>{head} </>}
+                    <span className="text-gradient">{tail}</span>
+                  </>
+                );
+              })()}
             </h1>
             <p className="mt-8 text-xl leading-relaxed text-muted sm:text-2xl">
               I am {settings.name}, a {settings.title || settings.heroTagline || "Software Engineer"} focused on building good digital solutions and crafting beautiful user experiences.

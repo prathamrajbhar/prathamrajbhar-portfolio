@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
@@ -25,12 +24,6 @@ const nextConfig = {
   },
   headers: async () => {
     return [
-      {
-        source: '/api/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'public, s-maxage=60, stale-while-revalidate=30' }
-        ]
-      },
       {
         source: '/:all*(svg|jpg|jpeg|png|gif|webp|avif)',
         headers: [

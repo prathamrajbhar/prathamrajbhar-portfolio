@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
@@ -12,7 +12,7 @@ interface ProjectGalleryProps {
 
 export function ProjectGallery({ project }: ProjectGalleryProps) {
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
-  const images = project.galleryImages || [];
+  const images = useMemo(() => project.galleryImages || [], [project.galleryImages]);
 
   useEffect(() => {
     if (activeImageIndex === null) return;

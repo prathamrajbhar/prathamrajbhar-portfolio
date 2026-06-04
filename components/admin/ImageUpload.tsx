@@ -11,9 +11,18 @@ interface ImageUploadProps {
   onChange: (url: string) => void;
   label?: string;
   className?: string;
+  aspect?: string;
+  folder?: string;
 }
 
-export function ImageUpload({ value, onChange, label = "Upload Image", className }: ImageUploadProps) {
+export function ImageUpload({ 
+  value, 
+  onChange, 
+  label = "Upload Image", 
+  className,
+  aspect = "aspect-square",
+  folder = "avatars"
+}: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -40,7 +49,7 @@ export function ImageUpload({ value, onChange, label = "Upload Image", className
     try {
       const fileExt = file.name.split(".").pop();
       const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
-      const filePath = `avatars/${fileName}`;
+      const filePath = `${folder}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from(BUCKET_NAME)
@@ -85,7 +94,8 @@ export function ImageUpload({ value, onChange, label = "Upload Image", className
       <div 
         onClick={() => !isUploading && fileInputRef.current?.click()}
         className={cn(
-          "relative group cursor-pointer aspect-square rounded-[2.5rem] border-2 border-dashed transition-all duration-500 overflow-hidden flex flex-col items-center justify-center gap-4",
+          "relative group cursor-pointer rounded-[2.5rem] border-2 border-dashed transition-all duration-500 overflow-hidden flex flex-col items-center justify-center gap-4",
+          aspect,
           value 
             ? "border-primary/50 bg-primary/5" 
             : "border-border/50 bg-surface/30 hover:border-primary/40 hover:bg-surface/50",

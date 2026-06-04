@@ -2,6 +2,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import Image from "next/image";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import { PreBlock } from "./PreBlock";
 
 const components = {
   a: (props: ComponentPropsWithoutRef<"a">) => (
@@ -32,6 +33,7 @@ const components = {
       {children}
     </div>
   ),
+  pre: (props: ComponentPropsWithoutRef<"pre">) => <PreBlock {...props} />,
 };
 
 export async function MdxContent({ source }: { source: string }) {

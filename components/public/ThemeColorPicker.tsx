@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Palette } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 const colorThemes = [
@@ -19,47 +19,63 @@ const colorThemes = [
 function adjustColor(hex: string, amount: number): string {
   const num = parseInt(hex.replace("#", ""), 16);
   const r = Math.min(255, Math.max(0, (num >> 16) + amount));
-  const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
-  const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00ff) + amount));
+  const b = Math.min(255, Math.max(0, (num & 0x0000ff) + amount));
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
+}
+
+function applyColorTheme(themeName: string, isDark: boolean) {
+  const theme = colorThemes.find((t) => t.name === themeName);
+  if (!theme) return;
+  const color = isDark ? theme.dark : theme.light;
+  document.documentElement.style.setProperty("--color-primary-val", color);
+  document.documentElement.style.setProperty("--color-primary-hover-val", adjustColor(color, -20));
+}
+
+/** Read saved color theme from localStorage (client-only, returns safe default). */
+function getStoredTheme(): string {
+  if (typeof window === "undefined") return "Amber";
+  return localStorage.getItem("colorTheme") || "Amber";
+}
+
+/** Read current dark mode from the document (client-only, returns safe default). */
+function getIsDark(): boolean {
+  if (typeof window === "undefined") return false;
+  return document.documentElement.dataset.theme === "dark";
 }
 
 export function ThemeColorPicker() {
   const [open, setOpen] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState(() => {
-    if (typeof window === "undefined") return "Amber";
-    const saved = localStorage.getItem("colorTheme");
-    return saved || "Amber";
-  });
+  // Lazy initializers run only on the client (after hydration)
+  const [selectedTheme, setSelectedTheme] = useState<string>(getStoredTheme);
+  const [isDark, setIsDark] = useState<boolean>(getIsDark);
+  const initialized = useRef(false);
 
+  // Apply the initial color theme once on mount (external side-effect only, no setState)
   useEffect(() => {
-    const theme = colorThemes.find((t) => t.name === selectedTheme);
-    if (theme) {
-      document.documentElement.style.setProperty("--color-primary-val", theme.light);
-      document.documentElement.style.setProperty("--color-primary-hover-val", adjustColor(theme.light, -20));
-      
-      if (document.documentElement.dataset.theme === "dark") {
-        document.documentElement.style.setProperty("--color-primary-val", theme.dark);
-        document.documentElement.style.setProperty("--color-primary-hover-val", adjustColor(theme.dark, -20));
-      }
-    }
-  }, [selectedTheme]);
+    if (initialized.current) return;
+    initialized.current = true;
+    applyColorTheme(selectedTheme, isDark);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // Re-apply whenever selectedTheme or isDark changes (after user interaction)
   useEffect(() => {
-    const handleThemeChange = () => {
-      const theme = colorThemes.find((t) => t.name === selectedTheme);
-      if (theme) {
-        const isDark = document.documentElement.dataset.theme === "dark";
-        document.documentElement.style.setProperty("--color-primary-val", isDark ? theme.dark : theme.light);
-        document.documentElement.style.setProperty("--color-primary-hover-val", adjustColor(isDark ? theme.dark : theme.light, -20));
-      }
-    };
+    if (!initialized.current) return;
+    applyColorTheme(selectedTheme, isDark);
+  }, [selectedTheme, isDark]);
 
-    const observer = new MutationObserver(handleThemeChange);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    
+  // Subscribe to dark/light mode mutations from the theme toggle
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.dataset.theme === "dark");
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
     return () => observer.disconnect();
-  }, [selectedTheme]);
+  }, []);
 
   function handleColorSelect(themeName: string) {
     setSelectedTheme(themeName);
@@ -94,10 +110,11 @@ export function ThemeColorPicker() {
                   onClick={() => handleColorSelect(theme.name)}
                   className={cn(
                     "relative flex h-8 w-8 items-center justify-center rounded-full transition-transform hover:scale-110",
-                    selectedTheme === theme.name && "ring-2 ring-offset-2 ring-offset-surface ring-primary"
+                    selectedTheme === theme.name &&
+                      "ring-2 ring-offset-2 ring-offset-surface ring-primary"
                   )}
                   style={{
-                    backgroundColor: document.documentElement.dataset.theme === "dark" ? theme.dark : theme.light,
+                    backgroundColor: isDark ? theme.dark : theme.light,
                   }}
                   title={theme.name}
                 >

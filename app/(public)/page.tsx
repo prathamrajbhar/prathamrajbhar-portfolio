@@ -48,7 +48,18 @@ export default async function HomePage() {
         <div className="mb-16">
           <p className="text-xs font-black uppercase tracking-[0.3em] text-primary">Who I am</p>
           <h2 className="mt-4 font-display text-4xl tracking-tight sm:text-6xl lg:text-7xl">
-            {settings.aboutTitle?.split(" ").slice(0, -3).join(" ")} <span className="text-gradient">{settings.aboutTitle?.split(" ").slice(-3).join(" ")}</span>
+            {(() => {
+              const words = settings.aboutTitle?.split(" ") ?? [];
+              const splitAt = Math.max(0, words.length - 3);
+              const head = words.slice(0, splitAt).join(" ");
+              const tail = words.slice(splitAt).join(" ");
+              return (
+                <>
+                  {head && <>{head} </>}
+                  <span className="text-gradient">{tail}</span>
+                </>
+              );
+            })()}
           </h2>
         </div>
 
@@ -197,7 +208,15 @@ export default async function HomePage() {
             </Button>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
-            {posts.slice(0, 3).map((post) => <BlogCard key={post.id} post={post} />)}
+            {posts.length > 0 ? (
+              posts.slice(0, 3).map((post) => <BlogCard key={post.id} post={post} />)
+            ) : (
+              <div className="col-span-full flex flex-col items-center justify-center rounded-3xl border border-dashed border-border/50 bg-surface/30 py-16 text-center">
+                <Code2 className="mb-4 text-muted/50" size={32} />
+                <h3 className="font-display text-lg font-bold text-text">No Posts Yet</h3>
+                <p className="mt-2 text-sm text-muted">Check back later for new articles.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>

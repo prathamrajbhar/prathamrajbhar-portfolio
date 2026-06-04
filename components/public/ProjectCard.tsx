@@ -25,14 +25,7 @@ export function ProjectCard({ project }: { project: ProjectDTO }) {
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
         />
-        <div className="absolute right-3 top-3 z-10">
-          <Badge 
-            variant={project.status === "completed" ? "success" : "warning"}
-            className="backdrop-blur-md bg-bg/80 border-border/60 shadow-sm text-[10px] font-bold uppercase tracking-wider px-2 py-0.5"
-          >
-            {project.status}
-          </Badge>
-        </div>
+
       </Link>
 
       {/* Card Body */}

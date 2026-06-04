@@ -154,7 +154,7 @@ export function Navbar({ name, openToWork }: { name: string; openToWork?: boolea
                     href={link.href}
                     onClick={() => setOpen(false)}
                     className={cn(
-                      "group flex items-center justify-between rounded-2xl px-6 py-5 text-2xl font-bold tracking-tight transition-all",
+                      "group flex items-center justify-between rounded-2xl px-6 py-5 text-2xl font-bold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-all",
                       pathname === link.href
                         ? "bg-primary text-bg shadow-2xl shadow-primary/20"
                         : "text-muted hover:bg-surface hover:text-text"

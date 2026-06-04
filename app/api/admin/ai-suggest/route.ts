@@ -99,9 +99,28 @@ export async function POST(req: Request) {
       );
     }
 
-    const data = (await res.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
+    const contentType = res.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      const text = await res.text();
+      console.error(`${getAIProviderLabel(config.provider)} non-JSON response:`, res.status, text.slice(0, 500));
+      return NextResponse.json(
+        { success: false, error: `${getAIProviderLabel(config.provider)} returned an invalid non-JSON response (e.g. HTML/Text).` },
+        { status: 500 }
+      );
+    }
+
+    let data;
+    try {
+      data = (await res.json()) as {
+        choices?: { message?: { content?: string } }[];
+      };
+    } catch (parseErr) {
+      console.error("Failed to parse JSON response from AI provider:", parseErr);
+      return NextResponse.json(
+        { success: false, error: "Failed to parse JSON response from AI provider" },
+        { status: 500 }
+      );
+    }
 
     const raw = data.choices?.[0]?.message?.content ?? "";
 

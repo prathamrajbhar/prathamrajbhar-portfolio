@@ -57,7 +57,10 @@ export function ContactForm() {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error. Please try again.");
       setState("error");
-      setTimeout(() => setState("idle"), 5000);
+      setTimeout(() => {
+        setState("idle");
+        setError("");
+      }, 5000);
     }
   }
 

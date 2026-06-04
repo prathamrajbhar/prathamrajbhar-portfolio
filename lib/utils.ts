@@ -56,7 +56,8 @@ export function getBaseUrl(headersList?: Headers | null) {
     return process.env.SITE_URL.replace(/\/$/, "");
   }
 
-  throw new Error("Unable to determine Base URL: Neither VERCEL_URL, Host header, nor SITE_URL are available.");
+  // Final fallback for build-time static generation
+  return "http://localhost:3000";
 }
 
 

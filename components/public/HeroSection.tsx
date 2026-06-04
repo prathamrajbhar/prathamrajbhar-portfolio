@@ -63,8 +63,18 @@ export function HeroSection({ settings }: { settings: SiteSettingsDTO }) {
 
             <motion.div variants={fadeInUp}>
               <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tighter text-text sm:text-7xl lg:text-8xl">
-                {settings.heroTitle?.split(" ").slice(0, -2).join(" ")} <br />
-                <span className="text-gradient">{settings.heroTitle?.split(" ").slice(-2).join(" ")}</span>
+                {(() => {
+                  const words = settings.heroTitle?.split(" ") ?? [];
+                  const splitAt = Math.max(0, words.length - 2);
+                  const head = words.slice(0, splitAt).join(" ");
+                  const tail = words.slice(splitAt).join(" ");
+                  return (
+                    <>
+                      {head && <>{head} <br /></>}
+                      <span className="text-gradient">{tail}</span>
+                    </>
+                  );
+                })()}
               </h1>
             </motion.div>
 

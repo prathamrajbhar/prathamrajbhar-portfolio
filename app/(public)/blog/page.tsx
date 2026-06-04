@@ -28,7 +28,18 @@ export default async function BlogPage() {
         <div className="mb-12 max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{settings.blogSubtitle || "Blog"}</p>
           <h1 className="mt-6 font-display text-5xl tracking-tight sm:text-6xl lg:text-7xl">
-            {settings.blogTitle?.split(" ").slice(0, -2).join(" ")} <br /><span className="text-gradient">{settings.blogTitle?.split(" ").slice(-2).join(" ")}</span>
+            {(() => {
+              const words = settings.blogTitle?.split(" ") ?? [];
+              const splitAt = Math.max(0, words.length - 2);
+              const head = words.slice(0, splitAt).join(" ");
+              const tail = words.slice(splitAt).join(" ");
+              return (
+                <>
+                  {head && <>{head} <br /></>}
+                  <span className="text-gradient">{tail}</span>
+                </>
+              );
+            })()}
           </h1>
           <p className="mt-8 text-lg leading-relaxed text-muted lg:text-xl">
             {settings.blogIntro || ""}

@@ -31,8 +31,18 @@ export function Footer({ settings }: { settings: SiteSettingsDTO }) {
         <div className="mb-20 grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              {settings.footerTitle?.split(" ").slice(0, -3).join(" ")} <br />
-              <span className="text-gradient">{settings.footerTitle?.split(" ").slice(-3).join(" ")}</span>
+              {(() => {
+                const words = settings.footerTitle?.split(" ") ?? [];
+                const splitAt = Math.max(0, words.length - 3);
+                const head = words.slice(0, splitAt).join(" ");
+                const tail = words.slice(splitAt).join(" ");
+                return (
+                  <>
+                    {head && <>{head} <br /></>}
+                    <span className="text-gradient">{tail}</span>
+                  </>
+                );
+              })()}
             </h2>
           </div>
           <div className="flex lg:justify-end">

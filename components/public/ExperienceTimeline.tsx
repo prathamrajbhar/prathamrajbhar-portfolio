@@ -33,7 +33,7 @@ export function ExperienceTimeline({ experiences }: { experiences: ExperienceDTO
           className="group relative"
         >
           {/* Timeline Connector & Glow */}
-          <div className="absolute -left-[28px] top-4 z-10">
+          <div className="absolute -left-[29px] top-4 z-10">
             <div className="relative flex h-4 w-4 items-center justify-center">
               <div className="absolute h-full w-full rounded-full bg-primary/20 animate-pulse group-hover:bg-primary/40" />
               <div className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" />
