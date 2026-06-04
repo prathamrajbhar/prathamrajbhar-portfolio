@@ -205,7 +205,7 @@ export default function EditBlogPostPage() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="max-w-6xl mx-auto pb-20"
@@ -249,10 +249,10 @@ export default function EditBlogPostPage() {
                         value={formData.title}
                         onChange={(e) => {
                           const title = e.target.value;
-                          setFormData({ 
-                            ...formData, 
-                            title, 
-                            slug: isEditingSlug ? formData.slug : slugify(title) 
+                          setFormData({
+                            ...formData,
+                            title,
+                            slug: isEditingSlug ? formData.slug : slugify(title)
                           });
                         }}
                         className={cn("h-14 text-lg font-bold", errors.title && "border-red-500/50 focus:ring-red-500/10")}
@@ -272,7 +272,7 @@ export default function EditBlogPostPage() {
                               className="bg-transparent border-none p-0 focus:ring-0 text-primary font-bold lowercase w-fit min-w-[50px] outline-none"
                             />
                           ) : (
-                            <span 
+                            <span
                               className="text-primary font-bold cursor-pointer hover:underline decoration-dotted underline-offset-4"
                               onClick={() => setIsEditingSlug(true)}
                             >
@@ -426,21 +426,21 @@ export default function EditBlogPostPage() {
                     {autoSaveStatus === "error" && "Auto-save failed"}
                   </span>
                 )}
-                <Button 
-                  type="button" 
-                  variant="secondary" 
-                  disabled={saving} 
-                  onClick={() => handleSave(false)} 
-                  size="lg" 
+                <Button
+                  type="button"
+                  variant="secondary"
+                  disabled={saving}
+                  onClick={() => handleSave(false)}
+                  size="lg"
                   className="w-full h-14 rounded-2xl border border-border"
                 >
                   Save Draft
                 </Button>
-                <Button 
-                  type="button" 
-                  disabled={saving} 
-                  onClick={() => handleSave(true)} 
-                  size="lg" 
+                <Button
+                  type="button"
+                  disabled={saving}
+                  onClick={() => handleSave(true)}
+                  size="lg"
                   className="w-full h-14 rounded-2xl shadow-xl shadow-primary/20"
                 >
                   {saving ? (
@@ -461,7 +461,7 @@ export default function EditBlogPostPage() {
               </div>
 
               {errors.general && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-sm font-bold text-red-500"

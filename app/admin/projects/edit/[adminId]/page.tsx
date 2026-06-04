@@ -275,7 +275,7 @@ export default function EditProjectPage() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="max-w-5xl mx-auto pb-20"
@@ -407,10 +407,10 @@ export default function EditProjectPage() {
                           value={formData.title}
                           onChange={(e) => {
                             const title = e.target.value;
-                            setFormData({ 
-                              ...formData, 
-                              title, 
-                              slug: isEditingSlug ? formData.slug : slugify(title) 
+                            setFormData({
+                              ...formData,
+                              title,
+                              slug: isEditingSlug ? formData.slug : slugify(title)
                             });
                           }}
                           className={cn("h-14 text-lg font-bold", errors.title && "border-red-500/50 focus:ring-red-500/10")}
@@ -430,7 +430,7 @@ export default function EditProjectPage() {
                                 className="bg-transparent border-none p-0 focus:ring-0 text-primary font-bold lowercase w-fit min-w-[50px] outline-none"
                               />
                             ) : (
-                              <span 
+                              <span
                                 className="text-primary font-bold cursor-pointer hover:underline decoration-dotted underline-offset-4"
                                 onClick={() => setIsEditingSlug(true)}
                               >
@@ -771,11 +771,11 @@ export default function EditProjectPage() {
                         <Label htmlFor="seoTitle">Meta Title</Label>
                         <AISuggestField label="Meta Title" module="projects" field="seoTitle" context={formData} onApply={(v) => setFormData({ ...formData, seoTitle: v })} />
                       </div>
-                      <Input 
-                        id="seoTitle" 
-                        placeholder="e.g. Acme Dashboard | My Portfolio" 
-                        value={formData.seoTitle} 
-                        onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })} 
+                      <Input
+                        id="seoTitle"
+                        placeholder="e.g. Acme Dashboard | My Portfolio"
+                        value={formData.seoTitle}
+                        onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
                       />
                     </div>
                     <div className="space-y-2">
@@ -783,21 +783,21 @@ export default function EditProjectPage() {
                         <Label htmlFor="seoDescription">Meta Description</Label>
                         <AISuggestField label="Meta Description" module="projects" field="seoDescription" context={formData} onApply={(v) => setFormData({ ...formData, seoDescription: v })} />
                       </div>
-                      <Textarea 
-                        id="seoDescription" 
-                        placeholder="Short, keyword-rich description..." 
-                        value={formData.seoDescription} 
+                      <Textarea
+                        id="seoDescription"
+                        placeholder="Short, keyword-rich description..."
+                        value={formData.seoDescription}
                         onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}
                         rows={3}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="seoKeywords">Keywords</Label>
-                      <Input 
-                        id="seoKeywords" 
-                        placeholder="e.g. React, Dashboard, Analytics" 
-                        value={formData.seoKeywords} 
-                        onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })} 
+                      <Input
+                        id="seoKeywords"
+                        placeholder="e.g. React, Dashboard, Analytics"
+                        value={formData.seoKeywords}
+                        onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })}
                       />
                     </div>
                   </div>
@@ -849,19 +849,19 @@ export default function EditProjectPage() {
               <Link href="/admin/projects">
                 <Button variant="outline" type="button" className="h-12 px-6 rounded-xl cursor-pointer">Cancel</Button>
               </Link>
-              <Button 
-                type="button" 
-                variant="secondary" 
-                disabled={saving} 
-                onClick={() => handleSave(false)} 
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={saving}
+                onClick={() => handleSave(false)}
                 className="h-12 px-6 rounded-xl cursor-pointer border border-border"
               >
                 Save Draft
               </Button>
-              <Button 
-                type="button" 
-                disabled={saving} 
-                onClick={() => handleSave(true)} 
+              <Button
+                type="button"
+                disabled={saving}
+                onClick={() => handleSave(true)}
                 className="h-12 px-8 rounded-xl shadow-lg shadow-primary/20 cursor-pointer"
               >
                 {saving ? (
@@ -880,7 +880,7 @@ export default function EditProjectPage() {
           </div>
 
           {errors.general && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-sm font-bold text-red-500 mt-4"

@@ -148,7 +148,7 @@ export default function EditHackathonPage() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="space-y-10"
@@ -206,53 +206,53 @@ export default function EditHackathonPage() {
               </div>
               <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Core Details</h2>
             </div>
-            
+
             <div className="p-8 space-y-6">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Hackathon Name *</Label>
-                    <Input
-                      id="title"
-                      placeholder="e.g. ETHGlobal San Francisco"
-                      value={formData.title}
-                      onChange={(e) => {
-                        const title = e.target.value;
-                        setFormData({ 
-                          ...formData, 
-                          title, 
-                          slug: isEditingSlug ? formData.slug : slugify(title) 
-                        });
-                      }}
-                      className={cn(errors.title && "border-red-500/50 focus:ring-red-500/10")}
-                    />
-                    <div className="flex items-center gap-2 px-1">
-                      <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
-                        <LinkIcon size={10} className="text-primary/50" />
-                        <span>Permalink:</span>
-                        <span className="text-text/40">{origin}/hackathons/</span>
-                        {isEditingSlug ? (
-                          <input
-                            type="text"
-                            value={formData.slug}
-                            onChange={(e) => setFormData({ ...formData, slug: slugify(e.target.value) })}
-                            onBlur={() => setIsEditingSlug(false)}
-                            autoFocus
-                            className="bg-transparent border-none p-0 focus:ring-0 text-primary font-bold lowercase w-fit min-w-[50px] outline-none"
-                          />
-                        ) : (
-                          <span 
-                            className="text-primary font-bold cursor-pointer hover:underline decoration-dotted underline-offset-4"
-                            onClick={() => setIsEditingSlug(true)}
-                          >
-                            {formData.slug}
-                          </span>
-                        )}
-                      </div>
-                      {errors.slug && <span className="text-[10px] font-bold uppercase text-red-500">— {errors.slug}</span>}
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Hackathon Name *</Label>
+                  <Input
+                    id="title"
+                    placeholder="e.g. ETHGlobal San Francisco"
+                    value={formData.title}
+                    onChange={(e) => {
+                      const title = e.target.value;
+                      setFormData({
+                        ...formData,
+                        title,
+                        slug: isEditingSlug ? formData.slug : slugify(title)
+                      });
+                    }}
+                    className={cn(errors.title && "border-red-500/50 focus:ring-red-500/10")}
+                  />
+                  <div className="flex items-center gap-2 px-1">
+                    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
+                      <LinkIcon size={10} className="text-primary/50" />
+                      <span>Permalink:</span>
+                      <span className="text-text/40">{origin}/hackathons/</span>
+                      {isEditingSlug ? (
+                        <input
+                          type="text"
+                          value={formData.slug}
+                          onChange={(e) => setFormData({ ...formData, slug: slugify(e.target.value) })}
+                          onBlur={() => setIsEditingSlug(false)}
+                          autoFocus
+                          className="bg-transparent border-none p-0 focus:ring-0 text-primary font-bold lowercase w-fit min-w-[50px] outline-none"
+                        />
+                      ) : (
+                        <span
+                          className="text-primary font-bold cursor-pointer hover:underline decoration-dotted underline-offset-4"
+                          onClick={() => setIsEditingSlug(true)}
+                        >
+                          {formData.slug}
+                        </span>
+                      )}
                     </div>
-                    {errors.title && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.title}</p>}
+                    {errors.slug && <span className="text-[10px] font-bold uppercase text-red-500">— {errors.slug}</span>}
                   </div>
+                  {errors.title && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.title}</p>}
                 </div>
+              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="description">Hackathon Description *</Label>
@@ -276,7 +276,7 @@ export default function EditHackathonPage() {
               </div>
               <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Project & Result</h2>
             </div>
-            
+
             <div className="p-8 space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
@@ -343,7 +343,7 @@ export default function EditHackathonPage() {
               </div>
               <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Logistics</h2>
             </div>
-            
+
             <div className="p-8 space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="date">Event Date *</Label>
@@ -383,7 +383,7 @@ export default function EditHackathonPage() {
               </div>
               <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Media</h2>
             </div>
-            
+
             <div className="p-8 space-y-6">
               <div className="space-y-2">
                 <Label>Hackathon Image</Label>

@@ -143,7 +143,7 @@ export default function EditEducationPage() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="space-y-10"
@@ -201,7 +201,7 @@ export default function EditEducationPage() {
               </div>
               <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Academic Details</h2>
             </div>
-            
+
             <div className="p-8 space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
@@ -213,10 +213,10 @@ export default function EditEducationPage() {
                       value={formData.institution}
                       onChange={(e) => {
                         const institution = e.target.value;
-                        setFormData({ 
-                          ...formData, 
-                          institution, 
-                          slug: slugify(`${institution} ${formData.degree}`) 
+                        setFormData({
+                          ...formData,
+                          institution,
+                          slug: slugify(`${institution} ${formData.degree}`)
                         });
                       }}
                       className={cn("pl-10", errors.institution && "border-red-500/50 focus:ring-red-500/10")}
@@ -225,67 +225,67 @@ export default function EditEducationPage() {
                   </div>
                   {errors.institution && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.institution}</p>}
                 </div>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="degree">Degree *</Label>
-                      <div className="relative">
-                        <Input
-                          id="degree"
-                          placeholder="e.g. Bachelor of Science"
-                          value={formData.degree}
-                          onChange={(e) => {
-                            const degree = e.target.value;
-                            setFormData({ 
-                              ...formData, 
-                              degree, 
-                              slug: isEditingSlug ? formData.slug : slugify(`${formData.institution} ${degree}`) 
-                            });
-                          }}
-                          className={cn("pl-10", errors.degree && "border-red-500/50 focus:ring-red-500/10")}
-                        />
-                        <BookOpen className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
-                      </div>
-                      <div className="flex items-center gap-2 px-1">
-                        <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
-                          <LinkIcon size={10} className="text-primary/50" />
-                          <span>Permalink:</span>
-                          <span className="text-text/40">{origin}/education/</span>
-                          {isEditingSlug ? (
-                            <input
-                              type="text"
-                              value={formData.slug}
-                              onChange={(e) => setFormData({ ...formData, slug: slugify(e.target.value) })}
-                              onBlur={() => setIsEditingSlug(false)}
-                              autoFocus
-                              className="bg-transparent border-none p-0 focus:ring-0 text-primary font-bold lowercase w-fit min-w-[50px] outline-none"
-                            />
-                          ) : (
-                            <span 
-                              className="text-primary font-bold cursor-pointer hover:underline decoration-dotted underline-offset-4"
-                              onClick={() => setIsEditingSlug(true)}
-                            >
-                              {formData.slug}
-                            </span>
-                          )}
-                        </div>
-                        {errors.slug && <span className="text-[10px] font-bold uppercase text-red-500">— {errors.slug}</span>}
-                      </div>
-                      {errors.degree && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.degree}</p>}
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="degree">Degree *</Label>
+                    <div className="relative">
+                      <Input
+                        id="degree"
+                        placeholder="e.g. Bachelor of Science"
+                        value={formData.degree}
+                        onChange={(e) => {
+                          const degree = e.target.value;
+                          setFormData({
+                            ...formData,
+                            degree,
+                            slug: isEditingSlug ? formData.slug : slugify(`${formData.institution} ${degree}`)
+                          });
+                        }}
+                        className={cn("pl-10", errors.degree && "border-red-500/50 focus:ring-red-500/10")}
+                      />
+                      <BookOpen className="absolute left-3 top-1/2 -translate-y-1/2 text-muted h-4 w-4" />
                     </div>
+                    <div className="flex items-center gap-2 px-1">
+                      <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted/60">
+                        <LinkIcon size={10} className="text-primary/50" />
+                        <span>Permalink:</span>
+                        <span className="text-text/40">{origin}/education/</span>
+                        {isEditingSlug ? (
+                          <input
+                            type="text"
+                            value={formData.slug}
+                            onChange={(e) => setFormData({ ...formData, slug: slugify(e.target.value) })}
+                            onBlur={() => setIsEditingSlug(false)}
+                            autoFocus
+                            className="bg-transparent border-none p-0 focus:ring-0 text-primary font-bold lowercase w-fit min-w-[50px] outline-none"
+                          />
+                        ) : (
+                          <span
+                            className="text-primary font-bold cursor-pointer hover:underline decoration-dotted underline-offset-4"
+                            onClick={() => setIsEditingSlug(true)}
+                          >
+                            {formData.slug}
+                          </span>
+                        )}
+                      </div>
+                      {errors.slug && <span className="text-[10px] font-bold uppercase text-red-500">— {errors.slug}</span>}
+                    </div>
+                    {errors.degree && <p className="text-[10px] font-bold uppercase tracking-wider text-red-500">{errors.degree}</p>}
                   </div>
+                </div>
               </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="field">Field of Study</Label>
-                  <Input
-                    id="field"
-                    placeholder="e.g. Computer Science"
-                    value={formData.field}
-                    onChange={(e) => setFormData({ ...formData, field: e.target.value })}
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="field">Field of Study</Label>
+                <Input
+                  id="field"
+                  placeholder="e.g. Computer Science"
+                  value={formData.field}
+                  onChange={(e) => setFormData({ ...formData, field: e.target.value })}
+                />
+              </div>
 
-                <div className="space-y-2">
+              <div className="space-y-2">
                 <Label htmlFor="description">Academic Description</Label>
                 <Textarea
                   id="description"
@@ -308,7 +308,7 @@ export default function EditEducationPage() {
               </div>
               <h2 className="text-sm font-black uppercase tracking-widest text-text/80">Logistics</h2>
             </div>
-            
+
             <div className="p-8 space-y-6">
               <div className="grid gap-6">
                 <div className="space-y-2">

@@ -22,6 +22,20 @@ const nextConfig = {
   },
   experimental: {
   },
+  redirects: async () => {
+    return [
+      {
+        source: '/hackathons',
+        destination: '/experience',
+        permanent: true,
+      },
+      {
+        source: '/certifications',
+        destination: '/experience',
+        permanent: true,
+      }
+    ];
+  },
   headers: async () => {
     return [
       {

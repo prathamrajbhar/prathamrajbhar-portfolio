@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Plus, Pencil, Trash2, Loader2, Trophy, MapPin, Calendar, Award, Search, ArrowUpRight, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Plus, Loader2, Trophy, Search, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { HackathonCard } from "@/components/admin/HackathonCard";
 
 import type { HackathonDTO } from "@/lib/types";
 
@@ -150,106 +151,11 @@ export default function HackathonsPage() {
                 layout
                 exit={{ opacity: 0, scale: 0.95 }}
               >
-                <Card className="group relative overflow-hidden border-border/50 bg-surface/30 backdrop-blur-md transition-all duration-500 hover:border-primary/40 hover:bg-surface/50 hover:shadow-2xl hover:shadow-primary/5">
-                  <div className="p-8 sm:p-10 relative z-10">
-                    <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-                      <div className="flex-1 space-y-8">
-                        <div className="flex flex-col sm:flex-row sm:items-start gap-8">
-                          <div className="relative">
-                            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[2rem] bg-bg border border-border/50 text-primary shadow-inner transition-all duration-700 group-hover:scale-110 group-hover:rotate-6">
-                              <Trophy size={36} />
-                            </div>
-                            {hackathon.result && (
-                              <div className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-bg shadow-lg border-2 border-surface">
-                                <Award size={16} />
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="space-y-3">
-                            <div className="flex flex-wrap items-center gap-4">
-                              <h3 className="font-display text-3xl font-bold tracking-tight text-text group-hover:text-primary transition-colors">
-                                {hackathon.title}
-                              </h3>
-                              {hackathon.result && (
-                                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.1em] text-emerald-500 shadow-sm">
-                                  <Sparkles size={12} />
-                                  {hackathon.result}
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-xl font-bold text-muted/80 tracking-tight">{hackathon.project}</p>
-                          </div>
-                        </div>
-
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                          <div className="flex items-center gap-4 rounded-2xl bg-bg/50 border border-border/30 p-4 transition-colors group-hover:bg-bg/80">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-primary border border-primary/10">
-                              <Calendar size={18} />
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-[10px] font-black uppercase tracking-widest text-muted/60">Timeline</p>
-                              <p className="text-sm font-bold text-text truncate">{new Date(hackathon.date).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</p>
-                            </div>
-                          </div>
-                          {hackathon.location && (
-                            <div className="flex items-center gap-4 rounded-2xl bg-bg/50 border border-border/30 p-4 transition-colors group-hover:bg-bg/80">
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-primary border border-primary/10">
-                                <MapPin size={18} />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted/60">Venue</p>
-                                <p className="text-sm font-bold text-text truncate">{hackathon.location}</p>
-                              </div>
-                            </div>
-                          )}
-                          {hackathon.role && (
-                            <div className="flex items-center gap-4 rounded-2xl bg-bg/50 border border-border/30 p-4 transition-colors group-hover:bg-bg/80">
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-primary border border-primary/10">
-                                <Plus size={18} />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted/60">Responsibility</p>
-                                <p className="text-sm font-bold text-text truncate">{hackathon.role}</p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="rounded-[2rem] bg-bg/40 border border-border/50 p-8 relative overflow-hidden group/desc">
-                          <div className="absolute right-6 top-6 text-muted/10 transition-colors group-hover/desc:text-primary/10">
-                            <Trophy size={48} />
-                          </div>
-                          <p className="text-base leading-relaxed text-muted max-w-3xl">
-                            {hackathon.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3 sm:shrink-0 lg:flex-col lg:border-l lg:border-border/50 lg:pl-10">
-                        <Link href={`/admin/hackathons/edit/${hackathon.id}`} className="flex-1 sm:flex-none">
-                          <button className="flex h-14 w-14 items-center justify-center rounded-2xl bg-bg border border-border/50 text-muted transition-all hover:bg-primary hover:text-bg hover:border-primary active:scale-95 shadow-lg group/btn">
-                            <Pencil size={20} className="transition-transform group-hover/btn:scale-110 group-hover/btn:rotate-12" />
-                          </button>
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(hackathon.id)}
-                          disabled={deleting === hackathon.id}
-                          className="flex h-14 w-14 items-center justify-center rounded-2xl bg-bg border border-border/50 text-muted transition-all hover:bg-red-500 hover:text-white hover:border-red-500 active:scale-95 shadow-lg"
-                        >
-                          {deleting === hackathon.id ? (
-                            <Loader2 className="h-6 w-6 animate-spin" />
-                          ) : (
-                            <Trash2 size={20} />
-                          )}
-                        </button>
-                        <div className="hidden lg:block mt-2 text-muted/20">
-                          <ArrowUpRight size={28} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform group-hover:text-primary group-hover:opacity-100" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
+                <HackathonCard
+                  hackathon={hackathon}
+                  onDelete={handleDelete}
+                  isDeleting={deleting === hackathon.id}
+                />
               </motion.div>
             ))
           )}
