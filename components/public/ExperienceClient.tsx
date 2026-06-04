@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, GraduationCap, Award, Trophy, Download, MapPin, Calendar, ArrowRight } from "lucide-react";
+import { GraduationCap, Award, Trophy, Download, Calendar, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ExperienceTimeline } from "@/components/public/ExperienceTimeline";
+// import { ExperienceTimeline } from "@/components/public/ExperienceTimeline";
 import { SkillsCloud } from "@/components/public/SkillsCloud";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -87,7 +87,8 @@ export function ExperienceClient({ experiences, skills, hackathons, certificatio
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Main Content Area */}
           <div className="lg:col-span-8 space-y-12">
-            {/* Work Experience Section */}
+            {/* Work Experience Section (Hidden as requested) */}
+            {/*
             <motion.section variants={item}>
               <div className="mb-8 flex items-center justify-between px-2">
                 <h2 className="flex items-center gap-3 font-display text-3xl tracking-tight">
@@ -101,6 +102,7 @@ export function ExperienceClient({ experiences, skills, hackathons, certificatio
                  </div>
               </Card>
             </motion.section>
+            */}
 
             {/* Skills Mosaic */}
             <motion.section variants={item} className="pt-12">
@@ -115,28 +117,49 @@ export function ExperienceClient({ experiences, skills, hackathons, certificatio
           {/* Optimized Sidebar */}
           <motion.aside variants={item} className="lg:col-span-4 space-y-8">
             <div className="lg:sticky lg:top-24 space-y-8">
-              {/* Education - Glassmorphism Card */}
+              {/* Education - Clean and Simple Card */}
               {education.length > 0 && (
-                <Card className="relative overflow-hidden border-border/50 bg-surface/30 p-8 backdrop-blur-md transition-all duration-300 hover:border-primary/30 group shadow-lg shadow-black/5">
-                  <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <GraduationCap size={80} />
-                  </div>
-                  <h2 className="flex items-center gap-3 font-display text-xl tracking-tight mb-8">
-                    <GraduationCap className="text-primary" size={22} />
+                <Card className="border-border/40 bg-surface/20 p-6 md:p-8 rounded-2xl shadow-sm">
+                  <h2 className="flex items-center gap-2 font-display text-lg font-bold tracking-tight text-text mb-6">
+                    <GraduationCap className="text-primary" size={20} />
                     Education
                   </h2>
-                  <div className="space-y-8">
-                    {education.map((edu) => (
-                      <div key={edu.id} className="relative pl-6 before:absolute before:left-0 before:top-2 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-primary before:to-transparent">
-                        <div className="absolute left-[-4px] top-1 h-2 w-2 rounded-full bg-primary shadow-[0_0_10px_var(--color-primary)]" />
-                        <h3 className="font-bold text-lg leading-tight">{edu.degree} {edu.field && `in ${edu.field}`}</h3>
-                        <p className="mt-1 text-sm text-primary font-bold">{edu.institution}</p>
-                        <div className="mt-3 flex items-center gap-4 text-xs text-muted">
-                          <span className="flex items-center gap-1"><Calendar size={12} /> {edu.startYear} — {edu.current ? "Present" : edu.endYear}</span>
-                          {edu.location && <span className="flex items-center gap-1"><MapPin size={12} /> {edu.location}</span>}
+                  <div className="space-y-6">
+                    {education.map((edu) => {
+                      const hasFieldDuplication = edu.field && edu.degree.toLowerCase().includes(edu.field.toLowerCase());
+                      const displayTitle = edu.field && !hasFieldDuplication
+                        ? `${edu.degree} in ${edu.field}`
+                        : edu.degree;
+
+                      return (
+                        <div key={edu.id} className="flex flex-col pb-6 last:pb-0 border-b border-border/10 last:border-0">
+                          <div className="flex justify-between items-start gap-3">
+                            <h3 className="font-bold text-sm text-text leading-snug">
+                              {displayTitle}
+                            </h3>
+                            <span className="shrink-0 text-[10px] font-bold text-muted bg-surface/50 border border-border/20 px-2 py-0.5 rounded-full">
+                              {edu.startYear} — {edu.current ? "Present" : edu.endYear}
+                            </span>
+                          </div>
+                          
+                          <p className="mt-1 text-xs font-semibold text-primary">{edu.institution}</p>
+                          
+                          <div className="mt-2.5 flex flex-wrap items-center gap-x-2.5 text-[11px] text-muted/80">
+                            {edu.location && (
+                              <span>{edu.location}</span>
+                            )}
+                            {edu.location && edu.gpa && (
+                              <span className="text-border/60">•</span>
+                            )}
+                            {edu.gpa && (
+                              <span className="font-medium text-emerald-500 bg-emerald-500/5 px-1.5 py-0.5 rounded border border-emerald-500/10">
+                                GPA: {edu.gpa}
+                              </span>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </Card>
               )}

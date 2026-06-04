@@ -11,7 +11,7 @@ import { ThemeColorPicker } from "@/components/public/ThemeColorPicker";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
-  { href: "/blog", label: "Blog" },
+  // { href: "/blog", label: "Blog" },
   { href: "/experience", label: "Experience" },
   { href: "/contact", label: "Contact" }
 ];
